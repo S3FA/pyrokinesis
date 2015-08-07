@@ -16,6 +16,12 @@ class PyrokinesisSettings : NSManagedObject {
     @NSManaged var fireIPAddress: String
     @NSManaged var firePort: Int32
     
+    static let FLAME_EFFECT_RESEND_TIME_S : NSTimeInterval = 1.0
+    static let NUM_FLAME_EFFECTS: Int = 8
+    
+    static let DEFAULT_IP_ADDRESS: String = "192.168.43.212"
+    static let DEFAULT_PORT_NUMBER: Int32 = 2000
+    
     class func getSettings() -> PyrokinesisSettings? {
         
         let fetchRequest = NSFetchRequest(entityName: "PyrokinesisSettings")
@@ -48,8 +54,8 @@ class PyrokinesisSettings : NSManagedObject {
     
     func resetToDefaults() {
         self.connectionEnabled = true
-        self.fireIPAddress = "192.168.43.212"
-        self.firePort = 2000
+        self.fireIPAddress = PyrokinesisSettings.DEFAULT_IP_ADDRESS
+        self.firePort = PyrokinesisSettings.DEFAULT_PORT_NUMBER
     }
     
 }

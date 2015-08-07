@@ -12,4 +12,5 @@
 #import "Muse/Muse.h"
 #include "CorePlot-CocoaTouch.h"
 #include "GCDAsyncUdpSocket.h"
+#include "CPTMutablePlotRange+SwiftCompat.h"
 #endif

@@ -40,11 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        // Called as part of the transition from the background to the inactive state; 
+        // here you can undo many of the changes made on entering the background.
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. 
+        // If the application was previously in the background, optionally refresh the user interface.
         
         objc_sync_enter(self.museManager)
         if self.museManager != nil {
@@ -61,8 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
         if self.muse == nil {
             // Intent: show a bluetooth picker, but only if there isn't already a
             // Muse connected to the device. Do this by delaying the picker by 1
-            // second. If startWithMuse happens before the timer expires, cancel
-            // the timer.
+            // second. If startWithMuse happens before the timer expires, cancel the timer.
             self.musePickerTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("showMusePicker"), userInfo: nil, repeats: false)
         }
         
@@ -91,6 +92,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     }
     
     func showMusePicker() {
+        if self.muse != nil {
+            return
+        }
+        
         self.museManager?.showMusePickerWithCompletion({(error: NSError?) in
             if let e = error {
                 NSLog("Error showing Muse picker: \(e)");
@@ -99,6 +104,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     }
     
     func startWithMuse(muse: IXNMuse) {
+        self.musePickerTimer?.invalidate()
+        self.musePickerTimer = nil
+        
         objc_sync_enter(self.muse)
         if self.muse != nil {
             objc_sync_exit(self.muse)
@@ -107,13 +115,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
         self.muse = muse;
         objc_sync_exit(self.muse)
         
-        self.musePickerTimer?.invalidate()
-        self.musePickerTimer = nil
-        
         if let m = self.muse {
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.Horseshoe)
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.Battery)
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.Artifacts)
+            
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.AlphaScore)
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.BetaScore)
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.DeltaScore)
@@ -121,6 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.GammaScore)
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.Mellow)
             m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.Concentration)
+            
             //m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.Accelerometer)
             m.registerConnectionListener(self.museListener)
             
@@ -143,12 +150,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     }
     
     func sendFireControlData(fireIdx: Int) {
-        assert(fireIdx >= 0 && fireIdx <= 7, "Invalid fire emitter index.")
-        
+        self.sendMultiFireControlData([fireIdx])
+    }
+    func sendMultiFireControlData(fireIndices: [Int]) {
         if let udp = self.udpSocket {
             if let settings = PyrokinesisSettings.getSettings() {
-                var data = ("F\(fireIdx)" as NSString).dataUsingEncoding(NSUTF8StringEncoding)
-                udp.sendData(data, toHost: settings.fireIPAddress, port: UInt16(settings.firePort), withTimeout: -1, tag: self.packetCount)
+                
+                var data = ""
+                for fireIdx in fireIndices {
+                    assert(fireIdx >= 0 && fireIdx <= 7, "Invalid fire emitter index.")
+                    data += String(Character(UnicodeScalar(Int(0xFF)))) + "\(fireIdx)"
+                }
+                
+                let tempData = (data as NSString).dataUsingEncoding(NSASCIIStringEncoding)
+                NSLog("Sending data: \(tempData)")
+                
+                udp.sendData(tempData, toHost: settings.fireIPAddress, port: UInt16(settings.firePort), withTimeout: -1, tag: self.packetCount)
                 self.packetCount++
             }
         }
@@ -162,7 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
         NSLog("Failed to connect!")
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didSendDataWithTag tag: CLong) {
-        NSLog("Sent data!")
+        //NSLog("Sent data!")
     }
     func udpSocket(sock: GCDAsyncUdpSocket!, didNotSendDataWithTag tag: CLong, dueToError error: NSError!) {
         NSLog("Failed to send data!")

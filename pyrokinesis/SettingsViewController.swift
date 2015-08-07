@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsViewController: UITableViewController, SwitchCellDelegate {
+class SettingsViewController: UITableViewController, UINavigationControllerDelegate, SwitchCellDelegate {
 
     @IBOutlet var connectionEnabledSwitch: UISwitch!
     @IBOutlet var connectionEnabledCell: TableViewSwitchCell!
@@ -25,21 +25,10 @@ class SettingsViewController: UITableViewController, SwitchCellDelegate {
         super.viewDidLoad()
         
         self.connectionEnabledCell.delegate = self
+        self.navigationController?.delegate = self
         
         // Update with any previous settings data
-        if let settings = PyrokinesisSettings.getSettings() {
-            self.ipAddressLabel.text = settings.fireIPAddress
-            self.portLabel.text = "\(settings.firePort)"
-            self.connectionEnabledSwitch.setOn(settings.connectionEnabled, animated: false)
-        }
-        else {
-            var connSwitchOn = false
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            if let udpSocket = appDelegate.udpSocket {
-                connSwitchOn = true
-            }
-            self.connectionEnabledSwitch.setOn(connSwitchOn, animated: false)
-        }
+        self.updateSettingsValues()
     }
     
     override func didReceiveMemoryWarning() {
@@ -57,6 +46,29 @@ class SettingsViewController: UITableViewController, SwitchCellDelegate {
         }
     }
     
-
+    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        
+        if viewController == self {
+            // Update the settings values...
+            self.updateSettingsValues()
+        }
+    }
+    
+    private func updateSettingsValues() {
+        // Update with any previous settings data
+        if let settings = PyrokinesisSettings.getSettings() {
+            self.ipAddressLabel.text = settings.fireIPAddress
+            self.portLabel.text = "\(settings.firePort)"
+            self.connectionEnabledSwitch.setOn(settings.connectionEnabled, animated: false)
+        }
+        else {
+            var connSwitchOn = false
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            if let udpSocket = appDelegate.udpSocket {
+                connSwitchOn = true
+            }
+            self.connectionEnabledSwitch.setOn(connSwitchOn, animated: false)
+        }
+    }
     
 }

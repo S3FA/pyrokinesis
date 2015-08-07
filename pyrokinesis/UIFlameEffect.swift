@@ -17,7 +17,7 @@ class UIFlameEffect : UIView {
     @IBInspectable var touchFillColour: UIColor = UIColor.redColor()
     @IBInspectable var strokeColour: UIColor = UIColor.blackColor()
     
-    private static let FLAME_EFFECT_RESEND_TIME_S : NSTimeInterval = 1.0
+    
     
     private var currFillColour : UIColor
     private var shapePath: UIBezierPath
@@ -64,7 +64,7 @@ class UIFlameEffect : UIView {
             self.sendFireControlData()
             
             if self.touchRepeatTimer == nil {
-                self.touchRepeatTimer = NSTimer.scheduledTimerWithTimeInterval(UIFlameEffect.FLAME_EFFECT_RESEND_TIME_S, target: self, selector: Selector("sendFireControlData"), userInfo: nil, repeats: true)
+                self.touchRepeatTimer = NSTimer.scheduledTimerWithTimeInterval(PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S, target: self, selector: Selector("sendFireControlData"), userInfo: nil, repeats: true)
             }
             
             self.currFillColour = self.touchFillColour
