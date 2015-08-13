@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     
     var udpSocket: GCDAsyncUdpSocket? = nil
     
+    var fireAnimatorManager: FireAnimatorManager!
+    
     private var packetCount: Int = 0
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

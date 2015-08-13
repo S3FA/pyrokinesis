@@ -12,19 +12,23 @@ import UIKit
 class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
 
     static let MAX_CACHED_VALUES : Int = 256
-    static let MAX_HORSESHOE_SCORE_TO_FIRE : Int = 6
+    static let MAX_HORSESHOE_SCORE_TO_FIRE : Double = 6
+    static let WORST_HORSESHOE_SCORE : Double = 16
     
-    var cachedScoreValues : [IXNMuseDataPacketType: [Double]] = [IXNMuseDataPacketType: [Double]]()
+    var cachedScoreValues = [IXNMuseDataPacketType: [Double]]()
+    var horseshoeScoreValues = [Double]() // 4 - best, 16 - worst
+
+    var museConnStatus:IXNConnectionState = IXNConnectionState.Disconnected
+    var dataUpdated: Bool = false
+    
+    
+    
     
     private var sawOneBlink: Bool = false
     private var lastBlink: Bool = false
     private var sawOneJawClench: Bool = false
     private var lastJawClench: Bool = false
     private var lastJawClenchFireTime: NSDate = NSDate()
-    
-    var horseshoeScore: Int = 16 // 4 - best, 16 - worst    
-    var museConnStatus:IXNConnectionState = IXNConnectionState.Disconnected
-    var dataUpdated: Bool = false
     
     @objc func receiveMuseDataPacket(packet: IXNMuseDataPacket) {
         var cacheScore = false
@@ -66,7 +70,12 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
                         count += dblVal
                     }
                 }
-                self.horseshoeScore = Int(count)
+                
+                if self.horseshoeScoreValues.count >= MuseListener.MAX_CACHED_VALUES {
+                    self.horseshoeScoreValues.removeAtIndex(0)
+                }
+                self.horseshoeScoreValues.append(count)
+                
                 break
             
             default:
@@ -198,6 +207,13 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         return statusStr
     }
     
+    func avgHorseshoeValue() -> Double {
+        if self.horseshoeScoreValues.count == 0 {
+            return MuseListener.WORST_HORSESHOE_SCORE
+        }
+        return self.horseshoeScoreValues.reduce(0, combine: +) / Double(self.horseshoeScoreValues.count)
+    }
+    
     class func getConnectionStatusColour(state: IXNConnectionState) -> UIColor {
         switch (state) {
             case IXNConnectionState.Disconnected:
@@ -205,17 +221,17 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
             case IXNConnectionState.Connected:
                 return UIColor.greenColor()
             case IXNConnectionState.Connecting:
-                return UIColor(red: 0, green: 1.0, blue: 0.5, alpha: 1.0)
+                return UIColor.yellowColor()
             case IXNConnectionState.NeedsUpdate:
                 return UIColor.lightGrayColor()
             case IXNConnectionState.Unknown:
                 return UIColor.magentaColor()
             default:
-                return UIColor.yellowColor()
+                return UIColor.magentaColor()
         }
     }
     
-    class func getSignalStrengthString(horseshoeValue: Int) -> String {
+    class func getSignalStrengthString(horseshoeValue: Double) -> String {
         if horseshoeValue <=  4 {
             return "Excellent (Sending Fire Data)"
         }
@@ -230,7 +246,8 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         }
     }
     
-    class func getSignalStrengthColour(horseshoeValue: Int) -> UIColor {
+    class func getSignalStrengthColour(horseshoeValue: Double) -> UIColor {
+        
         if horseshoeValue <= MuseListener.MAX_HORSESHOE_SCORE_TO_FIRE {
             return UIColor.greenColor()
         }
@@ -247,6 +264,8 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         for (packetType, valueArray) in self.cachedScoreValues {
             avgScoreValues.updateValue(valueArray.reduce(0, combine: +) / Double(valueArray.count), forKey: packetType)
         }
+        
+        // TODO: Have a mode to determine how scoring works?
         
         // Certain combinations of scores will create different kinds of effects...
         // TODO
@@ -286,6 +305,9 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
     }
     
     private func okToFire() -> Bool {
-        return self.museConnStatus == IXNConnectionState.Connected && self.horseshoeScore <= MuseListener.MAX_HORSESHOE_SCORE_TO_FIRE
+        let avgHorseshoeScore = self.avgHorseshoeValue()
+        return self.museConnStatus == IXNConnectionState.Connected && avgHorseshoeScore <= MuseListener.MAX_HORSESHOE_SCORE_TO_FIRE
     }
+    
+
 }

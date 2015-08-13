@@ -21,6 +21,7 @@
 		A49365C81B5C39AF008D3A42 /* pyrokinesis.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A49365C61B5C39AF008D3A42 /* pyrokinesis.xcdatamodeld */; };
 		A49365CA1B5C4AB7008D3A42 /* UIFlameEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49365C91B5C4AB7008D3A42 /* UIFlameEffect.swift */; };
 		A49365CC1B5C5C93008D3A42 /* ControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49365CB1B5C5C93008D3A42 /* ControlViewController.swift */; };
+		A4A2C59B1B7D444800AD7E2B /* GameModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A2C59A1B7D444800AD7E2B /* GameModeViewController.swift */; };
 		A4B8BEA61B2E5C2900DF3964 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BEA51B2E5C2900DF3964 /* AppDelegate.swift */; };
 		A4B8BEA81B2E5C2900DF3964 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BEA71B2E5C2900DF3964 /* OverviewViewController.swift */; };
 		A4B8BEAD1B2E5C2900DF3964 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B8BEAB1B2E5C2900DF3964 /* Main.storyboard */; };
@@ -28,6 +29,8 @@
 		A4B8BEB21B2E5C2900DF3964 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4B8BEB01B2E5C2900DF3964 /* LaunchScreen.xib */; };
 		A4B8BEBE1B2E5C2900DF3964 /* pyrokinesisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BEBD1B2E5C2900DF3964 /* pyrokinesisTests.swift */; };
 		A4B8BED21B2E687300DF3964 /* MuseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BED11B2E687300DF3964 /* MuseListener.swift */; };
+		A4D328E51B7BFFD300B9CC8C /* FireAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */; };
+		A4D328E91B7C302300B9CC8C /* FireAnimatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D328E81B7C302300B9CC8C /* FireAnimatorManager.swift */; };
 		A4F2F3DB1B7297D600AAAC4E /* _e_a_accessory_09_i_x_n_accessory_muse_8h_source.html in Resources */ = {isa = PBXBuildFile; fileRef = A4F2F27C1B7297D500AAAC4E /* _e_a_accessory_09_i_x_n_accessory_muse_8h_source.html */; };
 		A4F2F3DC1B7297D600AAAC4E /* _i_x_n_accelerometer_8h.html in Resources */ = {isa = PBXBuildFile; fileRef = A4F2F27D1B7297D500AAAC4E /* _i_x_n_accelerometer_8h.html */; };
 		A4F2F3DD1B7297D600AAAC4E /* _i_x_n_accelerometer_8h_source.html in Resources */ = {isa = PBXBuildFile; fileRef = A4F2F27E1B7297D500AAAC4E /* _i_x_n_accelerometer_8h_source.html */; };
@@ -345,6 +348,8 @@
 		A49365C71B5C39AF008D3A42 /* pyrokinesis.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = pyrokinesis.xcdatamodel; sourceTree = "<group>"; };
 		A49365C91B5C4AB7008D3A42 /* UIFlameEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFlameEffect.swift; sourceTree = "<group>"; };
 		A49365CB1B5C5C93008D3A42 /* ControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlViewController.swift; sourceTree = "<group>"; };
+		A4A2C5971B7D3D5F00AD7E2B /* pyrokinesis v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "pyrokinesis v2.xcdatamodel"; sourceTree = "<group>"; };
+		A4A2C59A1B7D444800AD7E2B /* GameModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameModeViewController.swift; sourceTree = "<group>"; };
 		A4B8BEA01B2E5C2900DF3964 /* pyrokinesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pyrokinesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B8BEA41B2E5C2900DF3964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4B8BEA51B2E5C2900DF3964 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -357,6 +362,8 @@
 		A4B8BEBD1B2E5C2900DF3964 /* pyrokinesisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pyrokinesisTests.swift; sourceTree = "<group>"; };
 		A4B8BECD1B2E623900DF3964 /* ObjCBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjCBridge.h; sourceTree = "<group>"; };
 		A4B8BED11B2E687300DF3964 /* MuseListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseListener.swift; sourceTree = "<group>"; };
+		A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireAnimator.swift; sourceTree = "<group>"; };
+		A4D328E81B7C302300B9CC8C /* FireAnimatorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireAnimatorManager.swift; sourceTree = "<group>"; };
 		A4F2F2771B72977500AAAC4E /* libMuse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMuse.a; path = pyrokinesis/lib/libmuse/libMuse.a; sourceTree = "<group>"; };
 		A4F2F27C1B7297D500AAAC4E /* _e_a_accessory_09_i_x_n_accessory_muse_8h_source.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = _e_a_accessory_09_i_x_n_accessory_muse_8h_source.html; sourceTree = "<group>"; };
 		A4F2F27D1B7297D500AAAC4E /* _i_x_n_accelerometer_8h.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = _i_x_n_accelerometer_8h.html; sourceTree = "<group>"; };
@@ -728,12 +735,15 @@
 			children = (
 				A4B8BECD1B2E623900DF3964 /* ObjCBridge.h */,
 				A4B8BED11B2E687300DF3964 /* MuseListener.swift */,
+				A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */,
+				A4D328E81B7C302300B9CC8C /* FireAnimatorManager.swift */,
 				A4B8BEA51B2E5C2900DF3964 /* AppDelegate.swift */,
 				A4B8BEA71B2E5C2900DF3964 /* OverviewViewController.swift */,
 				A418759C1B34B93200A542E1 /* SettingsViewController.swift */,
 				A49365CB1B5C5C93008D3A42 /* ControlViewController.swift */,
 				A41875A21B34CEE300A542E1 /* IPAddressViewController.swift */,
 				A41875A41B34D41F00A542E1 /* PortNumberViewController.swift */,
+				A4A2C59A1B7D444800AD7E2B /* GameModeViewController.swift */,
 				A41875A01B34C05E00A542E1 /* TableViewSwitchCell.swift */,
 				A49365C91B5C4AB7008D3A42 /* UIFlameEffect.swift */,
 				A49365C41B5C36BD008D3A42 /* PyrokinesisSettings.swift */,
@@ -1496,12 +1506,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4D328E91B7C302300B9CC8C /* FireAnimatorManager.swift in Sources */,
 				A41875A31B34CEE300A542E1 /* IPAddressViewController.swift in Sources */,
 				A4B8BED21B2E687300DF3964 /* MuseListener.swift in Sources */,
 				A4B8BEA61B2E5C2900DF3964 /* AppDelegate.swift in Sources */,
 				A41875A51B34D41F00A542E1 /* PortNumberViewController.swift in Sources */,
 				A49365C81B5C39AF008D3A42 /* pyrokinesis.xcdatamodeld in Sources */,
 				A41875A11B34C05E00A542E1 /* TableViewSwitchCell.swift in Sources */,
+				A4A2C59B1B7D444800AD7E2B /* GameModeViewController.swift in Sources */,
 				A49365CC1B5C5C93008D3A42 /* ControlViewController.swift in Sources */,
 				A4B8BEA81B2E5C2900DF3964 /* OverviewViewController.swift in Sources */,
 				A49365C31B5C1A22008D3A42 /* GCDAsyncUdpSocket.m in Sources */,
@@ -1509,6 +1521,7 @@
 				A418759D1B34B93200A542E1 /* SettingsViewController.swift in Sources */,
 				A49365C51B5C36BD008D3A42 /* PyrokinesisSettings.swift in Sources */,
 				A49365CA1B5C4AB7008D3A42 /* UIFlameEffect.swift in Sources */,
+				A4D328E51B7BFFD300B9CC8C /* FireAnimator.swift in Sources */,
 				A41875BC1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1770,9 +1783,10 @@
 		A49365C61B5C39AF008D3A42 /* pyrokinesis.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				A4A2C5971B7D3D5F00AD7E2B /* pyrokinesis v2.xcdatamodel */,
 				A49365C71B5C39AF008D3A42 /* pyrokinesis.xcdatamodel */,
 			);
-			currentVersion = A49365C71B5C39AF008D3A42 /* pyrokinesis.xcdatamodel */;
+			currentVersion = A4A2C5971B7D3D5F00AD7E2B /* pyrokinesis v2.xcdatamodel */;
 			path = pyrokinesis.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

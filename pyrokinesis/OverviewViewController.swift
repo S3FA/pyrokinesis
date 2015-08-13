@@ -222,8 +222,9 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
             self.connStatusLabel.text = MuseListener.getConnectionStatusString(museListener.museConnStatus)
             self.connStatusLabel.textColor = MuseListener.getConnectionStatusColour(museListener.museConnStatus)
             
-            self.signalLabel.text = MuseListener.getSignalStrengthString(museListener.horseshoeScore)
-            self.signalLabel.textColor = MuseListener.getSignalStrengthColour(museListener.horseshoeScore)
+            let horseshoeScore = museListener.avgHorseshoeValue()
+            self.signalLabel.text = MuseListener.getSignalStrengthString(horseshoeScore)
+            self.signalLabel.textColor = MuseListener.getSignalStrengthColour(horseshoeScore)
         }
     }
 

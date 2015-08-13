@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="PyrokinesisSettings" representedClassName="pyrokinesis.PyrokinesisSettings" syncable="YES">
+        <attribute name="connectionEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="fireIPAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firePort" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="gameMode" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="PyrokinesisSettings" positionX="-63" positionY="-18" width="128" height="105"/>
+    </elements>
+</model>
