@@ -157,15 +157,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     func sendMultiFireControlData(fireIndices: [Int]) {
         if let udp = self.udpSocket {
             if let settings = PyrokinesisSettings.getSettings() {
+
+                var data = [UInt8]()
                 
-                var data = ""
                 for fireIdx in fireIndices {
                     assert(fireIdx >= 0 && fireIdx <= 7, "Invalid fire emitter index.")
-                    data += String(Character(UnicodeScalar(Int(0xFF)))) + "\(fireIdx)"
+                    data.append(0x01)
+                    data.append(UInt8(48 + fireIdx))
                 }
                 
-                let tempData = (data as NSString).dataUsingEncoding(NSASCIIStringEncoding)
-                NSLog("Sending data: \(tempData)")
+                //let tempData = (data as NSString).dataUsingEncoding(NSUTF8StringEncoding)
+                let tempData = NSData(bytes: data, length: data.count)
+                NSLog("Sending data: \(data), to IP: \(settings.fireIPAddress), on port: \(settings.firePort)")
                 
                 udp.sendData(tempData, toHost: settings.fireIPAddress, port: UInt16(settings.firePort), withTimeout: -1, tag: self.packetCount)
                 self.packetCount++

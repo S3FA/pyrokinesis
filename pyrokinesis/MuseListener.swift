@@ -11,7 +11,8 @@ import UIKit
 
 class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
 
-    static let MAX_CACHED_VALUES : Int = 256
+    static let MAX_CACHED_VALUES : Int = 100
+    static let MAX_HORSESHOE_CACHED_VALUES: Int = 20
     static let MAX_HORSESHOE_SCORE_TO_FIRE : Double = 6
     static let WORST_HORSESHOE_SCORE : Double = 16
     
@@ -20,9 +21,6 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
 
     var museConnStatus:IXNConnectionState = IXNConnectionState.Disconnected
     var dataUpdated: Bool = false
-    
-    
-    
     
     private var sawOneBlink: Bool = false
     private var lastBlink: Bool = false
@@ -71,7 +69,7 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
                     }
                 }
                 
-                if self.horseshoeScoreValues.count >= MuseListener.MAX_CACHED_VALUES {
+                if self.horseshoeScoreValues.count >= MuseListener.MAX_HORSESHOE_CACHED_VALUES {
                     self.horseshoeScoreValues.removeAtIndex(0)
                 }
                 self.horseshoeScoreValues.append(count)
@@ -83,6 +81,17 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         }
         
         if cacheScore {
+            
+            // Get the last known horseshoe value, if it's not acceptible then we don't record the value...
+            if let lastHorseshoeScore = self.horseshoeScoreValues.last {
+                if lastHorseshoeScore > MuseListener.MAX_HORSESHOE_SCORE_TO_FIRE {
+                    return
+                }
+            }
+            else {
+                return
+            }
+            
             let values = packet.values
             
             var avgValue: Double = 0.0
@@ -259,20 +268,70 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
             return
         }
         
+        
+        
         // Calculate all the current averages...
         var avgScoreValues = [IXNMuseDataPacketType: Double]()
         for (packetType, valueArray) in self.cachedScoreValues {
             avgScoreValues.updateValue(valueArray.reduce(0, combine: +) / Double(valueArray.count), forKey: packetType)
         }
         
-        // TODO: Have a mode to determine how scoring works?
+        if let settings = PyrokinesisSettings.getSettings() {
+            
+            if let gameMode = PyrokinesisSettings.GameMode(rawValue: settings.gameMode) {
+            
+                switch (gameMode) {
+                    case .Calm:
+                        self.calmModeCalc(avgScoreValues)
+                        break
+                    
+                    case .Concentration:
+                        self.concentrationModeCalc(avgScoreValues)
+                        break
+                    
+                    default:
+                        return
+                }
+            }
+        }
+        
         
         // Certain combinations of scores will create different kinds of effects...
         // TODO
         
         
-        //let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        //
     }
+    
+    private func calmModeCalc(avgScoreValues: [IXNMuseDataPacketType: Double]) {
+        // Alpha and Mellow are the key values being examined here, make sure they have a high enough
+        // value over time in order to shoot fire...
+        
+        let avgAlpha = avgScoreValues[IXNMuseDataPacketType.AlphaScore]
+        let avgMellow = avgScoreValues[IXNMuseDataPacketType.Mellow]
+        
+        if avgAlpha > 0.7 && avgMellow > 0.9 {
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let animMgr = appDelegate.fireAnimatorManager
+            
+            // Check the latest animation time in the animation manager, if there's a
+            // animation running that won't be finished for some time then we shouldn't
+            // append more animations
+            let latestAnim = animMgr.getLatestAnimator()
+            if latestAnim.animationTime <= 3.0 {
+                
+                // Create the "calm" fire routine
+                FireAnimatorManager.buildCalmFireAnimators(latestAnim.animationTime + 0.5)
+                
+                
+            }
+            
+        }
+    }
+    private func concentrationModeCalc(avgScoreValues: [IXNMuseDataPacketType: Double]) {
+        
+    }
+    
     private func museBlinkToFireCalc() {
         if !self.okToFire() {
             return
@@ -282,6 +341,13 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
     private func museJawClenchToFireCalc() {
         if !self.okToFire() {
             return
+        }
+        
+        // Make sure jaw clenching is enabled...
+        if let settings = PyrokinesisSettings.getSettings() {
+            if !settings.jawClenchingEnabled {
+                return
+            }
         }
         
         // Make sure we don't spam this...
@@ -305,9 +371,12 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
     }
     
     private func okToFire() -> Bool {
-        let avgHorseshoeScore = self.avgHorseshoeValue()
-        return self.museConnStatus == IXNConnectionState.Connected && avgHorseshoeScore <= MuseListener.MAX_HORSESHOE_SCORE_TO_FIRE
+        if let lastHorseshoeScore = self.horseshoeScoreValues.last {
+            let avgHorseshoeScore = self.avgHorseshoeValue()
+            return self.museConnStatus == IXNConnectionState.Connected && avgHorseshoeScore <= MuseListener.MAX_HORSESHOE_SCORE_TO_FIRE
+        }
+        else {
+            return false
+        }
     }
-    
-
 }

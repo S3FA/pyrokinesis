@@ -22,6 +22,9 @@
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ki-eP-ZFn" customClass="CPTGraphHostingView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="heightClass=regular" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                                </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vv7-yh-U3N">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -211,7 +214,7 @@
                         <sections>
                             <tableViewSection headerTitle="Server" id="zhV-dp-Nyc">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SwitchSettingCell" id="Rke-sK-tx3" customClass="TableViewSwitchCell" customModule="pyrokinesis" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Rke-sK-tx3">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rke-sK-tx3" id="HQl-Bo-lw9">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -219,7 +222,7 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LBi-sg-rr7">
                                                     <rect key="frame" x="537" y="6" width="51" height="31"/>
                                                     <connections>
-                                                        <action selector="onSwitchChange:" destination="Rke-sK-tx3" eventType="valueChanged" id="hAi-1X-cEI"/>
+                                                        <action selector="onConnEnableSwitchChanged:" destination="5EJ-zH-klx" eventType="valueChanged" id="qvR-z3-EB4"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Enable Connection" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="900-93-Tqj">
@@ -279,10 +282,6 @@
                                             </variation>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <outlet property="enableSwitch" destination="LBi-sg-rr7" id="tNu-gv-YQM"/>
-                                            <outlet property="label" destination="900-93-Tqj" id="xpX-qh-w9H"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="IPAddressSettingCell" textLabel="UPW-Vn-dJN" detailTextLabel="a1d-cV-eA9" style="IBUITableViewCellStyleValue1" id="Ibb-Xw-EXP">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -379,6 +378,62 @@
                                             <segue destination="PJC-A3-kor" kind="show" id="dUh-Kq-a4x"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="ilR-n1-PSg">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ilR-n1-PSg" id="GS0-22-g01">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qoK-bF-JrW">
+                                                    <rect key="frame" x="-25" y="-15" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="onJawClenchEnableSwitchChanged:" destination="5EJ-zH-klx" eventType="valueChanged" id="zH9-em-clf"/>
+                                                    </connections>
+                                                </switch>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Clenching" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RBB-vc-PdK">
+                                                    <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="qoK-bF-JrW" secondAttribute="trailing" constant="8" id="AsR-cU-vnK">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="-8"/>
+                                                </constraint>
+                                                <constraint firstAttribute="centerY" secondItem="RBB-vc-PdK" secondAttribute="centerY" constant="-0.75" id="NH0-ym-SZj"/>
+                                                <constraint firstItem="RBB-vc-PdK" firstAttribute="leading" secondItem="GS0-22-g01" secondAttribute="leadingMargin" constant="7" id="mJu-DH-XuY">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                                                </constraint>
+                                                <constraint firstAttribute="centerY" secondItem="qoK-bF-JrW" secondAttribute="centerY" constant="0.25" id="nst-kZ-ocR"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="qoK-bF-JrW"/>
+                                                    <exclude reference="RBB-vc-PdK"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="NH0-ym-SZj"/>
+                                                    <exclude reference="mJu-DH-XuY"/>
+                                                    <exclude reference="AsR-cU-vnK"/>
+                                                    <exclude reference="nst-kZ-ocR"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="qoK-bF-JrW"/>
+                                                    <include reference="RBB-vc-PdK"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="NH0-ym-SZj"/>
+                                                    <include reference="mJu-DH-XuY"/>
+                                                    <include reference="AsR-cU-vnK"/>
+                                                    <include reference="nst-kZ-ocR"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -389,9 +444,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="YME-3C-lsj"/>
                     <connections>
-                        <outlet property="connectionEnabledCell" destination="Rke-sK-tx3" id="Ejj-UT-XsQ"/>
                         <outlet property="connectionEnabledSwitch" destination="LBi-sg-rr7" id="jyP-Wk-kkb"/>
                         <outlet property="ipAddressLabel" destination="a1d-cV-eA9" id="QCm-Cr-YB5"/>
+                        <outlet property="jawClenchEnabledSwitch" destination="qoK-bF-JrW" id="cRa-KX-W84"/>
                         <outlet property="modeLabel" destination="w5Y-F7-0vM" id="PdD-1w-Uyz"/>
                         <outlet property="portLabel" destination="fQy-5m-ZrG" id="Fje-48-wdS"/>
                         <outlet property="settingsTableView" destination="gQb-3k-Z5x" id="amR-2s-U5u"/>
@@ -517,238 +572,309 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fuh-K8-1PT" customClass="UIFlameEffect" customModule="pyrokinesis">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ugg-Yd-UF4">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="index">
-                                        <integer key="value" value="0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
-                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="155" y="269" width="64" height="64"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fuh-K8-1PT" customClass="UIFlameEffect" customModule="pyrokinesis">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="index">
+                                                <integer key="value" value="0"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
+                                                <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="155" y="257" width="64" height="64"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="71" y="445" width="80" height="80"/>
+                                        </variation>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JRJ-wq-1rP" customClass="UIFlameEffect" customModule="pyrokinesis">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="index">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
+                                                <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="155" y="172" width="64" height="64"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="71" y="333" width="80" height="80"/>
+                                        </variation>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="agI-Xl-em1" customClass="UIFlameEffect" customModule="pyrokinesis">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="index">
+                                                <integer key="value" value="2"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
+                                                <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="155" y="91" width="64" height="64"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="71" y="218" width="80" height="80"/>
+                                        </variation>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nbi-iL-92Z" customClass="UIFlameEffect" customModule="pyrokinesis">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="index">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
+                                                <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="390" y="175" width="64" height="64"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="249" y="333" width="80" height="80"/>
+                                        </variation>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mZe-tP-U53" customClass="UIFlameEffect" customModule="pyrokinesis">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="index">
+                                                <integer key="value" value="6"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
+                                                <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="390" y="92" width="64" height="64"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="249" y="218" width="80" height="80"/>
+                                        </variation>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kYd-Lm-0K7" customClass="UIFlameEffect" customModule="pyrokinesis">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="index">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
+                                                <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="390" y="259" width="64" height="64"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="249" y="445" width="80" height="80"/>
+                                        </variation>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oam-gR-RY2" customClass="UIFlameEffect" customModule="pyrokinesis">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="index">
+                                                <integer key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
+                                                <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="390" y="8" width="64" height="64"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="249" y="98" width="80" height="80"/>
+                                        </variation>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q38-uG-eHV" customClass="UIFlameEffect" customModule="pyrokinesis">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="index">
+                                                <integer key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
+                                                <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="155" y="8" width="64" height="64"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="71" y="98" width="80" height="80"/>
+                                        </variation>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="fuh-K8-1PT"/>
+                                        <exclude reference="JRJ-wq-1rP"/>
+                                        <exclude reference="agI-Xl-em1"/>
+                                        <exclude reference="nbi-iL-92Z"/>
+                                        <exclude reference="mZe-tP-U53"/>
+                                        <exclude reference="kYd-Lm-0K7"/>
+                                        <exclude reference="oam-gR-RY2"/>
+                                        <exclude reference="Q38-uG-eHV"/>
+                                    </mask>
                                 </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="74" y="396" width="80" height="80"/>
+                                <variation key="heightClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="fuh-K8-1PT"/>
+                                        <include reference="JRJ-wq-1rP"/>
+                                        <include reference="agI-Xl-em1"/>
+                                        <include reference="nbi-iL-92Z"/>
+                                        <include reference="mZe-tP-U53"/>
+                                        <include reference="kYd-Lm-0K7"/>
+                                        <include reference="oam-gR-RY2"/>
+                                        <include reference="Q38-uG-eHV"/>
+                                    </mask>
                                 </variation>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JRJ-wq-1rP" customClass="UIFlameEffect" customModule="pyrokinesis">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="index">
-                                        <integer key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
-                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="155" y="185" width="64" height="64"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="74" y="276" width="80" height="80"/>
-                                </variation>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="agI-Xl-em1" customClass="UIFlameEffect" customModule="pyrokinesis">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="index">
-                                        <integer key="value" value="2"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
-                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="155" y="103" width="64" height="64"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="74" y="163" width="80" height="80"/>
-                                </variation>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q38-uG-eHV" customClass="UIFlameEffect" customModule="pyrokinesis">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="index">
-                                        <integer key="value" value="3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
-                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="155" y="20" width="64" height="64"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="74" y="50" width="80" height="80"/>
-                                </variation>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nbi-iL-92Z" customClass="UIFlameEffect" customModule="pyrokinesis">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="index">
-                                        <integer key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
-                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="390" y="185" width="64" height="64"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="247" y="276" width="80" height="80"/>
-                                </variation>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mZe-tP-U53" customClass="UIFlameEffect" customModule="pyrokinesis">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="index">
-                                        <integer key="value" value="6"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
-                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="390" y="103" width="64" height="64"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="247" y="163" width="80" height="80"/>
-                                </variation>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oam-gR-RY2" customClass="UIFlameEffect" customModule="pyrokinesis">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="index">
-                                        <integer key="value" value="7"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
-                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="390" y="20" width="64" height="64"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="247" y="50" width="80" height="80"/>
-                                </variation>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kYd-Lm-0K7" customClass="UIFlameEffect" customModule="pyrokinesis">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="index">
-                                        <integer key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="idleFillColour">
-                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="touchFillColour">
-                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="strokeColour">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="390" y="269" width="64" height="64"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="247" y="396" width="80" height="80"/>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="fuh-K8-1PT"/>
+                                        <include reference="JRJ-wq-1rP"/>
+                                        <include reference="agI-Xl-em1"/>
+                                        <include reference="nbi-iL-92Z"/>
+                                        <include reference="mZe-tP-U53"/>
+                                        <include reference="kYd-Lm-0K7"/>
+                                        <include reference="oam-gR-RY2"/>
+                                        <include reference="Q38-uG-eHV"/>
+                                    </mask>
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ugg-Yd-UF4" firstAttribute="leading" secondItem="COg-AP-GcC" secondAttribute="leadingMargin" id="3aB-xb-q4F">
+                                <variation key="heightClass=regular-widthClass=compact" constant="-16"/>
+                            </constraint>
+                            <constraint firstAttribute="trailingMargin" secondItem="ugg-Yd-UF4" secondAttribute="trailing" id="HW4-Cm-9ht">
+                                <variation key="heightClass=regular-widthClass=compact" constant="-16"/>
+                            </constraint>
+                            <constraint firstItem="ugg-Yd-UF4" firstAttribute="width" secondItem="COg-AP-GcC" secondAttribute="width" id="QaY-Ue-UCE"/>
+                            <constraint firstItem="ugg-Yd-UF4" firstAttribute="leading" secondItem="COg-AP-GcC" secondAttribute="leadingMargin" constant="-16" id="Tag-Zu-PTQ"/>
+                            <constraint firstItem="ugg-Yd-UF4" firstAttribute="leading" secondItem="COg-AP-GcC" secondAttribute="leading" id="TpD-0G-nWR"/>
+                            <constraint firstItem="yT0-yt-oIp" firstAttribute="top" secondItem="ugg-Yd-UF4" secondAttribute="bottom" id="cPZ-8U-kUU"/>
+                            <constraint firstItem="ugg-Yd-UF4" firstAttribute="top" secondItem="tob-l3-gcm" secondAttribute="bottom" id="fBK-qV-rqY"/>
+                            <constraint firstItem="ugg-Yd-UF4" firstAttribute="top" secondItem="tob-l3-gcm" secondAttribute="bottom" id="fIc-qJ-xdR"/>
+                            <constraint firstItem="ugg-Yd-UF4" firstAttribute="top" secondItem="tob-l3-gcm" secondAttribute="bottom" id="hZd-AJ-FZv"/>
+                            <constraint firstAttribute="centerX" secondItem="ugg-Yd-UF4" secondAttribute="centerX" id="iXA-Rx-Yn5"/>
+                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="fuh-K8-1PT"/>
-                                <exclude reference="JRJ-wq-1rP"/>
-                                <exclude reference="agI-Xl-em1"/>
-                                <exclude reference="Q38-uG-eHV"/>
-                                <exclude reference="nbi-iL-92Z"/>
-                                <exclude reference="mZe-tP-U53"/>
-                                <exclude reference="oam-gR-RY2"/>
-                                <exclude reference="kYd-Lm-0K7"/>
+                                <exclude reference="ugg-Yd-UF4"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="3aB-xb-q4F"/>
+                                <exclude reference="HW4-Cm-9ht"/>
+                                <exclude reference="QaY-Ue-UCE"/>
+                                <exclude reference="Tag-Zu-PTQ"/>
+                                <exclude reference="TpD-0G-nWR"/>
+                                <exclude reference="fBK-qV-rqY"/>
+                                <exclude reference="fIc-qJ-xdR"/>
+                                <exclude reference="hZd-AJ-FZv"/>
+                                <exclude reference="iXA-Rx-Yn5"/>
+                                <exclude reference="cPZ-8U-kUU"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="subviews">
-                                <include reference="fuh-K8-1PT"/>
-                                <include reference="JRJ-wq-1rP"/>
-                                <include reference="agI-Xl-em1"/>
-                                <include reference="Q38-uG-eHV"/>
-                                <include reference="nbi-iL-92Z"/>
-                                <include reference="mZe-tP-U53"/>
-                                <include reference="oam-gR-RY2"/>
-                                <include reference="kYd-Lm-0K7"/>
+                                <include reference="ugg-Yd-UF4"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="3aB-xb-q4F"/>
+                                <exclude reference="HW4-Cm-9ht"/>
+                                <include reference="QaY-Ue-UCE"/>
+                                <include reference="Tag-Zu-PTQ"/>
+                                <include reference="hZd-AJ-FZv"/>
+                                <exclude reference="iXA-Rx-Yn5"/>
+                                <include reference="cPZ-8U-kUU"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
-                                <include reference="fuh-K8-1PT"/>
-                                <include reference="JRJ-wq-1rP"/>
-                                <include reference="agI-Xl-em1"/>
-                                <include reference="Q38-uG-eHV"/>
-                                <include reference="nbi-iL-92Z"/>
-                                <include reference="mZe-tP-U53"/>
-                                <include reference="oam-gR-RY2"/>
-                                <include reference="kYd-Lm-0K7"/>
+                                <include reference="ugg-Yd-UF4"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="3aB-xb-q4F"/>
+                                <exclude reference="HW4-Cm-9ht"/>
+                                <exclude reference="QaY-Ue-UCE"/>
+                                <include reference="TpD-0G-nWR"/>
+                                <include reference="fBK-qV-rqY"/>
+                                <include reference="fIc-qJ-xdR"/>
+                                <include reference="hZd-AJ-FZv"/>
+                                <include reference="iXA-Rx-Yn5"/>
+                                <include reference="cPZ-8U-kUU"/>
                             </mask>
                         </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Control" image="control" id="YLc-R7-T58"/>
+                    <connections>
+                        <outlet property="flameEffectView" destination="ugg-Yd-UF4" id="wT9-Ft-jF5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jsd-cm-XeZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

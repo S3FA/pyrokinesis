@@ -2,7 +2,7 @@
 //  PyrokinesisSettings.swift
 //  pyrokinesis
 //
-//  Created by beowulf on 2015-07-19.
+//  Created by Callum Hay on 2015-07-19.
 //  Copyright (c) 2015 s3fa. All rights reserved.
 //
 
@@ -12,18 +12,21 @@ import CoreData
 
 class PyrokinesisSettings : NSManagedObject {
     
-    static let FLAME_EFFECT_RESEND_TIME_S : NSTimeInterval = 1.0
+    static let FLAME_EFFECT_RESEND_TIME_S : NSTimeInterval = 0.050
     static let NUM_FLAME_EFFECTS: Int = 8
     
-    static let DEFAULT_IP_ADDRESS: String = "192.168.43.212"
+    static let DEFAULT_CONN_ENABLED = true
+    static let DEFAULT_IP_ADDRESS: String = "192.168.1.1"
     static let DEFAULT_PORT_NUMBER: Int32 = 2000
     
     static let DEFAULT_GAME_MODE: String = GameMode.Calm.rawValue
+    static let DEFAULT_JAW_CLENCHING_ENABLED = true
     
     @NSManaged var connectionEnabled: Bool
     @NSManaged var fireIPAddress: String
     @NSManaged var firePort: Int32
     @NSManaged var gameMode: String
+    @NSManaged var jawClenchingEnabled: Bool
     
     enum GameMode: String {
         case Calm = "Calm"
@@ -65,10 +68,11 @@ class PyrokinesisSettings : NSManagedObject {
     }
     
     func resetToDefaults() {
-        self.connectionEnabled = true
+        self.connectionEnabled = PyrokinesisSettings.DEFAULT_CONN_ENABLED
         self.fireIPAddress = PyrokinesisSettings.DEFAULT_IP_ADDRESS
         self.firePort = PyrokinesisSettings.DEFAULT_PORT_NUMBER
         self.gameMode = PyrokinesisSettings.DEFAULT_GAME_MODE
+        self.jawClenchingEnabled = PyrokinesisSettings.DEFAULT_JAW_CLENCHING_ENABLED
     }
     
 }

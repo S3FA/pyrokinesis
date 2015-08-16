@@ -11,8 +11,14 @@ import UIKit
 
 class ControlViewController : UIViewController {
     
+    @IBOutlet var flameEffectView: UIView!
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -37,7 +43,7 @@ class ControlViewController : UIViewController {
             
             let touchLocation = touch.locationInView(self.view)
             
-            for view in self.view.subviews {
+            for view in self.flameEffectView.subviews {
                 if let flameEffect = view as? UIFlameEffect {
                     if flameEffect.containsPoint(touchLocation) {
                         flameEffect.setTouched(touchOn)

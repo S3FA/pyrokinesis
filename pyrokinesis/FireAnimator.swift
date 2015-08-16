@@ -12,10 +12,14 @@ class FireAnimator {
     
     static let REPEAT_ANIM_FOREVER: Int = -1
     
-    private var fireIndices = [Int]()
+    var fireIndices = [Int]()
+    var animationTime: Double = 0.0
     
-    private var animationTime: Double = 0.0
+    var keepFiringWhenFinished = false
+    
+    
     private var timeCounter: Double = 0
+    private var keepFiringTimeCounter: Double = 0
     
     init(fireIndices: [Int]) {
         assert(fireIndices.count >= 0 && fireIndices.count <= PyrokinesisSettings.NUM_FLAME_EFFECTS)
@@ -24,6 +28,10 @@ class FireAnimator {
     convenience init(fireIndices: [Int], animationTime: Double) {
         self.init(fireIndices: fireIndices)
         self.startAnimation(animationTime)
+    }
+    convenience init(fireIndices: [Int], animationTime: Double, keepFiringWhenFinished: Bool) {
+        self.init(fireIndices: fireIndices, animationTime: animationTime)
+        self.keepFiringWhenFinished = keepFiringWhenFinished
     }
     
     func startAnimation(animationTime: Double) {
@@ -43,6 +51,17 @@ class FireAnimator {
     
     func tick(dt: Double) {
         if self.isFinished() {
+            
+            // Make sure we keep "strobing" the fire (keeping it turned on) if the 
+            // keep firing flag is on
+            if self.keepFiringWhenFinished {
+                self.keepFiringTimeCounter += dt
+                if self.keepFiringTimeCounter >= PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S {
+                    self.fire()
+                    self.keepFiringTimeCounter = 0
+                }
+            }
+            
             return
         }
         
@@ -50,10 +69,14 @@ class FireAnimator {
         self.timeCounter += dt
         if self.timeCounter >= self.animationTime {
             // Shoot the fire!
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.sendMultiFireControlData(self.fireIndices)
-            
+            self.fire()
             self.timeCounter = self.animationTime + 0.1
         }
     }
+    
+    private func fire() {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.sendMultiFireControlData(self.fireIndices)
+    }
+    
 }

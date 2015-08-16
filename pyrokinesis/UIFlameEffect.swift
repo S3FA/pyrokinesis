@@ -2,7 +2,7 @@
 //  UIFlameEffect.swift
 //  pyrokinesis
 //
-//  Created by beowulf on 2015-07-19.
+//  Created by Callum Hay on 2015-07-19.
 //  Copyright (c) 2015 s3fa. All rights reserved.
 //
 

@@ -24,6 +24,8 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
     
     override func viewDidLoad() {
         
+        self.setNeedsStatusBarAppearanceUpdate()
+        
         // Create the muse graph
         self.museGraph = CPTXYGraph(frame: self.graphView.bounds)
         self.graphView.allowPinchScaling = true
@@ -59,6 +61,10 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
 
     
@@ -132,7 +138,6 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
     }
     
     func configureAxes() {
-
         
         var axisTitleStyle = CPTMutableTextStyle()
         axisTitleStyle.color = CPTColor.whiteColor()
@@ -170,7 +175,6 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
                 axisLabel.contentLayer.hidden = true
             }
         }
-        
         
         // Y-Axis
         var y = axisSet.axisForCoordinate(CPTCoordinate.Y, atIndex: 0)
@@ -222,9 +226,9 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
             self.connStatusLabel.text = MuseListener.getConnectionStatusString(museListener.museConnStatus)
             self.connStatusLabel.textColor = MuseListener.getConnectionStatusColour(museListener.museConnStatus)
             
-            let horseshoeScore = museListener.avgHorseshoeValue()
-            self.signalLabel.text = MuseListener.getSignalStrengthString(horseshoeScore)
-            self.signalLabel.textColor = MuseListener.getSignalStrengthColour(horseshoeScore)
+            var score = museListener.avgHorseshoeValue()
+            self.signalLabel.text = MuseListener.getSignalStrengthString(score)
+            self.signalLabel.textColor = MuseListener.getSignalStrengthColour(score)
         }
     }
 

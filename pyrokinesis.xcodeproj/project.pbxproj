@@ -15,6 +15,7 @@
 		A41875B31B3B4CD600A542E1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A41875B21B3B4CD600A542E1 /* QuartzCore.framework */; };
 		A41875B91B3B5A3E00A542E1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A41875B81B3B5A3E00A542E1 /* Accelerate.framework */; };
 		A41875BC1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = A41875BB1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.m */; };
+		A47A5D531B7E880B007973AC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A47A5D511B7E880B007973AC /* LaunchScreen.xib */; };
 		A49365C21B5C1A22008D3A42 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A49365BF1B5C1A22008D3A42 /* GCDAsyncSocket.m */; };
 		A49365C31B5C1A22008D3A42 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A49365C11B5C1A22008D3A42 /* GCDAsyncUdpSocket.m */; };
 		A49365C51B5C36BD008D3A42 /* PyrokinesisSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49365C41B5C36BD008D3A42 /* PyrokinesisSettings.swift */; };
@@ -26,7 +27,6 @@
 		A4B8BEA81B2E5C2900DF3964 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BEA71B2E5C2900DF3964 /* OverviewViewController.swift */; };
 		A4B8BEAD1B2E5C2900DF3964 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B8BEAB1B2E5C2900DF3964 /* Main.storyboard */; };
 		A4B8BEAF1B2E5C2900DF3964 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B8BEAE1B2E5C2900DF3964 /* Images.xcassets */; };
-		A4B8BEB21B2E5C2900DF3964 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4B8BEB01B2E5C2900DF3964 /* LaunchScreen.xib */; };
 		A4B8BEBE1B2E5C2900DF3964 /* pyrokinesisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BEBD1B2E5C2900DF3964 /* pyrokinesisTests.swift */; };
 		A4B8BED21B2E687300DF3964 /* MuseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BED11B2E687300DF3964 /* MuseListener.swift */; };
 		A4D328E51B7BFFD300B9CC8C /* FireAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */; };
@@ -340,6 +340,8 @@
 		A41875B81B3B5A3E00A542E1 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A41875BA1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CPTMutablePlotRange+SwiftCompat.h"; sourceTree = "<group>"; };
 		A41875BB1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CPTMutablePlotRange+SwiftCompat.m"; sourceTree = "<group>"; };
+		A47A5D4C1B7E6581007973AC /* pyrokinesis v3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "pyrokinesis v3.xcdatamodel"; sourceTree = "<group>"; };
+		A47A5D521B7E880B007973AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A49365BE1B5C1A22008D3A42 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = pyrokinesis/lib/gcd/GCDAsyncSocket.h; sourceTree = "<group>"; };
 		A49365BF1B5C1A22008D3A42 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = pyrokinesis/lib/gcd/GCDAsyncSocket.m; sourceTree = "<group>"; };
 		A49365C01B5C1A22008D3A42 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncUdpSocket.h; path = pyrokinesis/lib/gcd/GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
@@ -356,7 +358,6 @@
 		A4B8BEA71B2E5C2900DF3964 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		A4B8BEAC1B2E5C2900DF3964 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4B8BEAE1B2E5C2900DF3964 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A4B8BEB11B2E5C2900DF3964 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A4B8BEB71B2E5C2900DF3964 /* pyrokinesisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pyrokinesisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B8BEBC1B2E5C2900DF3964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4B8BEBD1B2E5C2900DF3964 /* pyrokinesisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pyrokinesisTests.swift; sourceTree = "<group>"; };
@@ -748,8 +749,8 @@
 				A49365C91B5C4AB7008D3A42 /* UIFlameEffect.swift */,
 				A49365C41B5C36BD008D3A42 /* PyrokinesisSettings.swift */,
 				A4B8BEAB1B2E5C2900DF3964 /* Main.storyboard */,
+				A47A5D511B7E880B007973AC /* LaunchScreen.xib */,
 				A4B8BEAE1B2E5C2900DF3964 /* Images.xcassets */,
-				A4B8BEB01B2E5C2900DF3964 /* LaunchScreen.xib */,
 				A4B8BEA31B2E5C2900DF3964 /* Supporting Files */,
 				A41875BA1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.h */,
 				A41875BB1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.m */,
@@ -1262,6 +1263,7 @@
 				A4F2F46E1B7297D600AAAC4E /* all_3.html in Resources */,
 				A4F2F3E51B7297D600AAAC4E /* _i_x_n_connection_state_8h_source.html in Resources */,
 				A4F2F43A1B7297D600AAAC4E /* interface_i_x_n_lib_muse_version.html in Resources */,
+				A47A5D531B7E880B007973AC /* LaunchScreen.xib in Resources */,
 				A4F2F4841B7297D600AAAC4E /* all_e.html in Resources */,
 				A4F2F47C1B7297D600AAAC4E /* all_a.html in Resources */,
 				A4F2F4541B7297D600AAAC4E /* protocol_i_x_n_muse-p.html in Resources */,
@@ -1299,7 +1301,6 @@
 				A4F2F4521B7297D600AAAC4E /* open.png in Resources */,
 				A4F2F4D41B7297D600AAAC4E /* search_m.png in Resources */,
 				A4F2F4011B7297D600AAAC4E /* _i_x_n_notch_frequency_8h_source.html in Resources */,
-				A4B8BEB21B2E5C2900DF3964 /* LaunchScreen.xib in Resources */,
 				A4F2F4371B7297D600AAAC4E /* interface_i_x_n_computing_device_configuration.png in Resources */,
 				A4F2F41E1B7297D600AAAC4E /* files.html in Resources */,
 				A4F2F4531B7297D600AAAC4E /* protocol_i_x_n_muse-p-members.html in Resources */,
@@ -1550,20 +1551,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A47A5D511B7E880B007973AC /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A47A5D521B7E880B007973AC /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
 		A4B8BEAB1B2E5C2900DF3964 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A4B8BEAC1B2E5C2900DF3964 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		A4B8BEB01B2E5C2900DF3964 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A4B8BEB11B2E5C2900DF3964 /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1656,6 +1657,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1687,6 +1689,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1783,10 +1786,11 @@
 		A49365C61B5C39AF008D3A42 /* pyrokinesis.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				A47A5D4C1B7E6581007973AC /* pyrokinesis v3.xcdatamodel */,
 				A4A2C5971B7D3D5F00AD7E2B /* pyrokinesis v2.xcdatamodel */,
 				A49365C71B5C39AF008D3A42 /* pyrokinesis.xcdatamodel */,
 			);
-			currentVersion = A4A2C5971B7D3D5F00AD7E2B /* pyrokinesis v2.xcdatamodel */;
+			currentVersion = A47A5D4C1B7E6581007973AC /* pyrokinesis v3.xcdatamodel */;
 			path = pyrokinesis.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
