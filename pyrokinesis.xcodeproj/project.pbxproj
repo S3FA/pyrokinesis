@@ -16,6 +16,9 @@
 		A41875B91B3B5A3E00A542E1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A41875B81B3B5A3E00A542E1 /* Accelerate.framework */; };
 		A41875BC1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = A41875BB1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.m */; };
 		A47A5D531B7E880B007973AC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A47A5D511B7E880B007973AC /* LaunchScreen.xib */; };
+		A47A5D551B8128DA007973AC /* MathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47A5D541B8128DA007973AC /* MathHelper.swift */; };
+		A47A5D571B813FFE007973AC /* UISettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47A5D561B813FFE007973AC /* UISettings.swift */; };
+		A47A5D591B81410A007973AC /* PyrokinesisTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47A5D581B81410A007973AC /* PyrokinesisTabBarController.swift */; };
 		A49365C21B5C1A22008D3A42 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A49365BF1B5C1A22008D3A42 /* GCDAsyncSocket.m */; };
 		A49365C31B5C1A22008D3A42 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A49365C11B5C1A22008D3A42 /* GCDAsyncUdpSocket.m */; };
 		A49365C51B5C36BD008D3A42 /* PyrokinesisSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49365C41B5C36BD008D3A42 /* PyrokinesisSettings.swift */; };
@@ -342,6 +345,9 @@
 		A41875BB1B3B61EC00A542E1 /* CPTMutablePlotRange+SwiftCompat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CPTMutablePlotRange+SwiftCompat.m"; sourceTree = "<group>"; };
 		A47A5D4C1B7E6581007973AC /* pyrokinesis v3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "pyrokinesis v3.xcdatamodel"; sourceTree = "<group>"; };
 		A47A5D521B7E880B007973AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		A47A5D541B8128DA007973AC /* MathHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathHelper.swift; sourceTree = "<group>"; };
+		A47A5D561B813FFE007973AC /* UISettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISettings.swift; sourceTree = "<group>"; };
+		A47A5D581B81410A007973AC /* PyrokinesisTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PyrokinesisTabBarController.swift; sourceTree = "<group>"; };
 		A49365BE1B5C1A22008D3A42 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = pyrokinesis/lib/gcd/GCDAsyncSocket.h; sourceTree = "<group>"; };
 		A49365BF1B5C1A22008D3A42 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = pyrokinesis/lib/gcd/GCDAsyncSocket.m; sourceTree = "<group>"; };
 		A49365C01B5C1A22008D3A42 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncUdpSocket.h; path = pyrokinesis/lib/gcd/GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
@@ -739,6 +745,7 @@
 				A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */,
 				A4D328E81B7C302300B9CC8C /* FireAnimatorManager.swift */,
 				A4B8BEA51B2E5C2900DF3964 /* AppDelegate.swift */,
+				A47A5D581B81410A007973AC /* PyrokinesisTabBarController.swift */,
 				A4B8BEA71B2E5C2900DF3964 /* OverviewViewController.swift */,
 				A418759C1B34B93200A542E1 /* SettingsViewController.swift */,
 				A49365CB1B5C5C93008D3A42 /* ControlViewController.swift */,
@@ -748,6 +755,8 @@
 				A41875A01B34C05E00A542E1 /* TableViewSwitchCell.swift */,
 				A49365C91B5C4AB7008D3A42 /* UIFlameEffect.swift */,
 				A49365C41B5C36BD008D3A42 /* PyrokinesisSettings.swift */,
+				A47A5D561B813FFE007973AC /* UISettings.swift */,
+				A47A5D541B8128DA007973AC /* MathHelper.swift */,
 				A4B8BEAB1B2E5C2900DF3964 /* Main.storyboard */,
 				A47A5D511B7E880B007973AC /* LaunchScreen.xib */,
 				A4B8BEAE1B2E5C2900DF3964 /* Images.xcassets */,
@@ -1510,12 +1519,15 @@
 				A4D328E91B7C302300B9CC8C /* FireAnimatorManager.swift in Sources */,
 				A41875A31B34CEE300A542E1 /* IPAddressViewController.swift in Sources */,
 				A4B8BED21B2E687300DF3964 /* MuseListener.swift in Sources */,
+				A47A5D551B8128DA007973AC /* MathHelper.swift in Sources */,
+				A47A5D591B81410A007973AC /* PyrokinesisTabBarController.swift in Sources */,
 				A4B8BEA61B2E5C2900DF3964 /* AppDelegate.swift in Sources */,
 				A41875A51B34D41F00A542E1 /* PortNumberViewController.swift in Sources */,
 				A49365C81B5C39AF008D3A42 /* pyrokinesis.xcdatamodeld in Sources */,
 				A41875A11B34C05E00A542E1 /* TableViewSwitchCell.swift in Sources */,
 				A4A2C59B1B7D444800AD7E2B /* GameModeViewController.swift in Sources */,
 				A49365CC1B5C5C93008D3A42 /* ControlViewController.swift in Sources */,
+				A47A5D571B813FFE007973AC /* UISettings.swift in Sources */,
 				A4B8BEA81B2E5C2900DF3964 /* OverviewViewController.swift in Sources */,
 				A49365C31B5C1A22008D3A42 /* GCDAsyncUdpSocket.m in Sources */,
 				A49365C21B5C1A22008D3A42 /* GCDAsyncSocket.m in Sources */,

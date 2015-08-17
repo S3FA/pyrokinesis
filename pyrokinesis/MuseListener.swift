@@ -15,6 +15,8 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
     static let MAX_HORSESHOE_CACHED_VALUES: Int = 20
     static let MAX_HORSESHOE_SCORE_TO_FIRE : Double = 6
     static let WORST_HORSESHOE_SCORE : Double = 16
+
+    static let MAX_TIME_BETWEEN_QUEUED_ANIMS: Double = 2.0
     
     var cachedScoreValues = [IXNMuseDataPacketType: [Double]]()
     var horseshoeScoreValues = [Double]() // 4 - best, 16 - worst
@@ -268,8 +270,6 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
             return
         }
         
-        
-        
         // Calculate all the current averages...
         var avgScoreValues = [IXNMuseDataPacketType: Double]()
         for (packetType, valueArray) in self.cachedScoreValues {
@@ -294,41 +294,80 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
                 }
             }
         }
-        
-        
-        // Certain combinations of scores will create different kinds of effects...
-        // TODO
-        
-        
-        //
     }
     
     private func calmModeCalc(avgScoreValues: [IXNMuseDataPacketType: Double]) {
+        if avgScoreValues[IXNMuseDataPacketType.AlphaScore] == nil || avgScoreValues[IXNMuseDataPacketType.Mellow] == nil {
+            return
+        }
+        
         // Alpha and Mellow are the key values being examined here, make sure they have a high enough
         // value over time in order to shoot fire...
+        let avgAlpha = avgScoreValues[IXNMuseDataPacketType.AlphaScore]!
+        let avgMellow = avgScoreValues[IXNMuseDataPacketType.Mellow]!
         
-        let avgAlpha = avgScoreValues[IXNMuseDataPacketType.AlphaScore]
-        let avgMellow = avgScoreValues[IXNMuseDataPacketType.Mellow]
+        let MIN_ACCEPTED_ALPHA: Double = 0.7
+        let MIN_ACCEPTED_MELLOW: Double = 0.9
         
-        if avgAlpha > 0.7 && avgMellow > 0.9 {
+        if avgAlpha >= MIN_ACCEPTED_ALPHA && avgMellow >= MIN_ACCEPTED_MELLOW {
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             let animMgr = appDelegate.fireAnimatorManager
             
             // Check the latest animation time in the animation manager, if there's a
             // animation running that won't be finished for some time then we shouldn't
             // append more animations
-            let latestAnim = animMgr.getLatestAnimator()
-            if latestAnim.animationTime <= 3.0 {
+            var animTimeLeft = 0.0
+            if let latestAnim = animMgr.getLatestAnimator() {
+                animTimeLeft = latestAnim.timeUntilFinished()
+            }
+            if animTimeLeft <= MuseListener.MAX_TIME_BETWEEN_QUEUED_ANIMS {
+                
+                // Speed up the animation based on how good the brainwave values are...
+                let MIN_BURST_TIME_S: Double = 0.2
+                let MAX_BURST_TIME_S: Double = 1.0
+                var burstTimeInSecs: Double = MathHelper.lerp(avgAlpha+avgMellow, x0: MIN_ACCEPTED_ALPHA + MIN_ACCEPTED_MELLOW, x1: 2.0, y0: MIN_BURST_TIME_S, y1: MAX_BURST_TIME_S)
                 
                 // Create the "calm" fire routine
-                FireAnimatorManager.buildCalmFireAnimators(latestAnim.animationTime + 0.5)
-                
-                
+                let animators = FireAnimatorManager.buildInnerOuterFireAnimators(animTimeLeft + burstTimeInSecs, burstTimeInSecs: burstTimeInSecs)
+                animMgr.addAnimators(animators)
             }
-            
         }
     }
     private func concentrationModeCalc(avgScoreValues: [IXNMuseDataPacketType: Double]) {
+        if avgScoreValues[IXNMuseDataPacketType.BetaScore] == nil || avgScoreValues[IXNMuseDataPacketType.Concentration] == nil {
+            return
+        }
+        
+        // Beta and Concentration are the key values being examined here, make sure they have a high enough
+        // value over time in order to shoot fire...
+        let avgBeta = avgScoreValues[IXNMuseDataPacketType.BetaScore]!
+        let avgConcentration = avgScoreValues[IXNMuseDataPacketType.Concentration]!
+        
+        let MIN_ACCEPTED_BETA: Double = 0.6
+        let MIN_ACCEPTED_CONCENTATION: Double = 0.9
+        
+        if avgBeta >= MIN_ACCEPTED_BETA && avgConcentration >= MIN_ACCEPTED_CONCENTATION {
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let animMgr = appDelegate.fireAnimatorManager
+            
+            // Check the latest animation time in the animation manager, if there's a
+            // animation running that won't be finished for some time then we shouldn't
+            // append more animations
+            var animTimeLeft = 0.0
+            if let latestAnim = animMgr.getLatestAnimator() {
+                animTimeLeft = latestAnim.timeUntilFinished()
+            }
+            if animTimeLeft <= MuseListener.MAX_TIME_BETWEEN_QUEUED_ANIMS {
+                
+                // Speed up the animation based on how good the brainwave values are...
+                let MIN_BURST_TIME_S: Double = 0.2
+                let MAX_BURST_TIME_S: Double = 1.0
+                var burstTimeInSecs: Double = MathHelper.lerp(avgBeta+avgConcentration, x0: MIN_ACCEPTED_BETA + MIN_ACCEPTED_CONCENTATION, x1: 2.0, y0: MIN_BURST_TIME_S, y1: MAX_BURST_TIME_S)
+                
+                let animators = FireAnimatorManager.buildPinwheelFireAnimators(animTimeLeft + burstTimeInSecs, burstTimeInSecs: burstTimeInSecs, clockwise: true)
+                animMgr.addAnimators(animators)
+            }
+        }
         
     }
     

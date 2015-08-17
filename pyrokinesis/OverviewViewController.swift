@@ -23,16 +23,15 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
     }
     
     override func viewDidLoad() {
-        
+        super.viewDidLoad()
+
         self.setNeedsStatusBarAppearanceUpdate()
-        
+
         // Create the muse graph
         self.museGraph = CPTXYGraph(frame: self.graphView.bounds)
         self.graphView.allowPinchScaling = true
         self.museGraph.applyTheme(CPTTheme(named: kCPTDarkGradientTheme))
         self.graphView.hostedGraph = self.museGraph
-        
-        super.viewDidLoad()
         
         self.museGraph.title = "Muse Data"
         

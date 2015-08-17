@@ -14,13 +14,15 @@ class GameModeViewController : UITableViewController {
     
     private var lastSelectedIndexPath: NSIndexPath? = nil
     
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.navigationItem.title = "GAME MODE"
+        SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationItem.title = "Game Mode"
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: Selector("doneButtonPressed"))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: Selector("cancelButtonPressed"))
         
         var selectedIndex = NSIndexPath(forRow: 0, inSection: 0)
         if let settings = PyrokinesisSettings.getSettings() {
@@ -66,6 +68,12 @@ class GameModeViewController : UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("ModeOptionCell", forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = PyrokinesisSettings.GameMode.allValues[indexPath.row].rawValue
         cell.accessoryType = (self.lastSelectedIndexPath?.row == indexPath.row) ? .Checkmark : .None
+        if (cell.accessoryType == .Checkmark) {
+            cell.accessoryView = UIImageView(image: UIImage(named: "checkmark"))
+        }
+        else {
+            cell.accessoryView = nil
+        }
         
         return cell
     }
@@ -77,10 +85,12 @@ class GameModeViewController : UITableViewController {
             if let lastIdxPath = lastSelectedIndexPath {
                 let oldCell = tableView.cellForRowAtIndexPath(lastIdxPath)
                 oldCell?.accessoryType = .None
+                oldCell?.accessoryView = nil
             }
             
             let newCell = tableView.cellForRowAtIndexPath(indexPath)
             newCell?.accessoryType = .Checkmark
+            newCell?.accessoryView = UIImageView(image: UIImage(named: "checkmark"))
             
             self.lastSelectedIndexPath = indexPath
         }

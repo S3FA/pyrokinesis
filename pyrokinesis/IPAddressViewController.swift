@@ -20,10 +20,8 @@ class IPAddressViewController : UIViewController, UITextFieldDelegate {
         
         super.init(coder: aDecoder)
         
-        self.navigationItem.title = "IP Address"
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: Selector("doneButtonPressed"))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: Selector("cancelButtonPressed"))
+        self.navigationItem.title = "IP ADDRESS"
+        SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
     }
     
     override func viewDidLoad() {

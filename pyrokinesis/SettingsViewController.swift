@@ -13,6 +13,12 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
     // Table View
     @IBOutlet var settingsTableView: UITableView!
     
+    // Cells
+    @IBOutlet var ipAddressCell: UITableViewCell!
+    @IBOutlet var portCell: UITableViewCell!
+    @IBOutlet var gameModeCell: UITableViewCell!
+    
+    
     // Connection Settings
     @IBOutlet var connectionEnabledSwitch: UISwitch!
     @IBOutlet var ipAddressLabel: UILabel!
@@ -29,10 +35,19 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.delegate = self
+        if let navCtrl = self.navigationController {
+            navCtrl.delegate = self
+            //navCtrl.navigationBar.backgroundColor =
+            //navCtrl.navigationBar.tintColor = UIColor(red: 24.0/255.0, green: 24.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+        }
         
         // Update with any previous settings data
         self.updateSettingsValues()
+        
+        // Custom images for the disclosure indicators
+        self.ipAddressCell.accessoryView = UIImageView(image: UIImage(named: "disclosureIndicator"))
+        self.portCell.accessoryView = UIImageView(image: UIImage(named: "disclosureIndicator"))
+        self.gameModeCell.accessoryView = UIImageView(image: UIImage(named: "disclosureIndicator"))
     }
     
     override func didReceiveMemoryWarning() {
@@ -73,6 +88,14 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
         }
     }
     
+    
+    class func setupNavButtons(target: AnyObject?, navigationItem: UINavigationItem) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "checkmark"), style: UIBarButtonItemStyle.Done, target: target, action: Selector("doneButtonPressed"))
+        navigationItem.rightBarButtonItem?.tintColor = UISettings.DARK_RED_COLOR
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "cancelBack"), style: UIBarButtonItemStyle.Plain, target: target, action: Selector("cancelButtonPressed"))
+        navigationItem.leftBarButtonItem?.tintColor = UISettings.DARK_RED_COLOR
+    }
     
     // Private helper methods
     private func updateSettingsValues() {

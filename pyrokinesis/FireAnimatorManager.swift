@@ -28,6 +28,9 @@ class FireAnimatorManager {
     func addAnimator(animator: FireAnimator) {
         self.animators.append(animator)
     }
+    func addAnimators(animatorList: [FireAnimator]!) {
+        self.animators += animatorList
+    }
     
     func clearAnimators() {
         for animator in self.animators {
@@ -49,7 +52,7 @@ class FireAnimatorManager {
         }
     }
     
-    func getLatestAnimator() -> FireAnimator {
+    func getLatestAnimator() -> FireAnimator? {
         var latestTime: Double = -1
         var result: FireAnimator? = nil
         for animator in self.animators {
@@ -59,28 +62,40 @@ class FireAnimatorManager {
             }
         }
         
-        assert (result != nil)
-        return result!
+        return result
     }
     
     // Fire routine builder methods
-    static let TIME_BETWEEN_CALM_FIRE_BURSTS: Double = 1.0
-    class func buildCalmFireAnimators(startTimeInSecs: Double) -> [FireAnimator] {
+    class func buildInnerOuterFireAnimators(startTimeInSecs: Double, burstTimeInSecs: Double) -> [FireAnimator] {
         var result = [FireAnimator]()
-        result.reserveCapacity(PyrokinesisSettings.NUM_FLAME_EFFECTS)
+        result.reserveCapacity(2)
         
         // Inner-most flame heads....
-        
-        
-        // 2nd inner-most...
-        
-        
+        result.append(FireAnimator(fireIndices: PyrokinesisSettings.INNER_MOST_FLAME_INDICES, animationTime: startTimeInSecs, holdFlameTime: burstTimeInSecs))
         // Outer-most...
-        
+        result.append(FireAnimator(fireIndices: PyrokinesisSettings.OUTER_MOST_FLAME_INDICES, animationTime: startTimeInSecs + burstTimeInSecs, holdFlameTime: burstTimeInSecs))
         
         return result
     }
     
-    
-    
+    class func buildPinwheelFireAnimators(startTimeInSecs: Double, burstTimeInSecs: Double, clockwise: Bool) -> [FireAnimator] {
+        var result = [FireAnimator]()
+        result.reserveCapacity(PyrokinesisSettings.NUM_FLAME_EFFECTS)
+        
+        var timeCountInS: Double = startTimeInSecs
+        if clockwise {
+            for (var i = 0; i < PyrokinesisSettings.NUM_FLAME_EFFECTS; i++) {
+                result.append(FireAnimator(fireIndices: [i], animationTime: timeCountInS, holdFlameTime: burstTimeInSecs))
+                timeCountInS += burstTimeInSecs
+            }
+        }
+        else {
+            for (var i = PyrokinesisSettings.NUM_FLAME_EFFECTS-1; i >= 0 ; i--) {
+                result.append(FireAnimator(fireIndices: [i], animationTime: timeCountInS, holdFlameTime: burstTimeInSecs))
+                timeCountInS += burstTimeInSecs
+            }
+        }
+        
+        return result
+    }
 }
