@@ -311,7 +311,7 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         
         if avgAlpha >= MIN_ACCEPTED_ALPHA && avgMellow >= MIN_ACCEPTED_MELLOW {
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            let animMgr = appDelegate.fireAnimatorManager
+            let animMgr = appDelegate.fireAnimatorManager!
             
             // Check the latest animation time in the animation manager, if there's a
             // animation running that won't be finished for some time then we shouldn't
@@ -348,7 +348,7 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         
         if avgBeta >= MIN_ACCEPTED_BETA && avgConcentration >= MIN_ACCEPTED_CONCENTATION {
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            let animMgr = appDelegate.fireAnimatorManager
+            let animMgr = appDelegate.fireAnimatorManager!
             
             // Check the latest animation time in the animation manager, if there's a
             // animation running that won't be finished for some time then we shouldn't
@@ -364,7 +364,7 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
                 let MAX_BURST_TIME_S: Double = 1.0
                 var burstTimeInSecs: Double = MathHelper.lerp(avgBeta+avgConcentration, x0: MIN_ACCEPTED_BETA + MIN_ACCEPTED_CONCENTATION, x1: 2.0, y0: MIN_BURST_TIME_S, y1: MAX_BURST_TIME_S)
                 
-                let animators = FireAnimatorManager.buildPinwheelFireAnimators(animTimeLeft + burstTimeInSecs, burstTimeInSecs: burstTimeInSecs, clockwise: true)
+                let animators = FireAnimatorManager.buildPinwheelFireAnimators(animTimeLeft + burstTimeInSecs, burstTimeInSecs: burstTimeInSecs, clockwise: true, numPinwheels: 1)
                 animMgr.addAnimators(animators)
             }
         }

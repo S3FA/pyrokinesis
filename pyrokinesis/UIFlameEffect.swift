@@ -13,19 +13,20 @@ class UIFlameEffect : UIView {
     
     @IBInspectable var index: Int = -1
     
-    @IBInspectable var idleFillColour: UIColor  = UIColor.whiteColor()
+    static let IDLE_FILL_COLOUR: UIColor  = UIColor(red:1.0, green:0.0, blue:0.0, alpha:0.5)
     @IBInspectable var touchFillColour: UIColor = UIColor.redColor()
     @IBInspectable var strokeColour: UIColor = UIColor.blackColor()
-    
-    
     
     private var currFillColour : UIColor
     private var shapePath: UIBezierPath
     
     private var touchRepeatTimer: NSTimer?
     
+    var lockUntouch = false // If true this will not allow the flame effect to be untoggled by touch
+    
+    
     required init(coder aDecoder: NSCoder) {
-        self.currFillColour = idleFillColour
+        self.currFillColour = UIFlameEffect.IDLE_FILL_COLOUR
         self.shapePath = UIBezierPath()
         self.touchRepeatTimer = nil
         
@@ -37,9 +38,9 @@ class UIFlameEffect : UIView {
     override func drawRect(rect: CGRect) {
         let LINE_WIDTH: CGFloat = 3.0
         
-        var circleRect = CGRectMake(rect.origin.x+LINE_WIDTH, rect.origin.y+LINE_WIDTH, rect.size.width - 2*LINE_WIDTH, rect.size.height - 2*LINE_WIDTH);
+        var circleRect = CGRectMake(rect.origin.x+LINE_WIDTH, rect.origin.y+2*LINE_WIDTH, rect.size.width - 2*LINE_WIDTH, rect.size.height - 2*LINE_WIDTH);
         
-        self.shapePath = UIBezierPath(ovalInRect: circleRect)
+        self.shapePath = UIBezierPath(ovalInRect: rect)
         self.shapePath.lineWidth = LINE_WIDTH
         
         self.currFillColour.setFill()
@@ -50,6 +51,18 @@ class UIFlameEffect : UIView {
     
     func containsPoint(point: CGPoint) -> Bool {
         return self.shapePath.containsPoint(self.convertPoint(point, fromView: self.superview))
+    }
+    
+    func simulateTouchWithoutSendingData(isBeingTouched: Bool) {
+        self.lockUntouch = isBeingTouched
+        if isBeingTouched {
+            self.currFillColour = self.touchFillColour
+        }
+        else {
+            self.currFillColour = UIFlameEffect.IDLE_FILL_COLOUR
+        }
+        
+        self.setNeedsDisplay()
     }
     
     func setTouched(isBeingTouched: Bool) {
@@ -76,7 +89,9 @@ class UIFlameEffect : UIView {
                 }
             }
             self.touchRepeatTimer = nil
-            self.currFillColour = self.idleFillColour
+            if !self.lockUntouch {
+                self.currFillColour = UIFlameEffect.IDLE_FILL_COLOUR
+            }
         }
 
         self.setNeedsDisplay()

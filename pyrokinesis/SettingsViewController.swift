@@ -37,8 +37,6 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
         
         if let navCtrl = self.navigationController {
             navCtrl.delegate = self
-            //navCtrl.navigationBar.backgroundColor =
-            //navCtrl.navigationBar.tintColor = UIColor(red: 24.0/255.0, green: 24.0/255.0, blue: 24.0/255.0, alpha: 1.0)
         }
         
         // Update with any previous settings data
@@ -77,6 +75,12 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
     // UITableViewController/Delegate Protocol
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return tableView.rowHeight
+    }
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let header = view as? UITableViewHeaderFooterView {
+            header.textLabel.textColor = UIColor.whiteColor()
+            //header.textLabel.font
+        }
     }
     
     // UINavigationControllerDelegate Protocol

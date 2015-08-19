@@ -19,6 +19,7 @@
 		A47A5D551B8128DA007973AC /* MathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47A5D541B8128DA007973AC /* MathHelper.swift */; };
 		A47A5D571B813FFE007973AC /* UISettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47A5D561B813FFE007973AC /* UISettings.swift */; };
 		A47A5D591B81410A007973AC /* PyrokinesisTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47A5D581B81410A007973AC /* PyrokinesisTabBarController.swift */; };
+		A47A5D5B1B83F97A007973AC /* FireSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47A5D5A1B83F979007973AC /* FireSimulator.swift */; };
 		A49365C21B5C1A22008D3A42 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A49365BF1B5C1A22008D3A42 /* GCDAsyncSocket.m */; };
 		A49365C31B5C1A22008D3A42 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = A49365C11B5C1A22008D3A42 /* GCDAsyncUdpSocket.m */; };
 		A49365C51B5C36BD008D3A42 /* PyrokinesisSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49365C41B5C36BD008D3A42 /* PyrokinesisSettings.swift */; };
@@ -348,6 +349,7 @@
 		A47A5D541B8128DA007973AC /* MathHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathHelper.swift; sourceTree = "<group>"; };
 		A47A5D561B813FFE007973AC /* UISettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISettings.swift; sourceTree = "<group>"; };
 		A47A5D581B81410A007973AC /* PyrokinesisTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PyrokinesisTabBarController.swift; sourceTree = "<group>"; };
+		A47A5D5A1B83F979007973AC /* FireSimulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireSimulator.swift; sourceTree = "<group>"; };
 		A49365BE1B5C1A22008D3A42 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = pyrokinesis/lib/gcd/GCDAsyncSocket.h; sourceTree = "<group>"; };
 		A49365BF1B5C1A22008D3A42 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = pyrokinesis/lib/gcd/GCDAsyncSocket.m; sourceTree = "<group>"; };
 		A49365C01B5C1A22008D3A42 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncUdpSocket.h; path = pyrokinesis/lib/gcd/GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
@@ -744,6 +746,7 @@
 				A4B8BED11B2E687300DF3964 /* MuseListener.swift */,
 				A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */,
 				A4D328E81B7C302300B9CC8C /* FireAnimatorManager.swift */,
+				A47A5D5A1B83F979007973AC /* FireSimulator.swift */,
 				A4B8BEA51B2E5C2900DF3964 /* AppDelegate.swift */,
 				A47A5D581B81410A007973AC /* PyrokinesisTabBarController.swift */,
 				A4B8BEA71B2E5C2900DF3964 /* OverviewViewController.swift */,
@@ -1528,6 +1531,7 @@
 				A4A2C59B1B7D444800AD7E2B /* GameModeViewController.swift in Sources */,
 				A49365CC1B5C5C93008D3A42 /* ControlViewController.swift in Sources */,
 				A47A5D571B813FFE007973AC /* UISettings.swift in Sources */,
+				A47A5D5B1B83F97A007973AC /* FireSimulator.swift in Sources */,
 				A4B8BEA81B2E5C2900DF3964 /* OverviewViewController.swift in Sources */,
 				A49365C31B5C1A22008D3A42 /* GCDAsyncUdpSocket.m in Sources */,
 				A49365C21B5C1A22008D3A42 /* GCDAsyncSocket.m in Sources */,

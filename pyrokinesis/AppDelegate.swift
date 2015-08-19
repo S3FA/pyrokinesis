@@ -22,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     
     var udpSocket: GCDAsyncUdpSocket? = nil
     
-    var fireAnimatorManager: FireAnimatorManager!
+    var fireAnimatorManager: FireAnimatorManager? = nil
+    var fireSimulator: FireSimulator = FireSimulator()
     
     private var packetCount: Int = 0
     
@@ -32,6 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
         //UINavigationBar.appearance().translucent = false
         //UINavigationBar.appearance().barTintColor = UIColor(red: 24.0/255.0, green: 24.0/255.0, blue: 24.0/255.0, alpha: 1.0)
 
+        UITableViewHeaderFooterView.appearance().tintColor = UIColor.whiteColor()
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+        
+        self.fireAnimatorManager = FireAnimatorManager()
+        
         return true
     }
 
@@ -168,13 +174,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
                     assert(fireIdx >= 0 && fireIdx <= 7, "Invalid fire emitter index.")
                     data.append(0x01)
                     data.append(UInt8(48 + fireIdx))
+                    
+                    // Simulate the fire on this client...
+                    self.fireSimulator.flameEffects[fireIdx].turnOn()
                 }
+
+                //NSLog("Sending data: \(data), to IP: \(settings.fireIPAddress), on port: \(settings.firePort)")
                 
-                //let tempData = (data as NSString).dataUsingEncoding(NSUTF8StringEncoding)
-                let tempData = NSData(bytes: data, length: data.count)
-                NSLog("Sending data: \(data), to IP: \(settings.fireIPAddress), on port: \(settings.firePort)")
-                
-                udp.sendData(tempData, toHost: settings.fireIPAddress, port: UInt16(settings.firePort), withTimeout: -1, tag: self.packetCount)
+                udp.sendData(NSData(bytes: data, length: data.count), toHost: settings.fireIPAddress, port: UInt16(settings.firePort), withTimeout: -1, tag: self.packetCount)
                 self.packetCount++
             }
         }

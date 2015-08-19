@@ -95,6 +95,11 @@ class GameModeViewController : UITableViewController {
             self.lastSelectedIndexPath = indexPath
         }
     }
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let header = view as? UITableViewHeaderFooterView {
+            header.textLabel.textColor = UIColor.whiteColor()
+        }
+    }
     
     func getGameModeString() -> String {
         if let selectedIdxPath = self.lastSelectedIndexPath {

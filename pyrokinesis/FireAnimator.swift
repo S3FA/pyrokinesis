@@ -13,11 +13,18 @@ class FireAnimator {
     static let REPEAT_ANIM_FOREVER: Int = -1
     
     var fireIndices = [Int]()
-    var animationTime: Double = 0.0
+    var waitToFireTime: Double = 0.0
     var holdFlameTime: Double = 0.0
     
     private var timeCounter: Double = 0
-    private var keepFiringTimeCounter: Double = 0
+    private var strobeFiringTimeCounter: Double = 0
+    
+    private enum State {
+        case WaitingToFire
+        case Firing
+        case Done
+    }
+    private var currState = State.WaitingToFire
     
     init() {
         
@@ -26,77 +33,106 @@ class FireAnimator {
         assert(fireIndices.count >= 0 && fireIndices.count <= PyrokinesisSettings.NUM_FLAME_EFFECTS)
         self.fireIndices = fireIndices
     }
-    convenience init(fireIndices: [Int], animationTime: Double) {
+    convenience init(fireIndices: [Int], timeUntilFire: Double) {
         self.init(fireIndices: fireIndices)
-        self.startAnimation(animationTime)
+        self.startAnimation(timeUntilFire)
     }
-    convenience init(fireIndices: [Int], animationTime: Double, holdFlameTime: Double) {
-        self.init(fireIndices: fireIndices, animationTime: animationTime)
+    convenience init(fireIndices: [Int], timeUntilFire: Double, holdFlameTime: Double) {
+        self.init(fireIndices: fireIndices, timeUntilFire: timeUntilFire)
         self.holdFlameTime = holdFlameTime
     }
     
-    func startAnimation(animationTime: Double) {
-        assert(animationTime >= 0.0)
-        self.timeCounter = 0
-        self.animationTime = animationTime
+    func startAnimation(waitToFireTime: Double) {
+        assert(waitToFireTime >= 0.0)
+
+        self.waitToFireTime = waitToFireTime
+        if waitToFireTime > 0 {
+            self.setState(State.WaitingToFire)
+        }
+        else {
+            self.setState(State.Firing)
+        }
     }
     
     func stopAnimation() {
-        self.animationTime = 0.0
-        self.timeCounter = 0
+        self.setState(State.Done)
     }
     
     func timeUntilFinished() -> Double {
-        if self.isFinished() {
-            return 0.0
+        switch (self.currState) {
+            case .WaitingToFire:
+                return (self.waitToFireTime - self.timeCounter) + self.holdFlameTime
+            case .Firing:
+                return (self.holdFlameTime - self.timeCounter)
+            case .Done:
+                return 0.0
         }
-        
-        if self.holdFlameTime > 0.0 {
-            return (self.animationTime + self.holdFlameTime) - self.timeCounter
-        }
-        return self.animationTime - self.timeCounter
     }
     
     func isFinished() -> Bool {
-        // Special case if the hold flame time is non-zero, positive
-        if self.holdFlameTime > 0.0 {
-            return self.timeCounter > (self.animationTime + self.holdFlameTime)
-        }
-        
-        return self.timeCounter > self.animationTime
+        return self.currState == .Done
     }
     
     func tick(dt: Double) {
-        if self.isFinished() {
-            return
-        }
-        
-        if self.holdFlameTime > 0.0 && self.timeCounter > self.animationTime {
-            self.keepFiringTimeCounter += dt
-            self.timeCounter += dt
+        switch (self.currState) {
+            case .WaitingToFire:
+                
+                // Figure out where we are in the animation time and shoot fire if we're far enough into it
+                self.timeCounter += dt
+                if self.timeCounter >= self.waitToFireTime {
+                    
+                    let diff = self.timeCounter - self.waitToFireTime
+                    
+                    // Shoot the fire!
+                    self.fire()
+                    self.setState(State.Firing)
+                    self.timeCounter = diff
+                }
+                break
+                
+            case .Firing:
+                // Make sure we keep "strobing" the fire (keeping it turned on) if the
+                // keep firing flag is on
+                self.strobeFiringTimeCounter += dt
+                if self.strobeFiringTimeCounter >= PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S {
+                    let diff = PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S - self.strobeFiringTimeCounter
+                    
+                    self.fire()
+                    self.strobeFiringTimeCounter = diff
+                }
+                
+                self.timeCounter += dt
+                if self.timeCounter >= self.holdFlameTime {
+                    self.setState(State.Done)
+                    return
+                }
             
-            // Make sure we keep "strobing" the fire (keeping it turned on) if the
-            // keep firing flag is on
-            if self.keepFiringTimeCounter >= PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S {
-                self.fire()
-                self.keepFiringTimeCounter = 0
-            }
-            
-            return
-        }
-        
-        // Figure out where we are in the animation time and shoot fire if we're far enough into it
-        self.timeCounter += dt
-        if self.timeCounter >= self.animationTime {
-            // Shoot the fire!
-            self.fire()
-            self.timeCounter = self.animationTime
+                break
+                
+            case .Done:
+                break
         }
     }
     
     private func fire() {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         appDelegate.sendMultiFireControlData(self.fireIndices)
+    }
+    
+    private func setState(newState: State) {
+        switch (newState) {
+        case .WaitingToFire:
+            self.timeCounter = 0
+            break
+        case .Firing:
+            self.timeCounter = 0
+            self.strobeFiringTimeCounter = PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S
+            break
+        case .Done:
+            break
+        }
+        
+        self.currState = newState
     }
     
 }

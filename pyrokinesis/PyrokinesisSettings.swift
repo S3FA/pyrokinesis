@@ -13,10 +13,12 @@ import CoreData
 class PyrokinesisSettings : NSManagedObject {
     
     static let FLAME_EFFECT_RESEND_TIME_S : NSTimeInterval = 0.050
+    static let FLAME_EFFECT_ON_TIME_S: NSTimeInterval = 0.1
     static let NUM_FLAME_EFFECTS: Int = 8
     
     static let INNER_MOST_FLAME_INDICES: [Int] = [0, 4]
     static let OUTER_MOST_FLAME_INDICES: [Int] = [1, 2, 3, 5, 6, 7]
+    static let ALL_FLAME_INDICES: [Int] = [0, 1, 2, 3, 4, 5, 6, 7]
     
     static let DEFAULT_CONN_ENABLED = true
     static let DEFAULT_IP_ADDRESS: String = "192.168.1.1"
