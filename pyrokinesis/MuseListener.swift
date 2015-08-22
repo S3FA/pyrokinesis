@@ -11,12 +11,14 @@ import UIKit
 
 class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
 
-    static let MAX_CACHED_VALUES : Int = 100
+    static let MAX_CACHED_VALUES : Int = 80
     static let MAX_HORSESHOE_CACHED_VALUES: Int = 20
     static let MAX_HORSESHOE_SCORE_TO_FIRE : Double = 6
     static let WORST_HORSESHOE_SCORE : Double = 16
 
     static let MAX_TIME_BETWEEN_QUEUED_ANIMS: Double = 2.0
+    
+    static let MIN_TIME_BETWEEN_JAW_CLENCH_FLAMES: Double = 1.0
     
     var cachedScoreValues = [IXNMuseDataPacketType: [Double]]()
     var horseshoeScoreValues = [Double]() // 4 - best, 16 - worst
@@ -43,13 +45,13 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
                 cacheScore = true
                 break
             case IXNMuseDataPacketType.DeltaScore:
-                cacheScore = true
+                //cacheScore = true
                 break
             case IXNMuseDataPacketType.ThetaScore:
-                cacheScore = true
+                //cacheScore = true
                 break
             case IXNMuseDataPacketType.GammaScore:
-                cacheScore = true
+                //cacheScore = true
                 break
             case IXNMuseDataPacketType.Mellow:
                 cacheScore = true
@@ -119,6 +121,7 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
                         self.cachedScoreValues[packet.packetType]!.removeAtIndex(0)
                     }
                     self.cachedScoreValues[packet.packetType]!.append(avgValue)
+                    self.museBrainToFireCalc()
                 }
                 else {
                     self.cachedScoreValues[packet.packetType] = [avgValue]
@@ -196,26 +199,40 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
 
         switch (state) {
             case IXNConnectionState.Disconnected:
-                statusStr = "Disconnected"
+                statusStr = "DISCONNECTED"
                 break
             case IXNConnectionState.Connected:
-                statusStr = "Connected"
+                statusStr = "CONNECTED"
                 break
             case IXNConnectionState.Connecting:
-                statusStr = "Connecting"
+                statusStr = "CONNECTING"
                 break
             case IXNConnectionState.NeedsUpdate:
-                statusStr = "Needs Updating"
+                statusStr = "NEEDS UPDATING"
                 break
             case IXNConnectionState.Unknown:
-                statusStr = "Unknown"
+                statusStr = "UNKNOWN"
                 break
             default:
-                statusStr = "Invalid"
+                statusStr = "INVALID"
                 break
         }
         
         return statusStr
+    }
+    
+    func isMuseAvailable() -> Bool {
+        switch (self.museConnStatus) {
+            case .Connected:
+                return true
+            case .Connecting:
+                return true
+            case .NeedsUpdate:
+                return true
+            
+            default:
+                return false
+        }
     }
     
     func avgHorseshoeValue() -> Double {
@@ -244,16 +261,24 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
     
     class func getSignalStrengthString(horseshoeValue: Double) -> String {
         if horseshoeValue <=  4 {
-            return "Excellent (Sending Fire Data)"
+            return "EXCELLENT"
         }
         else if horseshoeValue <= 6 {
-            return "Good (Sending Fire Data)"
+            return "GOOD"
         }
         else if horseshoeValue <= 8 {
-            return "OK (Not Sending Fire Data)"
+            return "OK"
         }
         else {
-            return "Poor (Not Sending Fire Data)"
+            return "POOR"
+        }
+    }
+    class func getSignalDetailString(horseshoeValue: Double) -> String {
+        if horseshoeValue <= MuseListener.MAX_HORSESHOE_SCORE_TO_FIRE {
+            return "SENDING FIRE DATA"
+        }
+        else {
+            return "NOT SENDING FIRE DATA"
         }
     }
     
@@ -306,8 +331,8 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         let avgAlpha = avgScoreValues[IXNMuseDataPacketType.AlphaScore]!
         let avgMellow = avgScoreValues[IXNMuseDataPacketType.Mellow]!
         
-        let MIN_ACCEPTED_ALPHA: Double = 0.7
-        let MIN_ACCEPTED_MELLOW: Double = 0.9
+        let MIN_ACCEPTED_ALPHA: Double = 0.4
+        let MIN_ACCEPTED_MELLOW: Double = 0.6
         
         if avgAlpha >= MIN_ACCEPTED_ALPHA && avgMellow >= MIN_ACCEPTED_MELLOW {
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -323,9 +348,13 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
             if animTimeLeft <= MuseListener.MAX_TIME_BETWEEN_QUEUED_ANIMS {
                 
                 // Speed up the animation based on how good the brainwave values are...
-                let MIN_BURST_TIME_S: Double = 0.2
-                let MAX_BURST_TIME_S: Double = 1.0
-                var burstTimeInSecs: Double = MathHelper.lerp(avgAlpha+avgMellow, x0: MIN_ACCEPTED_ALPHA + MIN_ACCEPTED_MELLOW, x1: 2.0, y0: MIN_BURST_TIME_S, y1: MAX_BURST_TIME_S)
+                let MIN_BURST_TIME_S: Double = 0.075
+                let MAX_BURST_TIME_S: Double = 1.100
+                
+                let MAX_SUM_CLAMP = 1.75
+                
+                var total = min(0.3*avgAlpha + 0.7*avgMellow, MAX_SUM_CLAMP)
+                var burstTimeInSecs: Double = MathHelper.lerp(total, x0: MIN_ACCEPTED_ALPHA + MIN_ACCEPTED_MELLOW, x1: MAX_SUM_CLAMP, y0: MIN_BURST_TIME_S, y1: MAX_BURST_TIME_S)
                 
                 // Create the "calm" fire routine
                 let animators = FireAnimatorManager.buildInnerOuterFireAnimators(animTimeLeft + burstTimeInSecs, burstTimeInSecs: burstTimeInSecs)
@@ -343,8 +372,8 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         let avgBeta = avgScoreValues[IXNMuseDataPacketType.BetaScore]!
         let avgConcentration = avgScoreValues[IXNMuseDataPacketType.Concentration]!
         
-        let MIN_ACCEPTED_BETA: Double = 0.6
-        let MIN_ACCEPTED_CONCENTATION: Double = 0.9
+        let MIN_ACCEPTED_BETA: Double = 0.4
+        let MIN_ACCEPTED_CONCENTATION: Double = 0.6
         
         if avgBeta >= MIN_ACCEPTED_BETA && avgConcentration >= MIN_ACCEPTED_CONCENTATION {
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -360,15 +389,18 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
             if animTimeLeft <= MuseListener.MAX_TIME_BETWEEN_QUEUED_ANIMS {
                 
                 // Speed up the animation based on how good the brainwave values are...
-                let MIN_BURST_TIME_S: Double = 0.2
-                let MAX_BURST_TIME_S: Double = 1.0
-                var burstTimeInSecs: Double = MathHelper.lerp(avgBeta+avgConcentration, x0: MIN_ACCEPTED_BETA + MIN_ACCEPTED_CONCENTATION, x1: 2.0, y0: MIN_BURST_TIME_S, y1: MAX_BURST_TIME_S)
+                let MIN_BURST_TIME_S = 0.2
+                let MAX_BURST_TIME_S = 1.0
+                
+                let MAX_SUM_CLAMP = 1.75
+                
+                var total = min(0.3*avgBeta + 0.7*avgConcentration, MAX_SUM_CLAMP)
+                var burstTimeInSecs: Double = MathHelper.lerp(total, x0: MIN_ACCEPTED_BETA + MIN_ACCEPTED_CONCENTATION, x1: MAX_SUM_CLAMP, y0: MIN_BURST_TIME_S, y1: MAX_BURST_TIME_S)
                 
                 let animators = FireAnimatorManager.buildPinwheelFireAnimators(animTimeLeft + burstTimeInSecs, burstTimeInSecs: burstTimeInSecs, clockwise: true, numPinwheels: 1)
                 animMgr.addAnimators(animators)
             }
         }
-        
     }
     
     private func museBlinkToFireCalc() {
@@ -376,6 +408,7 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
             return
         }
         
+        // ... blinks are just too common...
     }
     private func museJawClenchToFireCalc() {
         if !self.okToFire() {
@@ -392,19 +425,15 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         // Make sure we don't spam this...
         let currTime = NSDate()
         
-        if self.lastJawClenchFireTime.timeIntervalSinceDate(currTime) < PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S {
+        if (currTime.timeIntervalSinceReferenceDate - self.lastJawClenchFireTime.timeIntervalSinceReferenceDate) < MuseListener.MIN_TIME_BETWEEN_JAW_CLENCH_FLAMES {
             self.lastJawClenchFireTime = currTime
             return
         }
         
         // ALL OF THE FIRE!
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        var fireIndices = [Int]()
-        for (var i = 0; i < PyrokinesisSettings.NUM_FLAME_EFFECTS; i++) {
-            fireIndices.append(i)
-        }
-        appDelegate.sendMultiFireControlData(fireIndices)
+        let animations = FireAnimatorManager.buildEruptionFireAnimators(0.0, burstTimeInSecs: MuseListener.MIN_TIME_BETWEEN_JAW_CLENCH_FLAMES-0.1)
+        appDelegate.fireAnimatorManager?.addAnimators(animations)
         
         self.lastJawClenchFireTime = currTime
     }

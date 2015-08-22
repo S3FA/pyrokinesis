@@ -18,11 +18,13 @@ class GameModeViewController : UITableViewController {
         super.init(coder: aDecoder)
         
         self.navigationItem.title = "GAME MODE"
-        SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
         
         var selectedIndex = NSIndexPath(forRow: 0, inSection: 0)
         if let settings = PyrokinesisSettings.getSettings() {

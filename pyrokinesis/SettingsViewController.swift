@@ -9,7 +9,7 @@
 import UIKit
 
 class SettingsViewController: UITableViewController, UINavigationControllerDelegate {
-
+    
     // Table View
     @IBOutlet var settingsTableView: UITableView!
     
@@ -39,13 +39,13 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
             navCtrl.delegate = self
         }
         
-        // Update with any previous settings data
-        self.updateSettingsValues()
-        
         // Custom images for the disclosure indicators
         self.ipAddressCell.accessoryView = UIImageView(image: UIImage(named: "disclosureIndicator"))
         self.portCell.accessoryView = UIImageView(image: UIImage(named: "disclosureIndicator"))
         self.gameModeCell.accessoryView = UIImageView(image: UIImage(named: "disclosureIndicator"))
+        
+        // Update with any previous settings data
+        self.updateSettingsValues()
     }
     
     override func didReceiveMemoryWarning() {
@@ -103,6 +103,8 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
     
     // Private helper methods
     private func updateSettingsValues() {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
         // Update with any previous settings data
         if let settings = PyrokinesisSettings.getSettings() {
             self.ipAddressLabel.text = settings.fireIPAddress
@@ -114,12 +116,17 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
         }
         else {
             var connSwitchOn = false
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             if let udpSocket = appDelegate.udpSocket {
                 connSwitchOn = true
             }
             self.connectionEnabledSwitch.setOn(connSwitchOn, animated: false)
         }
+        
+        // Update the overview controller as well...
+        if let graphView = appDelegate.overviewViewController {
+            graphView.updateSettings()
+        }
+        
     }
     
 }

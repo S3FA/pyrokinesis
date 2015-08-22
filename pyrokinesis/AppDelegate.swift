@@ -14,6 +14,8 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate {
 
     var window: UIWindow?
+    var overviewViewController: OverviewViewController? = nil
+    
     
     var muse: IXNMuse? = nil
     var musePickerTimer: NSTimer? = nil
@@ -32,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
         
         //UINavigationBar.appearance().translucent = false
         //UINavigationBar.appearance().barTintColor = UIColor(red: 24.0/255.0, green: 24.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+        //UINavigationBar.appearance().titleTextAttributes?.updateValue(UIFont(name: "Gotham-Bold", size: 22)!, forKey: NSFontAttributeName)
 
         UITableViewHeaderFooterView.appearance().tintColor = UIColor.whiteColor()
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)

@@ -21,11 +21,12 @@ class IPAddressViewController : UIViewController, UITextFieldDelegate {
         super.init(coder: aDecoder)
         
         self.navigationItem.title = "IP ADDRESS"
-        SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
         
         self.ipField0.delegate = self
         self.ipField1.delegate = self

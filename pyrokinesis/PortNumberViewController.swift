@@ -18,12 +18,13 @@ class PortNumberViewController : UIViewController {
         super.init(coder: aDecoder)
         
         self.navigationItem.title = "PORT"
-        SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
+        
         if let settings = PyrokinesisSettings.getSettings() {
             self.portNumberTextField.text = "\(settings.firePort)"
         }
