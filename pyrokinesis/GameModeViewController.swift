@@ -12,6 +12,7 @@ class GameModeViewController : UITableViewController {
     
     @IBOutlet var gameModeTableView: UITableView!
     
+    static let CELL_BG_COLOUR = UIColor(red: 23/255.0, green: 23/255.0, blue: 23/255.0, alpha: 1.0)
     private var lastSelectedIndexPath: NSIndexPath? = nil
     
     required init(coder aDecoder: NSCoder) {
@@ -72,6 +73,7 @@ class GameModeViewController : UITableViewController {
         cell.accessoryType = (self.lastSelectedIndexPath?.row == indexPath.row) ? .Checkmark : .None
         if (cell.accessoryType == .Checkmark) {
             cell.accessoryView = UIImageView(image: UIImage(named: "checkmark"))
+            cell.accessoryView?.backgroundColor = GameModeViewController.CELL_BG_COLOUR
         }
         else {
             cell.accessoryView = nil
@@ -93,6 +95,7 @@ class GameModeViewController : UITableViewController {
             let newCell = tableView.cellForRowAtIndexPath(indexPath)
             newCell?.accessoryType = .Checkmark
             newCell?.accessoryView = UIImageView(image: UIImage(named: "checkmark"))
+            newCell?.accessoryView?.backgroundColor = GameModeViewController.CELL_BG_COLOUR
             
             self.lastSelectedIndexPath = indexPath
         }
@@ -101,6 +104,10 @@ class GameModeViewController : UITableViewController {
         if let header = view as? UITableViewHeaderFooterView {
             header.textLabel.textColor = UIColor.whiteColor()
         }
+    }
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        cell.backgroundColor = GameModeViewController.CELL_BG_COLOUR
     }
     
     func getGameModeString() -> String {

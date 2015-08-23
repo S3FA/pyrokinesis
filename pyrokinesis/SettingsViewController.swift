@@ -82,6 +82,10 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
             //header.textLabel.font
         }
     }
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        cell.backgroundColor = UIColor(red: 23/255.0, green: 23/255.0, blue: 23/255.0, alpha: 1.0)
+    }
     
     // UINavigationControllerDelegate Protocol
     func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {

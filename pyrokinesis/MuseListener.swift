@@ -331,7 +331,7 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
         let avgAlpha = avgScoreValues[IXNMuseDataPacketType.AlphaScore]!
         let avgMellow = avgScoreValues[IXNMuseDataPacketType.Mellow]!
         
-        let MIN_ACCEPTED_ALPHA: Double = 0.4
+        let MIN_ACCEPTED_ALPHA: Double = 0.5
         let MIN_ACCEPTED_MELLOW: Double = 0.6
         
         if avgAlpha >= MIN_ACCEPTED_ALPHA && avgMellow >= MIN_ACCEPTED_MELLOW {
@@ -348,10 +348,10 @@ class MuseListener : IXNMuseDataListener, IXNMuseConnectionListener {
             if animTimeLeft <= MuseListener.MAX_TIME_BETWEEN_QUEUED_ANIMS {
                 
                 // Speed up the animation based on how good the brainwave values are...
-                let MIN_BURST_TIME_S: Double = 0.075
-                let MAX_BURST_TIME_S: Double = 1.100
+                let MIN_BURST_TIME_S: Double = 0.5
+                let MAX_BURST_TIME_S: Double = 1.2
                 
-                let MAX_SUM_CLAMP = 1.75
+                let MAX_SUM_CLAMP = 1.8
                 
                 var total = min(0.3*avgAlpha + 0.7*avgMellow, MAX_SUM_CLAMP)
                 var burstTimeInSecs: Double = MathHelper.lerp(total, x0: MIN_ACCEPTED_ALPHA + MIN_ACCEPTED_MELLOW, x1: MAX_SUM_CLAMP, y0: MIN_BURST_TIME_S, y1: MAX_BURST_TIME_S)
