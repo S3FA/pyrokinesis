@@ -1,5 +1,6 @@
-#import "CPTColor.h"
 #import "CPTColorTests.h"
+
+#import "CPTColor.h"
 
 @implementation CPTColorTests
 
@@ -10,7 +11,7 @@
 {
     CPTColor *color = [CPTColor redColor];
 
-    CPTColor *newColor = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:color]];
+    CPTColor *newColor = [self archiveRoundTrip:color];
 
     XCTAssertEqualObjects(color, newColor, @"Colors not equal");
 }

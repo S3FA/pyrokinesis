@@ -9,15 +9,15 @@
 import Foundation
 
 protocol FireSimulatorDelegate {
-    func flameEffectChanged(flameIdx: Int, isOn: Bool)
+    func flameEffectChanged(_ flameIdx: Int, isOn: Bool)
 }
 
 class FlameEffectSimulator : NSObject {
     
-    private var timer: NSTimer?
+    fileprivate var timer: Timer?
     
-    private(set) var index: Int
-    private(set) var isOn: Bool
+    fileprivate(set) var index: Int
+    fileprivate(set) var isOn: Bool
     
     var delegate: FireSimulatorDelegate?
     
@@ -35,7 +35,7 @@ class FlameEffectSimulator : NSObject {
         self.isOn = true
         delegate?.flameEffectChanged(self.index, isOn: self.isOn)
         
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(PyrokinesisSettings.FLAME_EFFECT_ON_TIME_S, target: self, selector: Selector("turnOff"), userInfo: nil, repeats: false)
+        self.timer = Timer.scheduledTimer(timeInterval: PyrokinesisSettings.FLAME_EFFECT_ON_TIME_S, target: self, selector: Selector("turnOff"), userInfo: nil, repeats: false)
     }
     
     func turnOff() {
@@ -65,7 +65,7 @@ class FireSimulator {
         self.flameEffects = [FlameEffectSimulator]()
         self.flameEffects.reserveCapacity(PyrokinesisSettings.NUM_FLAME_EFFECTS)
 
-        for(var i = 0; i < PyrokinesisSettings.NUM_FLAME_EFFECTS; i++) {
+        for i in 0...PyrokinesisSettings.NUM_FLAME_EFFECTS {
             self.flameEffects.append(FlameEffectSimulator(index: i))
         }
     }

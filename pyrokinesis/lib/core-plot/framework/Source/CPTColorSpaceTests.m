@@ -1,5 +1,6 @@
-#import "CPTColorSpace.h"
 #import "CPTColorSpaceTests.h"
+
+#import "CPTColorSpace.h"
 
 @implementation CPTColorSpaceTests
 
@@ -10,15 +11,21 @@
 {
     CPTColorSpace *colorSpace = [CPTColorSpace genericRGBSpace];
 
-    CPTColorSpace *newColorSpace = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:colorSpace]];
+    CPTColorSpace *newColorSpace = [self archiveRoundTrip:colorSpace];
 
     CFDataRef iccProfile    = CGColorSpaceCopyICCProfile(colorSpace.cgColorSpace);
     CFDataRef newIccProfile = CGColorSpaceCopyICCProfile(newColorSpace.cgColorSpace);
 
-    XCTAssertTrue([(__bridge NSData *)iccProfile isEqualToData: (__bridge NSData *)newIccProfile], @"Color spaces not equal");
+    if ( iccProfile && newIccProfile ) {
+        XCTAssertTrue([(__bridge NSData *) iccProfile isEqualToData:(__bridge NSData *)newIccProfile], @"Color spaces not equal");
+    }
 
-    CFRelease(iccProfile);
-    CFRelease(newIccProfile);
+    if ( iccProfile ) {
+        CFRelease(iccProfile);
+    }
+    if ( newIccProfile ) {
+        CFRelease(newIccProfile);
+    }
 }
 
 @end

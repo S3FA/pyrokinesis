@@ -2,7 +2,7 @@
 
 @interface ColoredBarChart()
 
-@property (nonatomic, readwrite, strong) NSArray *plotData;
+@property (nonatomic, readwrite, strong, nonnull) CPTNumberArray *plotData;
 
 @end
 
@@ -15,7 +15,7 @@
     [super registerPlotItem:self];
 }
 
--(id)init
+-(nonnull instancetype)init
 {
     if ( (self = [super init]) ) {
         self.title   = @"Colored Bar Chart";
@@ -27,8 +27,8 @@
 
 -(void)generateData
 {
-    if ( self.plotData == nil ) {
-        NSMutableArray *contentArray = [NSMutableArray array];
+    if ( self.plotData.count == 0 ) {
+        CPTMutableNumberArray *contentArray = [NSMutableArray array];
         for ( NSUInteger i = 0; i < 8; i++ ) {
             [contentArray addObject:@(10.0 * arc4random() / (double)UINT32_MAX + 5.0)];
         }
@@ -36,9 +36,9 @@
     }
 }
 
--(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
 {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
 #else
     CGRect bounds = NSRectToCGRect(hostingView.bounds);
@@ -67,20 +67,20 @@
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
     CPTXYAxis *x          = axisSet.xAxis;
     {
-        x.majorIntervalLength         = CPTDecimalFromInteger(1);
-        x.minorTicksPerInterval       = 0;
-        x.orthogonalCoordinateDecimal = CPTDecimalFromInteger(0);
-        x.majorGridLineStyle          = majorGridLineStyle;
-        x.minorGridLineStyle          = minorGridLineStyle;
-        x.axisLineStyle               = nil;
-        x.majorTickLineStyle          = nil;
-        x.minorTickLineStyle          = nil;
-        x.labelFormatter              = nil;
+        x.majorIntervalLength   = @1.0;
+        x.minorTicksPerInterval = 0;
+        x.orthogonalPosition    = @0.0;
+        x.majorGridLineStyle    = majorGridLineStyle;
+        x.minorGridLineStyle    = minorGridLineStyle;
+        x.axisLineStyle         = nil;
+        x.majorTickLineStyle    = nil;
+        x.minorTickLineStyle    = nil;
+        x.labelFormatter        = nil;
     }
 
     CPTXYAxis *y = axisSet.yAxis;
     {
-        y.majorIntervalLength         = CPTDecimalFromInteger(10);
+        y.majorIntervalLength         = @10.0;
         y.minorTicksPerInterval       = 9;
         y.axisConstraints             = [CPTConstraints constraintWithLowerOffset:0.0];
         y.preferredNumberOfMajorTicks = 8;
@@ -105,7 +105,7 @@
     // Create bar plot
     CPTBarPlot *barPlot = [[CPTBarPlot alloc] init];
     barPlot.lineStyle         = barLineStyle;
-    barPlot.barWidth          = CPTDecimalFromFloat(0.75f); // bar is 75% of the available space
+    barPlot.barWidth          = @0.75; // bar is 75% of the available space
     barPlot.barCornerRadius   = 4.0;
     barPlot.barsAreHorizontal = NO;
     barPlot.dataSource        = self;
@@ -115,11 +115,11 @@
 
     // Plot space
     CPTMutablePlotRange *barRange = [[barPlot plotRangeEnclosingBars] mutableCopy];
-    [barRange expandRangeByFactor:CPTDecimalFromDouble(1.05)];
+    [barRange expandRangeByFactor:@1.05];
 
     CPTXYPlotSpace *barPlotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     barPlotSpace.xRange = barRange;
-    barPlotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0f) length:CPTDecimalFromFloat(16.0f)];
+    barPlotSpace.yRange = [CPTPlotRange plotRangeWithLocation:@0.0 length:@16.0];
 
     // Add legend
     CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
@@ -139,20 +139,20 @@
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
 {
     return self.plotData.count;
 }
 
--(NSArray *)numbersForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndexRange:(NSRange)indexRange
+-(nullable NSArray *)numbersForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndexRange:(NSRange)indexRange
 {
-    NSArray *nums = nil;
+    CPTNumberArray *nums = nil;
 
     switch ( fieldEnum ) {
         case CPTBarPlotFieldBarLocation:
             nums = [NSMutableArray arrayWithCapacity:indexRange.length];
             for ( NSUInteger i = indexRange.location; i < NSMaxRange(indexRange); i++ ) {
-                [(NSMutableArray *)nums addObject : @(i)];
+                [(NSMutableArray < NSNumber * > *) nums addObject:@(i)];
             }
             break;
 
@@ -167,7 +167,7 @@
     return nums;
 }
 
--(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
+-(nullable CPTFill *)barFillForBarPlot:(nonnull CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
 {
     CPTColor *color = nil;
 
@@ -205,6 +205,7 @@
             break;
 
         default:
+            color = [CPTColor blackColor];
             break;
     }
 
@@ -213,7 +214,7 @@
     return [CPTFill fillWithGradient:fillGradient];
 }
 
--(NSString *)legendTitleForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
+-(nullable NSString *)legendTitleForBarPlot:(nonnull CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
 {
     return [NSString stringWithFormat:@"Bar %lu", (unsigned long)(index + 1)];
 }

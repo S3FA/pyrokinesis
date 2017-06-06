@@ -1,11 +1,12 @@
-#import "CPTAxisLabel.h"
 #import "CPTAxisLabelTests.h"
+
+#import "CPTAxisLabel.h"
 #import "CPTBorderedLayer.h"
 #import "CPTMutableTextStyle.h"
 #import "CPTUtilities.h"
 #import <tgmath.h>
 
-static const double precision = 1.0e-6;
+static const CGFloat precision = CPTFloat(1.0e-6);
 
 @implementation CPTAxisLabelTests
 

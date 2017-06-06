@@ -1,9 +1,9 @@
 //
-//  RootViewController.m
-//  AAPLot
+// RootViewController.m
+// AAPLot
 //
-//  Created by Jonathan Saggau on 6/9/09.
-//  Copyright Sounds Broken inc. 2009. All rights reserved.
+// Created by Jonathan Saggau on 6/9/09.
+// Copyright Sounds Broken inc. 2009. All rights reserved.
 //
 
 #import "FlipsideViewController.h"
@@ -23,7 +23,10 @@
     MainViewController *viewController = [[MainViewController alloc] initWithNibName:@"MainView" bundle:nil];
     self.mainViewController = viewController;
 
-    [self.view insertSubview:self.mainViewController.view belowSubview:self.infoButton];
+    UIButton *button = self.infoButton;
+    if ( button ) {
+        [self.view insertSubview:viewController.view belowSubview:button];
+    }
     self.mainViewController.view.frame = self.view.bounds;
 }
 
@@ -43,7 +46,7 @@
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                 target:self
                                                                                 action:@selector(toggleView)];
-    UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:@"AAPLot"];
+    UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:NSLocalizedString(@"AAPLot", @"App name")];
     navigationItem.rightBarButtonItem = buttonItem;
     [self.flipsideNavigationBar pushNavigationItem:navigationItem animated:NO];
 }
@@ -63,10 +66,10 @@
 
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:1];
-    UIViewAnimationTransition transition = ([mainView superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft);
+    UIViewAnimationTransition transition = (mainView.superview ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft);
     [UIView setAnimationTransition:transition forView:self.view cache:YES];
 
-    if ( [mainView superview] != nil ) {
+    if ( mainView.superview != nil ) {
         [self.flipsideViewController viewWillAppear:YES];
         [self.mainViewController viewWillDisappear:YES];
         [mainView removeFromSuperview];
@@ -82,7 +85,10 @@
         [flipsideView removeFromSuperview];
         [self.flipsideNavigationBar removeFromSuperview];
         [self.view addSubview:mainView];
-        [self.view insertSubview:self.infoButton aboveSubview:self.mainViewController.view];
+        UIButton *button = self.infoButton;
+        if ( button ) {
+            [self.view insertSubview:button aboveSubview:self.mainViewController.view];
+        }
         [self.flipsideViewController viewDidDisappear:YES];
         [self.mainViewController viewDidAppear:YES];
     }

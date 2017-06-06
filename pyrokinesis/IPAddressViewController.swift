@@ -16,7 +16,7 @@ class IPAddressViewController : UIViewController, UITextFieldDelegate {
     @IBOutlet var ipField2: UITextField!
     @IBOutlet var ipField3: UITextField!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         
         super.init(coder: aDecoder)
         
@@ -35,7 +35,7 @@ class IPAddressViewController : UIViewController, UITextFieldDelegate {
         
         if let settings = PyrokinesisSettings.getSettings() {
             // Parse apart the ip address...
-            let ipAddressArray = settings.fireIPAddress.componentsSeparatedByString(".")
+            let ipAddressArray = settings.fireIPAddress.components(separatedBy: ".")
             if ipAddressArray.count >= 4 {
                 self.ipField0.text = ipAddressArray[0]
                 self.ipField1.text = ipAddressArray[1]
@@ -50,23 +50,23 @@ class IPAddressViewController : UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     // UITextFieldDelegate
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        if (range.length + range.location > count(textField.text)) {
+        if (range.length + range.location > (textField.text?.characters.count)!) {
             return false;
         }
         
-        let newLength = count(textField.text) + count(string) - range.length
+        let newLength = (textField.text?.characters.count)! + string.characters.count - range.length
         return newLength <= 3
     }
     
     func getIPAddress() -> String {
-        return self.ipField0.text + "." + self.ipField1.text + "." + self.ipField2.text + "." + self.ipField3.text
+        return String(format: "%@.%@.%@.%@", ipField0.text!, ipField1.text!, ipField2.text!, ipField3.text!)
     }
     
     func doneButtonPressed() {
@@ -76,10 +76,10 @@ class IPAddressViewController : UIViewController, UITextFieldDelegate {
             settings.save()
         }
         
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     func cancelButtonPressed() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
 }

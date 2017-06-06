@@ -10,26 +10,26 @@ import Foundation
 
 class MathHelper {
     
-    class func clamp(x: Double, xMin: Double, xMax: Double) -> Double {
+    class func clamp(_ x: Double, xMin: Double, xMax: Double) -> Double {
         return max(xMin, min(xMax, x) as Double) as Double
     }
     
     // Calculate the linear interpolation
-    class func lerp(x: Double, x0: Double, x1: Double, y0: Double, y1: Double) -> Double {
+    class func lerp(_ x: Double, x0: Double, x1: Double, y0: Double, y1: Double) -> Double {
         return y0 + (y1-y0) * (MathHelper.clamp(x, xMin: x0, xMax: x1) - x0) / (x1 - x0)
     }
     
-    class func randomDouble(minVal: Double, maxVal: Double) -> Double {
+    class func randomDouble(_ minVal: Double, maxVal: Double) -> Double {
         return minVal + MathHelper.randomZeroToOneIncl() * (maxVal - minVal)
     }
     class func randomZeroToOneIncl() -> Double {
         return Double(arc4random() % UINT32_MAX) / Double(UINT32_MAX-1)
     }
     
-    class func randomUInt(minVal: UInt, maxVal: UInt) -> UInt {
+    class func randomUInt(_ minVal: UInt, maxVal: UInt) -> UInt {
         return UInt(randomUInt32(UInt32(minVal), maxVal: UInt32(maxVal)))
     }
-    class func randomUInt32(minVal: UInt32, maxVal: UInt32) -> UInt32 {
+    class func randomUInt32(_ minVal: UInt32, maxVal: UInt32) -> UInt32 {
         return minVal + arc4random() % (maxVal - minVal + 1)
     }
     class func randomBool() -> Bool {

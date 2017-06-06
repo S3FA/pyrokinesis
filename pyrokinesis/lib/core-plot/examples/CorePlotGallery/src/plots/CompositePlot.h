@@ -1,6 +1,6 @@
 //
-//  CompositePlot.h
-//  CorePlotGallery
+// CompositePlot.h
+// CorePlotGallery
 //
 
 #import "PlotItem.h"
@@ -10,11 +10,11 @@
                                     CPTScatterPlotDelegate,
                                     CPTBarPlotDelegate>
 
-@property (readwrite, strong, nonatomic) NSMutableArray *dataForChart;
-@property (readwrite, strong, nonatomic) NSMutableArray *dataForPlot;
+@property (readwrite, strong, nonatomic, nonnull) CPTMutableNumberArray *dataForChart;
+@property (readwrite, strong, nonatomic, nonnull) NSMutableArray<NSDictionary *> *dataForPlot;
 
--(void)renderScatterPlotInHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme;
--(void)renderBarPlotInHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme;
--(void)renderPieChartInHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme;
+-(void)renderScatterPlotInHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme;
+-(void)renderBarPlotInHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme;
+-(void)renderPieChartInHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme;
 
 @end

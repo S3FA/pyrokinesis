@@ -12,8 +12,8 @@ import CoreData
 
 class PyrokinesisSettings : NSManagedObject {
     
-    static let FLAME_EFFECT_RESEND_TIME_S : NSTimeInterval = 0.050
-    static let FLAME_EFFECT_ON_TIME_S: NSTimeInterval = 0.1
+    static let FLAME_EFFECT_RESEND_TIME_S : TimeInterval = 0.050
+    static let FLAME_EFFECT_ON_TIME_S: TimeInterval = 0.1
     static let NUM_FLAME_EFFECTS: Int = 8
     
     static let INNER_MOST_FLAME_INDICES: [Int] = [0, 4]
@@ -42,18 +42,20 @@ class PyrokinesisSettings : NSManagedObject {
     
     class func getSettings() -> PyrokinesisSettings? {
         
-        let fetchRequest = NSFetchRequest(entityName: "PyrokinesisSettings")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PyrokinesisSettings")
         fetchRequest.fetchLimit = 1
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let managedObjectContext = appDelegate.managedObjectContext {
             
-            var error: NSError?
-            var fetchedEntities = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) as! [PyrokinesisSettings]
-            if error != nil || fetchedEntities.isEmpty {
+            var fetchedEntities: [PyrokinesisSettings];
+            do { fetchedEntities = try managedObjectContext.fetch(fetchRequest) as! [PyrokinesisSettings] }
+            catch { fetchedEntities = [] }
+            
+            if fetchedEntities.isEmpty {
                 
                 // Create a new GameData entity
-                let newSettings = NSEntityDescription.insertNewObjectForEntityForName("PyrokinesisSettings", inManagedObjectContext: managedObjectContext) as! PyrokinesisSettings
+                let newSettings = NSEntityDescription.insertNewObject(forEntityName: "PyrokinesisSettings", into: managedObjectContext) as! PyrokinesisSettings
                 
                 newSettings.resetToDefaults()
                 newSettings.save()
@@ -68,7 +70,7 @@ class PyrokinesisSettings : NSManagedObject {
     }
     
     func save() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.saveContext()
     }
     

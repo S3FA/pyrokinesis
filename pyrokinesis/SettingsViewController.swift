@@ -28,7 +28,7 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
     @IBOutlet var modeLabel: UILabel!
     @IBOutlet var jawClenchEnabledSwitch: UISwitch!
     
-    required init(coder aDecoder: NSCoder!) {
+    required init?(coder aDecoder: NSCoder!) {
         super.init(coder: aDecoder)
     }
     
@@ -53,42 +53,42 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
         // Dispose of any resources that can be recreated.
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     
-    @IBAction func onConnEnableSwitchChanged(sender: UISwitch) {
+    @IBAction func onConnEnableSwitchChanged(_ sender: UISwitch) {
         if let settings = PyrokinesisSettings.getSettings() {
-            settings.connectionEnabled = sender.on
+            settings.connectionEnabled = sender.isOn
             settings.save()
         }
     }
     
-    @IBAction func onJawClenchEnableSwitchChanged(sender: UISwitch) {
+    @IBAction func onJawClenchEnableSwitchChanged(_ sender: UISwitch) {
         if let settings = PyrokinesisSettings.getSettings() {
-            settings.jawClenchingEnabled = sender.on
+            settings.jawClenchingEnabled = sender.isOn
             settings.save()
         }
     }
     
     // UITableViewController/Delegate Protocol
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.rowHeight
     }
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let header = view as? UITableViewHeaderFooterView {
-            header.textLabel.textColor = UIColor.whiteColor()
+            header.textLabel?.textColor = UIColor.white
             //header.textLabel.font
         }
     }
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         cell.backgroundColor = UIColor(red: 23/255.0, green: 23/255.0, blue: 23/255.0, alpha: 1.0)
     }
     
     // UINavigationControllerDelegate Protocol
-    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         
         if viewController == self {
             // Update the settings values...
@@ -97,17 +97,17 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
     }
     
     
-    class func setupNavButtons(target: AnyObject?, navigationItem: UINavigationItem) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "checkmark"), style: UIBarButtonItemStyle.Done, target: target, action: Selector("doneButtonPressed"))
+    class func setupNavButtons(_ target: AnyObject?, navigationItem: UINavigationItem) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "checkmark"), style: UIBarButtonItemStyle.done, target: target, action: Selector("doneButtonPressed"))
         navigationItem.rightBarButtonItem?.tintColor = UISettings.DARK_RED_COLOR
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "cancelBack"), style: UIBarButtonItemStyle.Plain, target: target, action: Selector("cancelButtonPressed"))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "cancelBack"), style: UIBarButtonItemStyle.plain, target: target, action: Selector("cancelButtonPressed"))
         navigationItem.leftBarButtonItem?.tintColor = UISettings.DARK_RED_COLOR
     }
     
     // Private helper methods
-    private func updateSettingsValues() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    fileprivate func updateSettingsValues() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         // Update with any previous settings data
         if let settings = PyrokinesisSettings.getSettings() {

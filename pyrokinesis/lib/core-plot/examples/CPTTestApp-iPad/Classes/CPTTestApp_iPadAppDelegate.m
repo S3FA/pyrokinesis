@@ -1,8 +1,8 @@
 //
-//  CPTTestApp_iPadAppDelegate.m
-//  CPTTestApp-iPad
+// CPTTestApp_iPadAppDelegate.m
+// CPTTestApp-iPad
 //
-//  Created by Brad Larson on 4/1/2010.
+// Created by Brad Larson on 4/1/2010.
 //
 
 #import "CPTTestApp_iPadAppDelegate.h"
@@ -13,7 +13,7 @@
 @synthesize window;
 @synthesize viewController;
 
--(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+-(BOOL)application:(nonnull UIApplication *)application didFinishLaunchingWithOptions:(nullable CPTDictionary *)launchOptions
 {
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

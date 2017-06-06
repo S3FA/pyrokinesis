@@ -1,6 +1,6 @@
 //
-//  PlotView.m
-//  CorePlotGallery
+// PlotView.m
+// CorePlotGallery
 //
 
 #import "PlotView.h"
@@ -9,7 +9,7 @@
 
 @synthesize delegate;
 
--(id)initWithFrame:(NSRect)frame
+-(nonnull instancetype)initWithFrame:(NSRect)frame
 {
     if ( (self = [super initWithFrame:frame]) ) {
     }

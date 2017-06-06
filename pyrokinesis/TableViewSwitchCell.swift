@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SwitchCellDelegate : class {
-    func onSwitchStateChange(sender: TableViewSwitchCell, isOn: Bool)
+    func onSwitchStateChange(_ sender: TableViewSwitchCell, isOn: Bool)
 }
 
 class TableViewSwitchCell: UITableViewCell {
@@ -20,7 +20,7 @@ class TableViewSwitchCell: UITableViewCell {
     
     var delegate: SwitchCellDelegate?
     
-    @IBAction func onSwitchChange(sender: UISwitch) {
-        self.delegate?.onSwitchStateChange(self, isOn: self.enableSwitch.on)
+    @IBAction func onSwitchChange(_ sender: UISwitch) {
+        self.delegate?.onSwitchStateChange(self, isOn: self.enableSwitch.isOn)
     }
 }

@@ -1,4 +1,5 @@
 #import "CPTDataSourceTestCase.h"
+
 #import "CPTExceptions.h"
 #import "CPTMutablePlotRange.h"
 #import "CPTScatterPlot.h"
@@ -9,7 +10,7 @@ static const CGFloat CPTDataSourceTestCasePlotOffset = 0.5;
 /// @cond
 @interface CPTDataSourceTestCase()
 
--(CPTMutablePlotRange *)plotRangeForData:(NSArray *)dataArray;
+-(nonnull CPTMutablePlotRange *)plotRangeForData:(nonnull CPTNumberArray *)dataArray;
 
 @end
 
@@ -26,7 +27,7 @@ static const CGFloat CPTDataSourceTestCasePlotOffset = 0.5;
 
 -(void)setUp
 {
-    //check CPTDataSource conformance
+    // check CPTDataSource conformance
     XCTAssertTrue([self conformsToProtocol:@protocol(CPTPlotDataSource)], @"CPTDataSourceTestCase should conform to <CPTPlotDataSource>");
 }
 
@@ -34,14 +35,14 @@ static const CGFloat CPTDataSourceTestCasePlotOffset = 0.5;
 {
     self.xData = nil;
     self.yData = nil;
-    [[self plots] removeAllObjects];
+    [self.plots removeAllObjects];
 }
 
 -(void)buildData
 {
     NSUInteger recordCount = self.nRecords;
 
-    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:recordCount];
+    CPTMutableNumberArray *arr = [NSMutableArray arrayWithCapacity:recordCount];
 
     for ( NSUInteger i = 0; i < recordCount; i++ ) {
         [arr insertObject:@(i) atIndex:i];
@@ -55,69 +56,73 @@ static const CGFloat CPTDataSourceTestCasePlotOffset = 0.5;
     self.yData = arr;
 }
 
--(void)addPlot:(CPTPlot *)newPlot
+-(void)addPlot:(nonnull CPTPlot *)newPlot
 {
     if ( nil == self.plots ) {
         self.plots = [NSMutableArray array];
     }
 
-    [[self plots] addObject:newPlot];
+    [self.plots addObject:newPlot];
 }
 
--(CPTPlotRange *)xRange
+-(nonnull CPTPlotRange *)xRange
 {
     [self buildData];
-    return [self plotRangeForData:self.xData];
+
+    CPTNumberArray *data = self.xData;
+    return [self plotRangeForData:data];
 }
 
--(CPTPlotRange *)yRange
+-(nonnull CPTPlotRange *)yRange
 {
     [self buildData];
-    CPTMutablePlotRange *range = [self plotRangeForData:self.yData];
+
+    CPTNumberArray *data       = self.yData;
+    CPTMutablePlotRange *range = [self plotRangeForData:data];
 
     if ( self.plots.count > 1 ) {
-        range.length = CPTDecimalAdd( [range length], CPTDecimalFromDouble(self.plots.count) );
+        range.lengthDecimal = CPTDecimalAdd( range.lengthDecimal, CPTDecimalFromUnsignedInteger(self.plots.count) );
     }
 
     return range;
 }
 
--(CPTMutablePlotRange *)plotRangeForData:(NSArray *)dataArray
+-(nonnull CPTMutablePlotRange *)plotRangeForData:(nonnull CPTNumberArray *)dataArray
 {
     double min   = [[dataArray valueForKeyPath:@"@min.doubleValue"] doubleValue];
     double max   = [[dataArray valueForKeyPath:@"@max.doubleValue"] doubleValue];
     double range = max - min;
 
-    return [CPTMutablePlotRange plotRangeWithLocation:CPTDecimalFromDouble(min - 0.05 * range)
-                                               length:CPTDecimalFromDouble(range + 0.1 * range)];
+    return [CPTMutablePlotRange plotRangeWithLocation:@(min - 0.05 * range)
+                                               length:@(range + 0.1 * range)];
 }
 
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
 {
     return self.nRecords;
 }
 
--(NSArray *)numbersForPlot:(CPTPlot *)plot
-                     field:(NSUInteger)fieldEnum
-          recordIndexRange:(NSRange)indexRange
+-(nullable CPTNumberArray *)numbersForPlot:(nonnull CPTPlot *)plot
+                                     field:(NSUInteger)fieldEnum
+                          recordIndexRange:(NSRange)indexRange
 {
-    NSArray *result;
+    CPTNumberArray *result;
 
     switch ( fieldEnum ) {
         case CPTScatterPlotFieldX:
-            result = [[self xData] objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:indexRange]];
+            result = [self.xData objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:indexRange]];
             break;
 
         case CPTScatterPlotFieldY:
-            result = [[self yData] objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:indexRange]];
+            result = [self.yData objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:indexRange]];
             if ( self.plots.count > 1 ) {
                 XCTAssertTrue([[self plots] containsObject:plot], @"Plot missing");
-                NSMutableArray *shiftedResult = [NSMutableArray arrayWithCapacity:result.count];
+                CPTMutableNumberArray *shiftedResult = [NSMutableArray arrayWithCapacity:result.count];
                 for ( NSDecimalNumber *d in result ) {
-                    [shiftedResult addObject:[d decimalNumberByAdding:[NSDecimalNumber decimalNumberWithDecimal:CPTDecimalFromDouble( CPTDataSourceTestCasePlotOffset * ([[self plots] indexOfObject:plot] + 1) )]]];
+                    [shiftedResult addObject:[d decimalNumberByAdding:[NSDecimalNumber decimalNumberWithDecimal:CPTDecimalFromCGFloat( CPTDataSourceTestCasePlotOffset * ([self.plots indexOfObject:plot] + 1) )]]];
                 }
 
                 result = shiftedResult;

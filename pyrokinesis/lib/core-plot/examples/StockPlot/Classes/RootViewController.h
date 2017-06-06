@@ -1,9 +1,9 @@
 //
-//  RootViewController.h
-//  StockPlot
+// RootViewController.h
+// StockPlot
 //
-//  Created by Jonathan Saggau on 6/19/09.
-//  Copyright __MyCompanyName__ 2009. All rights reserved.
+// Created by Jonathan Saggau on 6/19/09.
+// Copyright __MyCompanyName__ 2009. All rights reserved.
 //
 #import <Foundation/Foundation.h>
 
@@ -12,8 +12,8 @@
 
 @interface RootViewController : UITableViewController<APYahooDataPullerDelegate>
 
-@property (nonatomic, readonly, strong) NSArray *symbols;
+@property (nonatomic, readonly, strong, nonnull) CPTStringArray *symbols;
 
--(void)addSymbol:(NSString *)aSymbol;
+-(void)addSymbol:(nonnull NSString *)aSymbol;
 
 @end

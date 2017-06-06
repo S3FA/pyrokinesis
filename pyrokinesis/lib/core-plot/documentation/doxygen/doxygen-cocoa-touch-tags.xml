@@ -242,6 +242,15 @@
         <base>NSMutableCopying-p</base>
     </compound>
     <compound kind="class" objc="yes">
+        <name>NSMutableDictionary</name>
+        <filename>https://developer.apple.com/library/ios/#documentation/Cocoa/Reference/Foundation/Classes/NSMutableDictionary_Class/Reference/Reference.html</filename>
+        <base>NSObject</base>
+        <base>NSCoding-p</base>
+        <base>NSCopying-p</base>
+        <base>NSFastEnumeration-p</base>
+        <base>NSMutableCopying-p</base>
+    </compound>
+    <compound kind="class" objc="yes">
         <name>UIEvent</name>
         <filename>https://developer.apple.com/library/ios/#documentation/UIKit/Reference/UIEvent_Class/Reference/Reference.html</filename>
         <base>NSObject</base>
@@ -441,9 +450,27 @@
         <base>NSMutableCopying-p</base>
     </compound>
     <compound kind="class" objc="yes">
+        <name>NSMutableSet</name>
+        <filename>https://developer.apple.com/library/ios/#documentation/Cocoa/Reference/Foundation/Classes/NSMutableSet_Class/Reference/Reference.html</filename>
+        <base>NSObject</base>
+        <base>NSCoding-p</base>
+        <base>NSCopying-p</base>
+        <base>NSFastEnumeration-p</base>
+        <base>NSMutableCopying-p</base>
+    </compound>
+    <compound kind="class" objc="yes">
         <name>UIResponder</name>
         <filename>https://developer.apple.com/library/ios/#documentation/UIKit/Reference/UIResponder_Class/Reference/Reference.html#//apple_ref/occ/cl/UIResponder</filename>
         <base>NSObject</base>
+    </compound>
+    <compound kind="protocol" objc="yes">
+        <name>NSSecureCoding</name>
+        <filename>https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSSecureCoding_Protocol_Ref/</filename>
+        <member kind="function" static="yes">
+            <type>BOOL</type>
+            <name>supportsSecureCoding:</name>
+            <anchor>//apple_ref/occ/intfcm/NSSecureCoding/supportsSecureCoding</anchor>
+        </member>
     </compound>
     <compound kind="class" objc="yes">
         <name>NSString</name>
@@ -660,6 +687,21 @@
     </compound>
 
     <!-- Core Animation -->
+    <compound kind="protocol" objc="yes">
+        <name>CAAnimationDelegate</name>
+        <filename>https://developer.apple.com/library/ios/documentation/Foundation/Reference/CAAnimationDelegate_Protocol_Ref/</filename>
+        <base>NSObject-p</base>
+        <member kind="function" static="yes">
+            <type>void</type>
+            <name>animationDidStart:</name>
+            <anchor>//apple_ref/occ/intfcm/CAAnimationDelegate/animationDidStart</anchor>
+        </member>
+        <member kind="function" static="yes">
+            <type>void</type>
+            <name>animationDidStop:finished:</name>
+            <anchor>//apple_ref/occ/intfcm/CAAnimationDelegate/animationDidStopfinished</anchor>
+        </member>
+    </compound>
     <compound kind="class" objc="yes">
         <name>CALayer</name>
         <filename>https://developer.apple.com/library/ios/#documentation/GraphicsImaging/Reference/CALayer_class/Introduction/Introduction.html</filename>
@@ -759,6 +801,36 @@
             <type>void</type>
             <name>setNeedsLayout</name>
             <anchor>//apple_ref/occ/instm/CALayer/setNeedsLayout</anchor>
+        </member>
+    </compound>
+    <compound kind="protocol" objc="yes">
+        <name>CALayerDelegate</name>
+        <filename>https://developer.apple.com/library/ios/documentation/Foundation/Reference/CALayerDelegate_Protocol_Ref/</filename>
+        <base>NSObject-p</base>
+        <member kind="function" static="yes">
+            <type>id</type>
+            <name>actionForLayer:forKey:</name>
+            <anchor>//apple_ref/occ/intfcm/CALayerDelegate/actionForLayerforKey</anchor>
+        </member>
+        <member kind="function" static="yes">
+            <type>void</type>
+            <name>displayLayer:</name>
+            <anchor>//apple_ref/occ/intfcm/CALayerDelegate/displayLayer</anchor>
+        </member>
+        <member kind="function" static="yes">
+            <type>void</type>
+            <name>drawLayer:inContext:</name>
+            <anchor>//apple_ref/occ/intfcm/CALayerDelegate/drawLayerinContext</anchor>
+        </member>
+        <member kind="function" static="yes">
+            <type>void</type>
+            <name>layerWillDraw:</name>
+            <anchor>//apple_ref/occ/intfcm/CALayerDelegate/layerWillDraw</anchor>
+        </member>
+        <member kind="function" static="yes">
+            <type>void</type>
+            <name>layoutSublayersOfLayer:</name>
+            <anchor>//apple_ref/occ/intfcm/CALayerDelegate/layoutSublayersOfLayer</anchor>
         </member>
     </compound>
     <compound kind="protocol" objc="yes">

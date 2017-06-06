@@ -9,7 +9,7 @@ static const NSUInteger numberOfPoints = 11;
 
 @interface ControlChart()
 
-@property (nonatomic, readwrite, strong) NSArray *plotData;
+@property (nonatomic, readwrite, strong, nonnull) CPTNumberArray *plotData;
 @property (nonatomic, readwrite, assign) double meanValue;
 @property (nonatomic, readwrite, assign) double standardError;
 
@@ -26,7 +26,7 @@ static const NSUInteger numberOfPoints = 11;
     [super registerPlotItem:self];
 }
 
--(id)init
+-(nonnull instancetype)init
 {
     if ( (self = [super init]) ) {
         self.title   = @"Control Chart";
@@ -38,8 +38,8 @@ static const NSUInteger numberOfPoints = 11;
 
 -(void)generateData
 {
-    if ( self.plotData == nil ) {
-        NSMutableArray *contentArray = [NSMutableArray array];
+    if ( self.plotData.count == 0 ) {
+        CPTMutableNumberArray *contentArray = [NSMutableArray array];
 
         double sum = 0.0;
 
@@ -55,7 +55,7 @@ static const NSUInteger numberOfPoints = 11;
 
         sum = 0.0;
         for ( NSNumber *value in contentArray ) {
-            double error = [value doubleValue] - self.meanValue;
+            double error = value.doubleValue - self.meanValue;
             sum += error * error;
         }
         double stdDev = sqrt( ( 1.0 / (numberOfPoints - 1) ) * sum );
@@ -63,9 +63,9 @@ static const NSUInteger numberOfPoints = 11;
     }
 }
 
--(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
 {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
 #else
     CGRect bounds = NSRectToCGRect(hostingView.bounds);
@@ -185,8 +185,8 @@ static const NSUInteger numberOfPoints = 11;
     CPTMutablePlotRange *xRange = [plotSpace.xRange mutableCopy];
     CPTMutablePlotRange *yRange = [plotSpace.yRange mutableCopy];
 
-    x.orthogonalCoordinateDecimal = yRange.location;
-    y.orthogonalCoordinateDecimal = xRange.location;
+    x.orthogonalPosition = yRange.location;
+    y.orthogonalPosition = xRange.location;
 
     x.visibleRange = xRange;
     y.visibleRange = yRange;
@@ -194,8 +194,8 @@ static const NSUInteger numberOfPoints = 11;
     x.gridLinesRange = yRange;
     y.gridLinesRange = xRange;
 
-    [xRange expandRangeByFactor:CPTDecimalFromDouble(1.05)];
-    [yRange expandRangeByFactor:CPTDecimalFromDouble(1.05)];
+    [xRange expandRangeByFactor:@1.05];
+    [yRange expandRangeByFactor:@1.05];
     plotSpace.xRange = xRange;
     plotSpace.yRange = yRange;
 
@@ -213,7 +213,7 @@ static const NSUInteger numberOfPoints = 11;
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
 {
     if ( plot.identifier == kDataLine ) {
         return self.plotData.count;
@@ -226,9 +226,9 @@ static const NSUInteger numberOfPoints = 11;
     }
 }
 
--(double)doubleForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(double)doubleForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
-    double number = NAN;
+    double number = (double)NAN;
 
     switch ( fieldEnum ) {
         case CPTScatterPlotFieldX:
@@ -246,7 +246,7 @@ static const NSUInteger numberOfPoints = 11;
                         break;
 
                     case 2:
-                        number = NAN;
+                        number = (double)NAN;
                         break;
                 }
             }
@@ -255,7 +255,7 @@ static const NSUInteger numberOfPoints = 11;
 
         case CPTScatterPlotFieldY:
             if ( plot.identifier == kDataLine ) {
-                number = [self.plotData[index] doubleValue];
+                number = self.plotData[index].doubleValue;
             }
             else if ( plot.identifier == kCenterLine ) {
                 number = self.meanValue;
@@ -268,7 +268,7 @@ static const NSUInteger numberOfPoints = 11;
                         break;
 
                     case 2:
-                        number = NAN;
+                        number = (double)NAN;
                         break;
 
                     case 3:
@@ -285,7 +285,7 @@ static const NSUInteger numberOfPoints = 11;
                         break;
 
                     case 2:
-                        number = NAN;
+                        number = (double)NAN;
                         break;
 
                     case 3:

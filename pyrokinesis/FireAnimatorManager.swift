@@ -10,9 +10,9 @@ import Foundation
 
 class FireAnimatorManager : NSObject {
     
-    private static let TICK_DELTA_TIME_SECS: NSTimeInterval = PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S / 2.0
+    fileprivate static let TICK_DELTA_TIME_SECS: TimeInterval = PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S / 2.0
     
-    private var tickTimer: NSTimer? = nil
+    fileprivate var tickTimer: Timer? = nil
     
     var animators = [FireAnimator]()
     
@@ -20,17 +20,17 @@ class FireAnimatorManager : NSObject {
         super.init()
         
         self.animators.reserveCapacity(3*PyrokinesisSettings.NUM_FLAME_EFFECTS)
-        self.tickTimer = NSTimer.scheduledTimerWithTimeInterval(FireAnimatorManager.TICK_DELTA_TIME_SECS, target: self, selector: Selector("tick"), userInfo: nil, repeats: true)
+        self.tickTimer = Timer.scheduledTimer(timeInterval: FireAnimatorManager.TICK_DELTA_TIME_SECS, target: self, selector: #selector(FireAnimatorManager.tick), userInfo: nil, repeats: true)
     }
     
     func animatorsActive() -> Bool {
         return !self.animators.isEmpty
     }
     
-    func addAnimator(animator: FireAnimator) {
+    func addAnimator(_ animator: FireAnimator) {
         self.animators.append(animator)
     }
-    func addAnimators(animatorList: [FireAnimator]!) {
+    func addAnimators(_ animatorList: [FireAnimator]!) {
         self.animators += animatorList
     }
     
@@ -38,7 +38,7 @@ class FireAnimatorManager : NSObject {
         for animator in self.animators {
             animator.stopAnimation()
         }
-        self.animators.removeAll(keepCapacity: true)
+        self.animators.removeAll(keepingCapacity: true)
     }
     
     func tick() {
@@ -69,7 +69,7 @@ class FireAnimatorManager : NSObject {
     }
     
     // Fire routine builder methods
-    class func buildInnerOuterFireAnimators(startTimeInSecs: Double, burstTimeInSecs: Double) -> [FireAnimator] {
+    class func buildInnerOuterFireAnimators(_ startTimeInSecs: Double, burstTimeInSecs: Double) -> [FireAnimator] {
         var result = [FireAnimator]()
         result.reserveCapacity(2)
         
@@ -81,22 +81,22 @@ class FireAnimatorManager : NSObject {
         return result
     }
     
-    class func buildPinwheelFireAnimators(startTimeInSecs: Double, burstTimeInSecs: Double, clockwise: Bool, numPinwheels: Int) -> [FireAnimator] {
+    class func buildPinwheelFireAnimators(_ startTimeInSecs: Double, burstTimeInSecs: Double, clockwise: Bool, numPinwheels: Int) -> [FireAnimator] {
         var result = [FireAnimator]()
         result.reserveCapacity(PyrokinesisSettings.NUM_FLAME_EFFECTS)
         
         var timeCountInS = startTimeInSecs
         if clockwise {
-            for (var x = 0; x < numPinwheels; x++) {
-                for (var i = 0; i < PyrokinesisSettings.NUM_FLAME_EFFECTS; i++) {
+            for _ in 0...numPinwheels {
+                for i in 0...PyrokinesisSettings.NUM_FLAME_EFFECTS {
                     result.append(FireAnimator(fireIndices: [i], timeUntilFire: timeCountInS, holdFlameTime: burstTimeInSecs))
                     timeCountInS += burstTimeInSecs
                 }
             }
         }
         else {
-            for (var x = 0; x < numPinwheels; x++) {
-                for (var i = PyrokinesisSettings.NUM_FLAME_EFFECTS-1; i >= 0 ; i--) {
+            for _ in 0...numPinwheels {
+                for i in (PyrokinesisSettings.NUM_FLAME_EFFECTS-1)...0 {
                     result.append(FireAnimator(fireIndices: [i], timeUntilFire: timeCountInS, holdFlameTime: burstTimeInSecs))
                     timeCountInS += burstTimeInSecs
                 }
@@ -106,11 +106,11 @@ class FireAnimatorManager : NSObject {
         return result
     }
     
-    class func buildEruptionFireAnimators(startTimeInSecs: Double, burstTimeInSecs: Double) -> [FireAnimator] {
+    class func buildEruptionFireAnimators(_ startTimeInSecs: Double, burstTimeInSecs: Double) -> [FireAnimator] {
         return [ FireAnimator(fireIndices: PyrokinesisSettings.ALL_FLAME_INDICES, timeUntilFire: startTimeInSecs, holdFlameTime: burstTimeInSecs) ]
     }
     
-    class func buildRandomFireAnimators(startTimeInSecs: Double, minNumRandomFlames: UInt, maxNumRandomFlames: UInt, minBurstTimeInSecs: Double, maxBurstTimeInSecs: Double) -> [FireAnimator] {
+    class func buildRandomFireAnimators(_ startTimeInSecs: Double, minNumRandomFlames: UInt, maxNumRandomFlames: UInt, minBurstTimeInSecs: Double, maxBurstTimeInSecs: Double) -> [FireAnimator] {
         
         assert(minNumRandomFlames <= maxNumRandomFlames)
         assert(minBurstTimeInSecs <= maxBurstTimeInSecs)
@@ -123,7 +123,7 @@ class FireAnimatorManager : NSObject {
         var randomFireIdx = Int(MathHelper.randomUInt(0, maxVal: UInt(PyrokinesisSettings.NUM_FLAME_EFFECTS-1)))
 
         var timeCountInS = startTimeInSecs
-        for (var i = 0; i < numRandomFlames; i++) {
+        for _ in 0...(numRandomFlames-1) {
             
             let randomBurstTimeInS = MathHelper.randomDouble(minBurstTimeInSecs, maxVal: maxBurstTimeInSecs)
             

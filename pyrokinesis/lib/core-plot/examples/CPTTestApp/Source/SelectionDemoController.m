@@ -10,11 +10,11 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
 -(void)setupScatterPlots;
 -(void)initializeData;
 
-@property (nonatomic, readwrite, strong) IBOutlet CPTGraphHostingView *hostView;
+@property (nonatomic, readwrite, strong, nullable) IBOutlet CPTGraphHostingView *hostView;
 
-@property (nonatomic, readwrite, strong) CPTXYGraph *graph;
+@property (nonatomic, readwrite, strong, nonnull) CPTXYGraph *graph;
 
-@property (nonatomic, readwrite, strong) NSMutableArray *dataForPlot;
+@property (nonatomic, readwrite, strong, nonnull) NSMutableArray<NSDictionary *> *dataForPlot;
 @property (nonatomic, readwrite) NSUInteger selectedIndex;
 
 @end
@@ -153,21 +153,21 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graph.defaultPlotSpace;
     [plotSpace scaleToFitPlots:@[dataSourceLinePlot]];
     CPTMutablePlotRange *xRange = [plotSpace.xRange mutableCopy];
-    [xRange expandRangeByFactor:CPTDecimalFromDouble(0.75)];
+    [xRange expandRangeByFactor:@0.75];
     plotSpace.xRange = xRange;
     CPTMutablePlotRange *yRange = [plotSpace.yRange mutableCopy];
-    [yRange expandRangeByFactor:CPTDecimalFromDouble(0.75)];
+    [yRange expandRangeByFactor:@0.75];
     plotSpace.yRange = yRange;
 
-    CPTPlotRange *globalXRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(-1.0) length:CPTDecimalFromDouble(10.0)];
+    CPTPlotRange *globalXRange = [CPTPlotRange plotRangeWithLocation:@(-1.0) length:@10.0];
     plotSpace.globalXRange = globalXRange;
-    CPTPlotRange *globalYRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(-5.0) length:CPTDecimalFromDouble(10.0)];
+    CPTPlotRange *globalYRange = [CPTPlotRange plotRangeWithLocation:@(-5.0) length:@10.0];
     plotSpace.globalYRange = globalYRange;
 }
 
 -(void)initializeData
 {
-    NSMutableArray *contentArray = [NSMutableArray arrayWithCapacity:100];
+    NSMutableArray<NSDictionary *> *contentArray = [NSMutableArray arrayWithCapacity:100];
 
     for ( NSUInteger i = 0; i < 100; i++ ) {
         NSNumber *x = @(i * 0.05);
@@ -182,14 +182,14 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
 #pragma mark -
 #pragma mark Plot datasource methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
 {
     NSUInteger count = 0;
 
-    if ( [(NSString *)plot.identifier isEqualToString : MAIN_PLOT] ) {
-        count = [self.dataForPlot count];
+    if ( [(NSString *) plot.identifier isEqualToString:MAIN_PLOT] ) {
+        count = self.dataForPlot.count;
     }
-    else if ( [(NSString *)plot.identifier isEqualToString : SELECTION_PLOT] ) {
+    else if ( [(NSString *) plot.identifier isEqualToString:SELECTION_PLOT] ) {
         if ( self.selectedIndex < NSUIntegerMax ) {
             count = 5;
         }
@@ -198,26 +198,26 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
     return count;
 }
 
--(id)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSNumber *num = nil;
 
-    if ( [(NSString *)plot.identifier isEqualToString : MAIN_PLOT] ) {
+    if ( [(NSString *) plot.identifier isEqualToString:MAIN_PLOT] ) {
         NSString *key = (fieldEnum == CPTScatterPlotFieldX ? @"x" : @"y");
         num = (self.dataForPlot)[index][key];
     }
-    else if ( [(NSString *)plot.identifier isEqualToString : SELECTION_PLOT] ) {
+    else if ( [(NSString *) plot.identifier isEqualToString:SELECTION_PLOT] ) {
         CPTXYPlotSpace *thePlotSpace = (CPTXYPlotSpace *)self.graph.defaultPlotSpace;
 
         switch ( fieldEnum ) {
             case CPTScatterPlotFieldX:
                 switch ( index ) {
                     case 0:
-                        num = [NSDecimalNumber decimalNumberWithDecimal:thePlotSpace.globalXRange.minLimit];
+                        num = thePlotSpace.globalXRange.minLimit;
                         break;
 
                     case 1:
-                        num = [NSDecimalNumber decimalNumberWithDecimal:thePlotSpace.globalXRange.maxLimit];
+                        num = thePlotSpace.globalXRange.maxLimit;
                         break;
 
                     case 2:
@@ -240,11 +240,11 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
                         break;
 
                     case 3:
-                        num = [NSDecimalNumber decimalNumberWithDecimal:thePlotSpace.globalYRange.maxLimit];
+                        num = thePlotSpace.globalYRange.maxLimit;
                         break;
 
                     case 4:
-                        num = [NSDecimalNumber decimalNumberWithDecimal:thePlotSpace.globalYRange.minLimit];
+                        num = thePlotSpace.globalYRange.minLimit;
                         break;
 
                     default:
@@ -260,13 +260,13 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
     return num;
 }
 
--(CPTPlotSymbol *)symbolForScatterPlot:(CPTScatterPlot *)plot recordIndex:(NSUInteger)index
+-(nullable CPTPlotSymbol *)symbolForScatterPlot:(nonnull CPTScatterPlot *)plot recordIndex:(NSUInteger)index
 {
     static CPTPlotSymbol *redDot = nil;
 
     CPTPlotSymbol *symbol = (id)[NSNull null];
 
-    if ( [(NSString *)plot.identifier isEqualToString : SELECTION_PLOT] && (index == 2) ) {
+    if ( [(NSString *) plot.identifier isEqualToString:SELECTION_PLOT] && (index == 2) ) {
         if ( !redDot ) {
             redDot            = [[CPTPlotSymbol alloc] init];
             redDot.symbolType = CPTPlotSymbolTypeEllipse;
@@ -282,7 +282,7 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
 #pragma mark -
 #pragma mark CPTScatterPlot delegate methods
 
--(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index
+-(void)scatterPlot:(nonnull CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index
 {
     self.selectedIndex = index;
 }
@@ -291,7 +291,7 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
 #pragma mark Plot space delegate methods
 
 #ifdef REMOVE_SELECTION_ON_CLICK
--(BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(id)event atPoint:(CGPoint)point
+-(BOOL)plotSpace:(nonnull CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point
 {
     self.selectedIndex = NSUIntegerMax;
     return YES;

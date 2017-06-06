@@ -1,6 +1,6 @@
 //
-//  PlotView.h
-//  CorePlotGallery
+// PlotView.h
+// CorePlotGallery
 //
 
 #import <Cocoa/Cocoa.h>
@@ -11,7 +11,7 @@
 
 @end
 
-@interface PlotView : NSView
-@property (nonatomic, weak) id<PlotViewDelegate> delegate;
+@interface PlotView : NSView<PlotViewDelegate>
+@property (nonatomic, weak, nullable) id<PlotViewDelegate> delegate;
 
 @end

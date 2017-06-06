@@ -15,22 +15,28 @@
     const size_t height           = 50;
     const size_t bitsPerComponent = 8;
 
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+#else
     CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+#endif
 
-    self.context = CGBitmapContextCreate(NULL,
-                                         width,
-                                         height,
-                                         bitsPerComponent,
-                                         width * bitsPerComponent * 4,
-                                         colorSpace,
-                                         (CGBitmapInfo)kCGImageAlphaNoneSkipLast);
+    CGContextRef testContext = CGBitmapContextCreate(NULL,
+                                                     width,
+                                                     height,
+                                                     bitsPerComponent,
+                                                     width * bitsPerComponent * 4,
+                                                     colorSpace,
+                                                     (CGBitmapInfo)kCGImageAlphaNoneSkipLast);
 
+    self.context = testContext;
+
+    CGContextRelease(testContext);
     CGColorSpaceRelease(colorSpace);
 }
 
 -(void)tearDown
 {
-    CGContextRelease(self.context);
     self.context = NULL;
 }
 
@@ -76,14 +82,14 @@
 
     XCTAssertEqualObjects([NSDecimalNumber decimalNumberWithString:@"100"], [NSDecimalNumber decimalNumberWithDecimal:CPTDecimalFromInteger(i)], @"NSInteger to NSDecimal conversion failed");
     XCTAssertEqualObjects([NSDecimalNumber decimalNumberWithString:@"100"], [NSDecimalNumber decimalNumberWithDecimal:CPTDecimalFromUnsignedInteger(unsignedI)], @"NSUInteger to NSDecimal conversion failed");
-    XCTAssertEqualWithAccuracy([@(f)floatValue], [[NSDecimalNumber decimalNumberWithDecimal:CPTDecimalFromFloat(f)] floatValue], 1.0e-7, @"float to NSDecimal conversion failed");
+    XCTAssertEqualWithAccuracy([@(f)floatValue], [[NSDecimalNumber decimalNumberWithDecimal:CPTDecimalFromFloat(f)] floatValue], 1.0e-7f, @"float to NSDecimal conversion failed");
     XCTAssertEqualObjects(@(d), [NSDecimalNumber decimalNumberWithDecimal:CPTDecimalFromDouble(d)], @"double to NSDecimal conversion failed.");
 }
 
 -(void)testConvertNegativeOne
 {
-    NSDecimal zero = [[NSDecimalNumber zero] decimalValue];
-    NSDecimal one  = [[NSDecimalNumber one] decimalValue];
+    NSDecimal zero = [NSDecimalNumber zero].decimalValue;
+    NSDecimal one  = [NSDecimalNumber one].decimalValue;
     NSDecimal negativeOne;
 
     NSDecimalSubtract(&negativeOne, &zero, &one, NSRoundPlain);
@@ -121,7 +127,7 @@
 
 -(void)testCachedZero
 {
-    NSDecimal zero = [[NSDecimalNumber zero] decimalValue];
+    NSDecimal zero = [NSDecimalNumber zero].decimalValue;
     NSDecimal testValue;
     NSString *errMessage;
 
@@ -178,7 +184,7 @@
 
 -(void)testCachedOne
 {
-    NSDecimal one = [[NSDecimalNumber one] decimalValue];
+    NSDecimal one = [NSDecimalNumber one].decimalValue;
     NSDecimal testValue;
     NSString *errMessage;
 
@@ -572,6 +578,45 @@
     XCTAssertEqual(alignedRect.origin.y, CPTFloat(16.0), @"round y (19.6364, 16.00001, 20.2727, 0.0)");
     XCTAssertEqual(alignedRect.size.width, CPTFloat(20.0), @"round width (19.6364, 16.00001, 20.2727, 0.0)");
     XCTAssertEqual(alignedRect.size.height, CPTFloat(0.0), @"round height (19.6364, 16.00001, 20.2727, 0.0)");
+}
+
+-(void)testLogModulus
+{
+    XCTAssertEqual(CPTLogModulus(0.0), 0.0, @"CPTLogModulus(0.0)");
+
+    XCTAssertEqual(CPTLogModulus(10.0), log10(11.0), @"CPTLogModulus(10.0)");
+    XCTAssertEqual(CPTLogModulus(-10.0), -log10(11.0), @"CPTLogModulus(-10.0)");
+
+    XCTAssertEqual(CPTLogModulus(100.0), log10(101.0), @"CPTLogModulus(100.0)");
+    XCTAssertEqual(CPTLogModulus(-100.0), -log10(101.0), @"CPTLogModulus(-100.0)");
+}
+
+-(void)testInverseLogModulus
+{
+    XCTAssertEqual(CPTInverseLogModulus(0.0), 0.0, @"CPTInverseLogModulus(0.0)");
+
+    XCTAssertEqualWithAccuracy(CPTInverseLogModulus( log10(11.0) ), 10.0, 1.0e-7, @"CPTInverseLogModulus(log10(11.0))");
+    XCTAssertEqualWithAccuracy(CPTInverseLogModulus( -log10(11.0) ), -10.0, 1.0e-7, @"CPTInverseLogModulus(-log10(11.0))");
+
+    XCTAssertEqualWithAccuracy(CPTInverseLogModulus( log10(101.0) ), 100.0, 1.0e-7, @"CPTInverseLogModulus(log10(101.0))");
+    XCTAssertEqualWithAccuracy(CPTInverseLogModulus( -log10(101.0) ), -100.0, 1.0e-7, @"CPTInverseLogModulus(-log10(101.0))");
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark Accessors
+
+/// @cond
+
+-(void)setContext:(nonnull CGContextRef)newContext
+{
+    if ( context != newContext ) {
+        CGContextRetain(newContext);
+        CGContextRelease(context);
+
+        context = newContext;
+    }
 }
 
 @end

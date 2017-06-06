@@ -1,6 +1,6 @@
 //
-//  RealTimePlot.m
-//  CorePlotGallery
+// RealTimePlot.m
+// CorePlotGallery
 //
 
 #import "RealTimePlot.h"
@@ -13,9 +13,9 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
 
 @interface RealTimePlot()
 
-@property (nonatomic, readwrite, strong) NSMutableArray *plotData;
+@property (nonatomic, readwrite, strong, nonnull) CPTMutableNumberArray *plotData;
 @property (nonatomic, readwrite, assign) NSUInteger currentIndex;
-@property (nonatomic, readwrite, strong) NSTimer *dataTimer;
+@property (nonatomic, readwrite, strong, nullable) NSTimer *dataTimer;
 
 @end
 
@@ -30,7 +30,7 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
     [super registerPlotItem:self];
 }
 
--(id)init
+-(nonnull instancetype)init
 {
     if ( (self = [super init]) ) {
         plotData  = [[NSMutableArray alloc] initWithCapacity:kMaxDataPoints];
@@ -57,9 +57,9 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
     self.currentIndex = 0;
 }
 
--(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
 {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
 #else
     CGRect bounds = NSRectToCGRect(hostingView.bounds);
@@ -88,29 +88,30 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
     // X axis
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
     CPTXYAxis *x          = axisSet.xAxis;
-    x.labelingPolicy              = CPTAxisLabelingPolicyAutomatic;
-    x.orthogonalCoordinateDecimal = CPTDecimalFromUnsignedInteger(0);
-    x.majorGridLineStyle          = majorGridLineStyle;
-    x.minorGridLineStyle          = minorGridLineStyle;
-    x.minorTicksPerInterval       = 9;
-    x.labelOffset                 = self.titleSize * CPTFloat(0.25);
-    x.title                       = @"X Axis";
-    x.titleOffset                 = self.titleSize * CPTFloat(1.5);
+    x.labelingPolicy        = CPTAxisLabelingPolicyAutomatic;
+    x.orthogonalPosition    = @0.0;
+    x.majorGridLineStyle    = majorGridLineStyle;
+    x.minorGridLineStyle    = minorGridLineStyle;
+    x.minorTicksPerInterval = 9;
+    x.labelOffset           = self.titleSize * CPTFloat(0.25);
+    x.title                 = @"X Axis";
+    x.titleOffset           = self.titleSize * CPTFloat(1.5);
+
     NSNumberFormatter *labelFormatter = [[NSNumberFormatter alloc] init];
     labelFormatter.numberStyle = NSNumberFormatterNoStyle;
     x.labelFormatter           = labelFormatter;
 
     // Y axis
     CPTXYAxis *y = axisSet.yAxis;
-    y.labelingPolicy              = CPTAxisLabelingPolicyAutomatic;
-    y.orthogonalCoordinateDecimal = CPTDecimalFromUnsignedInteger(0);
-    y.majorGridLineStyle          = majorGridLineStyle;
-    y.minorGridLineStyle          = minorGridLineStyle;
-    y.minorTicksPerInterval       = 3;
-    y.labelOffset                 = self.titleSize * CPTFloat(0.25);
-    y.title                       = @"Y Axis";
-    y.titleOffset                 = self.titleSize * CPTFloat(1.25);
-    y.axisConstraints             = [CPTConstraints constraintWithLowerOffset:0.0];
+    y.labelingPolicy        = CPTAxisLabelingPolicyAutomatic;
+    y.orthogonalPosition    = @0.0;
+    y.majorGridLineStyle    = majorGridLineStyle;
+    y.minorGridLineStyle    = minorGridLineStyle;
+    y.minorTicksPerInterval = 3;
+    y.labelOffset           = self.titleSize * CPTFloat(0.25);
+    y.title                 = @"Y Axis";
+    y.titleOffset           = self.titleSize * CPTFloat(1.25);
+    y.axisConstraints       = [CPTConstraints constraintWithLowerOffset:0.0];
 
     // Rotate the labels by 45 degrees, just to show it can be done.
     x.labelRotation = CPTFloat(M_PI_4);
@@ -130,18 +131,19 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
 
     // Plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromUnsignedInteger(0) length:CPTDecimalFromUnsignedInteger(kMaxDataPoints - 2)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromUnsignedInteger(0) length:CPTDecimalFromUnsignedInteger(1)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:@0.0 length:@(kMaxDataPoints - 2)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:@0.0 length:@1.0];
 
     [self.dataTimer invalidate];
 
     if ( animated ) {
-        self.dataTimer = [NSTimer timerWithTimeInterval:1.0 / kFrameRate
-                                                 target:self
-                                               selector:@selector(newData:)
-                                               userInfo:nil
-                                                repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:self.dataTimer forMode:NSRunLoopCommonModes];
+        NSTimer *newTimer = [NSTimer timerWithTimeInterval:1.0 / kFrameRate
+                                                    target:self
+                                                  selector:@selector(newData:)
+                                                  userInfo:nil
+                                                   repeats:YES];
+        self.dataTimer = newTimer;
+        [[NSRunLoop mainRunLoop] addTimer:newTimer forMode:NSRunLoopCommonModes];
     }
     else {
         self.dataTimer = nil;
@@ -156,7 +158,7 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
 #pragma mark -
 #pragma mark Timer callback
 
--(void)newData:(NSTimer *)theTimer
+-(void)newData:(nonnull NSTimer *)theTimer
 {
     CPTGraph *theGraph = (self.graphs)[0];
     CPTPlot *thePlot   = [theGraph plotWithIdentifier:kPlotIdentifier];
@@ -170,10 +172,10 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)theGraph.defaultPlotSpace;
         NSUInteger location       = (self.currentIndex >= kMaxDataPoints ? self.currentIndex - kMaxDataPoints + 2 : 0);
 
-        CPTPlotRange *oldRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromUnsignedInteger( (location > 0) ? (location - 1) : 0 )
-                                                              length:CPTDecimalFromUnsignedInteger(kMaxDataPoints - 2)];
-        CPTPlotRange *newRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromUnsignedInteger(location)
-                                                              length:CPTDecimalFromUnsignedInteger(kMaxDataPoints - 2)];
+        CPTPlotRange *oldRange = [CPTPlotRange plotRangeWithLocation:@( (location > 0) ? (location - 1) : 0 )
+                                                              length:@(kMaxDataPoints - 2)];
+        CPTPlotRange *newRange = [CPTPlotRange plotRangeWithLocation:@(location)
+                                                              length:@(kMaxDataPoints - 2)];
 
         [CPTAnimation animate:plotSpace
                      property:@"xRange"
@@ -182,7 +184,7 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
                      duration:CPTFloat(1.0 / kFrameRate)];
 
         self.currentIndex++;
-        [self.plotData addObject:@( (1.0 - kAlpha) * [[self.plotData lastObject] doubleValue] + kAlpha * arc4random() / (double)UINT32_MAX )];
+        [self.plotData addObject:@( (1.0 - kAlpha) * self.plotData.lastObject.doubleValue + kAlpha * arc4random() / (double)UINT32_MAX )];
         [thePlot insertDataAtIndex:self.plotData.count - 1 numberOfRecords:1];
     }
 }
@@ -190,12 +192,12 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
 {
     return self.plotData.count;
 }
 
--(id)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSNumber *num = nil;
 

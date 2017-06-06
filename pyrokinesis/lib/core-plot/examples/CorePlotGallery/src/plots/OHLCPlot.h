@@ -1,10 +1,11 @@
 //
-//  OHLCPlot.h
-//  CorePlotGallery
+// OHLCPlot.h
+// CorePlotGallery
 //
 
 #import "PlotItem.h"
 
-@interface OHLCPlot : PlotItem<CPTPlotDataSource, CPTTradingRangePlotDelegate>
+@interface OHLCPlot : PlotItem<CPTPlotDataSource,
+                               CPTTradingRangePlotDelegate>
 
 @end

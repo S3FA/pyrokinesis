@@ -13,7 +13,7 @@ class PortNumberViewController : UIViewController {
 
     @IBOutlet var portNumberTextField: UITextField!
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         
         super.init(coder: aDecoder)
         
@@ -35,12 +35,12 @@ class PortNumberViewController : UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     func getPortNumber() -> Int32 {
-        if let port = self.portNumberTextField.text.toInt() {
+        if let portString = self.portNumberTextField.text, let port = Int(portString) {
             return Int32(port)
         }
         
@@ -54,10 +54,10 @@ class PortNumberViewController : UIViewController {
             settings.save()
         }
         
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func cancelButtonPressed() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 }

@@ -1,5 +1,6 @@
-#import "CPTLineStyle.h"
 #import "CPTLineStyleTests.h"
+
+#import "CPTLineStyle.h"
 
 @implementation CPTLineStyleTests
 
@@ -10,7 +11,7 @@
 {
     CPTLineStyle *lineStyle = [CPTLineStyle lineStyle];
 
-    CPTLineStyle *newLineStyle = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:lineStyle]];
+    CPTLineStyle *newLineStyle = [self archiveRoundTrip:lineStyle];
 
     XCTAssertEqual(newLineStyle.lineCap, lineStyle.lineCap, @"Line cap not equal");
     XCTAssertEqual(newLineStyle.lineJoin, lineStyle.lineJoin, @"Line join not equal");

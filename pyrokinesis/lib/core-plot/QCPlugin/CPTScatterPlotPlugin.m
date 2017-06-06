@@ -22,7 +22,7 @@
 @dynamic inputXMin, inputXMax, inputYMin, inputYMax;
 @dynamic inputXMajorIntervals, inputYMajorIntervals, inputXMinorIntervals, inputYMinorIntervals;
 
-+(NSDictionary *)attributes
++(nonnull NSDictionary<NSString *, NSString *> *)attributes
 {
     return @{
                QCPlugInAttributeNameKey: @"Core Plot Scatter Plot",
@@ -123,11 +123,11 @@
         [self removeInputPortForKey:[NSString stringWithFormat:@"plotDataSymbols%lu", (unsigned long)(i - 1)]];
         [self removeInputPortForKey:[NSString stringWithFormat:@"plotDataSymbolColor%lu", (unsigned long)(i - 1)]];
 
-        [theGraph removePlot:[[theGraph allPlots] lastObject]];
+        [theGraph removePlot:[theGraph allPlots].lastObject];
     }
 }
 
--(CPTPlotSymbol *)plotSymbol:(NSUInteger)index
+-(nullable CPTPlotSymbol *)plotSymbol:(NSUInteger)index
 {
     NSString *key    = [NSString stringWithFormat:@"plotDataSymbols%lu", (unsigned long)index];
     NSUInteger value = [[self valueForInputKey:key] unsignedIntegerValue];
@@ -168,7 +168,7 @@
     }
 }
 
--(CGColorRef)dataSymbolColor:(NSUInteger)index
+-(nonnull CGColorRef)dataSymbolColor:(NSUInteger)index
 {
     NSString *key = [NSString stringWithFormat:@"plotDataSymbolColor%lu", (unsigned long)index];
 
@@ -193,8 +193,11 @@
         plot.plotSymbol.lineStyle = lineStyle;
         plot.plotSymbol.fill      = [CPTFill fillWithColor:[CPTColor colorWithCGColor:[self dataSymbolColor:index]]];
         plot.plotSymbol.size      = CGSizeMake(10.0, 10.0);
-        plot.areaFill             = [CPTFill fillWithColor:[CPTColor colorWithCGColor:[self areaFillColor:index]]];
-        plot.areaBaseValue        = CPTDecimalFromDouble( MAX( self.inputYMin, MIN(self.inputYMax, 0.0) ) );
+        CGColorRef fillColor = [self areaFillColor:index];
+        if ( fillColor ) {
+            plot.areaFill = [CPTFill fillWithColor:[CPTColor colorWithCGColor:fillColor]];
+        }
+        plot.areaBaseValue = @( MAX( self.inputYMin, MIN(self.inputYMax, 0.0) ) );
 
         [plot reloadData];
     }
@@ -204,14 +207,14 @@
 #pragma mark -
 #pragma mark Data source methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
 {
     NSUInteger plotIndex = [[self.graph allPlots] indexOfObject:plot];
     NSString *xKey       = [NSString stringWithFormat:@"plotXNumbers%lu", (unsigned long)plotIndex];
     NSString *yKey       = [NSString stringWithFormat:@"plotYNumbers%lu", (unsigned long)plotIndex];
 
-    NSDictionary *xVals = [self valueForInputKey:xKey];
-    NSDictionary *yVals = [self valueForInputKey:yKey];
+    CPTDictionary *xVals = [self valueForInputKey:xKey];
+    CPTDictionary *yVals = [self valueForInputKey:yKey];
 
     if ( !xVals || !yVals ) {
         return 0;
@@ -223,14 +226,14 @@
     return xVals.count;
 }
 
--(id)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSUInteger plotIndex = [[self.graph allPlots] indexOfObject:plot];
     NSString *xKey       = [NSString stringWithFormat:@"plotXNumbers%lu", (unsigned long)plotIndex];
     NSString *yKey       = [NSString stringWithFormat:@"plotYNumbers%lu", (unsigned long)plotIndex];
 
-    NSDictionary *xVals = [self valueForInputKey:xKey];
-    NSDictionary *yVals = [self valueForInputKey:yKey];
+    CPTDictionary *xVals = [self valueForInputKey:xKey];
+    CPTDictionary *yVals = [self valueForInputKey:yKey];
 
     if ( !xVals || !yVals ) {
         return nil;
@@ -239,7 +242,7 @@
         return nil;
     }
 
-    NSDictionary *dict = (fieldEnum == CPTScatterPlotFieldX) ? xVals : yVals;
+    CPTDictionary *dict = (fieldEnum == CPTScatterPlotFieldX) ? xVals : yVals;
 
     NSString *dictionaryKey = [NSString stringWithFormat:@"%lu", (unsigned long)index];
 

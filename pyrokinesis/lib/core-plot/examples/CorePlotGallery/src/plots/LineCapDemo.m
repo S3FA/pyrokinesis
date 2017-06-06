@@ -1,6 +1,6 @@
 //
-//  LineCapDemo.m
-//  Plot Gallery
+// LineCapDemo.m
+// Plot Gallery
 //
 
 #import "LineCapDemo.h"
@@ -12,7 +12,7 @@
     [super registerPlotItem:self];
 }
 
--(id)init
+-(nonnull instancetype)init
 {
     if ( (self = [super init]) ) {
         self.title   = @"Line Caps";
@@ -22,7 +22,7 @@
     return self;
 }
 
--(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
 {
 #if TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
@@ -46,8 +46,8 @@
 
     // Setup plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromUnsignedInteger(0) length:CPTDecimalFromUnsignedInteger(100)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(5.5) length:CPTDecimalFromInteger(-6)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:@0.0 length:@100.0];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:@5.5 length:@(-6.0)];
 
     // Line styles
     CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
@@ -60,15 +60,15 @@
     lineCap.fill      = [CPTFill fillWithColor:[CPTColor blueColor]];
 
     // Axes
-    NSMutableArray *axes = [[NSMutableArray alloc] init];
+    CPTMutableAxisArray *axes = [[NSMutableArray alloc] init];
 
     CPTLineCapType lineCapType = CPTLineCapTypeNone;
     while ( lineCapType < CPTLineCapTypeCustom ) {
         CPTXYAxis *axis = [[CPTXYAxis alloc] init];
-        axis.plotSpace                   = graph.defaultPlotSpace;
-        axis.labelingPolicy              = CPTAxisLabelingPolicyNone;
-        axis.orthogonalCoordinateDecimal = CPTDecimalFromUnsignedInteger(lineCapType / 2);
-        axis.axisLineStyle               = axisLineStyle;
+        axis.plotSpace          = graph.defaultPlotSpace;
+        axis.labelingPolicy     = CPTAxisLabelingPolicyNone;
+        axis.orthogonalPosition = @(lineCapType / 2);
+        axis.axisLineStyle      = axisLineStyle;
 
         lineCap.lineCapType = lineCapType++;
         axis.axisLineCapMin = lineCap;

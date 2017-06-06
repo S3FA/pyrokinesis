@@ -1,6 +1,6 @@
 //
-//  OHLCPlot.m
-//  CorePlotGallery
+// OHLCPlot.m
+// CorePlotGallery
 //
 
 #import "OHLCPlot.h"
@@ -9,8 +9,8 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 
 @interface OHLCPlot()
 
-@property (nonatomic, readwrite, strong) CPTGraph *graph;
-@property (nonatomic, readwrite, strong) NSArray *plotData;
+@property (nonatomic, readwrite, strong, nullable) CPTGraph *graph;
+@property (nonatomic, readwrite, strong, nonnull) NSArray<NSDictionary *> *plotData;
 
 @end
 
@@ -24,11 +24,11 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     [super registerPlotItem:self];
 }
 
--(id)init
+-(nonnull instancetype)init
 {
     if ( (self = [super init]) ) {
         graph    = nil;
-        plotData = nil;
+        plotData = @[];
 
         self.title   = @"OHLC Plot";
         self.section = kFinancialPlots;
@@ -39,8 +39,8 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 
 -(void)generateData
 {
-    if ( !self.plotData ) {
-        NSMutableArray *newData = [NSMutableArray array];
+    if ( self.plotData.count == 0 ) {
+        NSMutableArray<NSDictionary *> *newData = [NSMutableArray array];
         for ( NSUInteger i = 0; i < 8; i++ ) {
             NSTimeInterval x = oneDay * i;
 
@@ -62,14 +62,14 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     }
 }
 
--(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
 {
     // If you make sure your dates are calculated at noon, you shouldn't have to
     // worry about daylight savings. If you use midnight, you will have to adjust
     // for daylight savings time.
     NSDate *refDate = [NSDate dateWithTimeIntervalSinceReferenceDate:oneDay / 2.0];
 
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
 #else
     CGRect bounds = NSRectToCGRect(hostingView.bounds);
@@ -94,7 +94,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     // Axes
     CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *)newGraph.axisSet;
     CPTXYAxis *xAxis        = xyAxisSet.xAxis;
-    xAxis.majorIntervalLength   = CPTDecimalFromDouble(oneDay);
+    xAxis.majorIntervalLength   = @(oneDay);
     xAxis.minorTicksPerInterval = 0;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateStyle = kCFDateFormatterShortStyle;
@@ -109,7 +109,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     xAxis.axisLineCapMax = lineCap;
 
     CPTXYAxis *yAxis = xyAxisSet.yAxis;
-    yAxis.orthogonalCoordinateDecimal = CPTDecimalFromDouble(-0.5 * oneDay);
+    yAxis.orthogonalPosition = @(-0.5 * oneDay);
 
     // Line plot with gradient fill
     CPTScatterPlot *dataSourceLinePlot = [[CPTScatterPlot alloc] initWithFrame:newGraph.bounds];
@@ -124,14 +124,14 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     areaGradient.angle = -90.0;
     CPTFill *areaGradientFill = [CPTFill fillWithGradient:areaGradient];
     dataSourceLinePlot.areaFill      = areaGradientFill;
-    dataSourceLinePlot.areaBaseValue = CPTDecimalFromDouble(0.0);
+    dataSourceLinePlot.areaBaseValue = @0.0;
 
     areaColor                         = [CPTColor colorWithComponentRed:CPTFloat(0.0) green:CPTFloat(1.0) blue:CPTFloat(0.0) alpha:CPTFloat(0.6)];
     areaGradient                      = [CPTGradient gradientWithBeginningColor:[CPTColor clearColor] endingColor:areaColor];
     areaGradient.angle                = -90.0;
     areaGradientFill                  = [CPTFill fillWithGradient:areaGradient];
     dataSourceLinePlot.areaFill2      = areaGradientFill;
-    dataSourceLinePlot.areaBaseValue2 = CPTDecimalFromDouble(5.0);
+    dataSourceLinePlot.areaBaseValue2 = @5.0;
 
     // OHLC plot
     CPTMutableLineStyle *whiteLineStyle = [CPTMutableLineStyle lineStyle];
@@ -174,19 +174,19 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 
     // Set plot ranges
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)newGraph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(-0.5 * oneDay) length:CPTDecimalFromDouble(oneDay * self.plotData.count)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(4)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:@(-0.5 * oneDay) length:@(oneDay * self.plotData.count)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:@0.0 length:@4.0];
 }
 
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
 {
     return self.plotData.count;
 }
 
--(id)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSDecimalNumber *num = [NSDecimalNumber zero];
 
@@ -213,7 +213,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 #pragma mark -
 #pragma mark Plot Delegate Methods
 
--(void)tradingRangePlot:(CPTTradingRangePlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)index
+-(void)tradingRangePlot:(nonnull CPTTradingRangePlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)index
 {
     NSLog(@"Bar for '%@' was selected at index %d.", plot.identifier, (int)index);
 }

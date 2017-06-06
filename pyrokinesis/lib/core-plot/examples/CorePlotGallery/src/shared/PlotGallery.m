@@ -1,13 +1,13 @@
 //
-//  PlotGallery.m
-//  CorePlotGallery
+// PlotGallery.m
+// CorePlotGallery
 //
 
 #import "PlotGallery.h"
 
 @interface PlotGallery()
 
-@property (nonatomic, readwrite, strong) NSMutableArray *plotItems;
+@property (nonatomic, readwrite, strong) NSMutableArray<PlotItem *> *plotItems;
 @property (nonatomic, readwrite, strong) NSCountedSet *plotSections;
 
 @end
@@ -19,7 +19,7 @@
 
 static PlotGallery *sharedPlotGallery = nil;
 
-+(PlotGallery *)sharedPlotGallery
++(nonnull PlotGallery *)sharedPlotGallery
 {
     @synchronized(self)
     {
@@ -41,7 +41,7 @@ static PlotGallery *sharedPlotGallery = nil;
     return sharedPlotGallery;
 }
 
--(id)init
+-(nonnull instancetype)init
 {
     Class thisClass = [self class];
 
@@ -59,12 +59,12 @@ static PlotGallery *sharedPlotGallery = nil;
     return sharedPlotGallery;
 }
 
--(id)copyWithZone:(NSZone *)zone
+-(nonnull id)copyWithZone:(nullable NSZone *)zone
 {
     return self;
 }
 
--(void)addPlotItem:(PlotItem *)plotItem
+-(void)addPlotItem:(nonnull PlotItem *)plotItem
 {
     [self.plotItems addObject:plotItem];
 
@@ -89,7 +89,7 @@ static PlotGallery *sharedPlotGallery = nil;
     return [self.plotSections countForObject:self.sectionTitles[section]];
 }
 
--(PlotItem *)objectInSection:(NSUInteger)section atIndex:(NSUInteger)index
+-(nonnull PlotItem *)objectInSection:(NSUInteger)section atIndex:(NSUInteger)index
 {
     NSUInteger offset = 0;
 
@@ -105,9 +105,9 @@ static PlotGallery *sharedPlotGallery = nil;
     [self.plotItems sortUsingSelector:@selector(titleCompare:)];
 }
 
--(NSArray *)sectionTitles
+-(CPTStringArray *)sectionTitles
 {
-    return [[self.plotSections allObjects] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    return [self.plotSections.allObjects sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 }
 
 @end

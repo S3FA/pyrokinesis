@@ -14,33 +14,33 @@ class UIFlameEffect : UIView {
     @IBInspectable var index: Int = -1
     
     static let IDLE_FILL_COLOUR: UIColor  = UIColor(red:1.0, green:0.0, blue:0.0, alpha:0.5)
-    @IBInspectable var touchFillColour: UIColor = UIColor.redColor()
-    @IBInspectable var strokeColour: UIColor = UIColor.blackColor()
+    @IBInspectable var touchFillColour: UIColor = UIColor.red
+    @IBInspectable var strokeColour: UIColor = UIColor.black
     
-    private var currFillColour : UIColor
-    private var shapePath: UIBezierPath
+    fileprivate var currFillColour : UIColor
+    fileprivate var shapePath: UIBezierPath
     
-    private var touchRepeatTimer: NSTimer?
+    fileprivate var touchRepeatTimer: Timer?
     
     var lockUntouch = false // If true this will not allow the flame effect to be untoggled by touch
     
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         self.currFillColour = UIFlameEffect.IDLE_FILL_COLOUR
         self.shapePath = UIBezierPath()
         self.touchRepeatTimer = nil
         
         super.init(coder: aDecoder)
-        self.userInteractionEnabled = true
+        self.isUserInteractionEnabled = true
         self.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let LINE_WIDTH: CGFloat = 3.0
         
-        var circleRect = CGRectMake(rect.origin.x+LINE_WIDTH, rect.origin.y+2*LINE_WIDTH, rect.size.width - 2*LINE_WIDTH, rect.size.height - 2*LINE_WIDTH);
+        var circleRect = CGRect(x: rect.origin.x+LINE_WIDTH, y: rect.origin.y+2*LINE_WIDTH, width: rect.size.width - 2*LINE_WIDTH, height: rect.size.height - 2*LINE_WIDTH);
         
-        self.shapePath = UIBezierPath(ovalInRect: rect)
+        self.shapePath = UIBezierPath(ovalIn: rect)
         self.shapePath.lineWidth = LINE_WIDTH
         
         self.currFillColour.setFill()
@@ -49,11 +49,11 @@ class UIFlameEffect : UIView {
         self.shapePath.stroke()
     }
     
-    func containsPoint(point: CGPoint) -> Bool {
-        return self.shapePath.containsPoint(self.convertPoint(point, fromView: self.superview))
+    func containsPoint(_ point: CGPoint) -> Bool {
+        return self.shapePath.contains(self.convert(point, from: self.superview))
     }
     
-    func simulateTouchWithoutSendingData(isBeingTouched: Bool) {
+    func simulateTouchWithoutSendingData(_ isBeingTouched: Bool) {
         self.lockUntouch = isBeingTouched
         if isBeingTouched {
             self.currFillColour = self.touchFillColour
@@ -65,7 +65,7 @@ class UIFlameEffect : UIView {
         self.setNeedsDisplay()
     }
     
-    func setTouched(isBeingTouched: Bool) {
+    func setTouched(_ isBeingTouched: Bool) {
         // Setup or tear down a timer for checking on resending fire data...
         if isBeingTouched {
             
@@ -77,14 +77,14 @@ class UIFlameEffect : UIView {
             self.sendFireControlData()
             
             if self.touchRepeatTimer == nil {
-                self.touchRepeatTimer = NSTimer.scheduledTimerWithTimeInterval(PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S, target: self, selector: Selector("sendFireControlData"), userInfo: nil, repeats: true)
+                self.touchRepeatTimer = Timer.scheduledTimer(timeInterval: PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S, target: self, selector: Selector("sendFireControlData"), userInfo: nil, repeats: true)
             }
             
             self.currFillColour = self.touchFillColour
         }
         else {
             if let timer = self.touchRepeatTimer {
-                if timer.valid {
+                if timer.isValid {
                     timer.invalidate()
                 }
             }
@@ -99,11 +99,11 @@ class UIFlameEffect : UIView {
     
     // Resend fire data if the flame effect is being held down...
     func sendFireControlData() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.sendFireControlData(self.index)
     }
     
-    private func isTouched() -> Bool {
+    fileprivate func isTouched() -> Bool {
         return self.currFillColour == self.touchFillColour
     }
     
