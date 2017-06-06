@@ -1,6 +1,6 @@
 //
-//  3DRotationView.m
-//  CPTTestApp
+// 3DRotationView.m
+// CPTTestApp
 //
 
 #import "RotationView.h"
@@ -18,7 +18,7 @@ static const CGFloat kMouseMovementScaleFactorForRotation = 1.0;
 #pragma mark -
 #pragma mark Initialization and teardown
 
--(id)initWithFrame:(NSRect)frame
+-(nonnull instancetype)initWithFrame:(NSRect)frame
 {
     if ( (self = [super initWithFrame:frame]) ) {
         rotationTransform = CATransform3DIdentity;
@@ -30,19 +30,19 @@ static const CGFloat kMouseMovementScaleFactorForRotation = 1.0;
 #pragma mark -
 #pragma mark Mouse handling methods
 
--(BOOL)acceptsFirstMouse:(NSEvent *)theEvent
+-(BOOL)acceptsFirstMouse:(nullable NSEvent *)theEvent
 {
     return YES;
 }
 
--(void)mouseDown:(NSEvent *)theEvent
+-(void)mouseDown:(nonnull NSEvent *)theEvent
 {
-    self.previousLocation = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    self.previousLocation = [self convertPoint:theEvent.locationInWindow fromView:nil];
 }
 
--(void)mouseDragged:(NSEvent *)theEvent
+-(void)mouseDragged:(nonnull NSEvent *)theEvent
 {
-    NSPoint currentLocation = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    NSPoint currentLocation = [self convertPoint:theEvent.locationInWindow fromView:nil];
 
     CGFloat displacementInX = kMouseMovementScaleFactorForRotation * (currentLocation.x - self.previousLocation.x);
     CGFloat displacementInY = kMouseMovementScaleFactorForRotation * (self.previousLocation.y - currentLocation.y);
@@ -59,12 +59,12 @@ static const CGFloat kMouseMovementScaleFactorForRotation = 1.0;
     [theDelegate rotateObjectUsingTransform:newTransform];
 
     self.rotationTransform = newTransform;
-    self.previousLocation  = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    self.previousLocation  = [self convertPoint:theEvent.locationInWindow fromView:nil];
 }
 
--(void)mouseUp:(NSEvent *)theEvent
+-(void)mouseUp:(nonnull NSEvent *)theEvent
 {
-    self.previousLocation = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    self.previousLocation = [self convertPoint:theEvent.locationInWindow fromView:nil];
 }
 
 #pragma mark -

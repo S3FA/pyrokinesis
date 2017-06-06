@@ -1,6 +1,6 @@
 //
-//  Plot_Gallery_MacAppDelegate.m
-//  CorePlotGallery
+// Plot_Gallery_MacAppDelegate.m
+// CorePlotGallery
 //
 
 #import "Plot_Gallery_MacAppDelegate.h"
@@ -9,7 +9,7 @@
 
 @synthesize window;
 
--(void)applicationDidFinishLaunching:(NSNotification *)aNotification
+-(void)applicationDidFinishLaunching:(nonnull NSNotification *)aNotification
 {
 }
 

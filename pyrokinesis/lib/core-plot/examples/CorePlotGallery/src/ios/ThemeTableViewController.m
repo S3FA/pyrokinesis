@@ -1,11 +1,11 @@
 //
-//  ThemeTableViewController.m
-//  CorePlotGallery
+// ThemeTableViewController.m
+// CorePlotGallery
 //
 
 #import "ThemeTableViewController.h"
 
-#import "CorePlot-CocoaTouch.h"
+#import <CorePlot/CorePlot.h>
 
 NSString *const kThemeTableViewControllerNoTheme      = @"None";
 NSString *const kThemeTableViewControllerDefaultTheme = @"Default";
@@ -15,7 +15,7 @@ NSString *const PlotGalleryThemeNameKey               = @"PlotGalleryThemeNameKe
 
 @interface ThemeTableViewController()
 
-@property (nonatomic, readwrite, strong) NSMutableArray *themes;
+@property (nonatomic, readwrite, strong, nonnull) CPTMutableStringArray *themes;
 
 @end
 
@@ -27,7 +27,7 @@ NSString *const PlotGalleryThemeNameKey               = @"PlotGalleryThemeNameKe
 
 -(void)setupThemes
 {
-    NSMutableArray *themeList = [[NSMutableArray alloc] init];
+    CPTMutableStringArray *themeList = [[NSMutableArray alloc] init];
 
     [themeList addObject:kThemeTableViewControllerDefaultTheme];
     [themeList addObject:kThemeTableViewControllerNoTheme];
@@ -41,10 +41,12 @@ NSString *const PlotGalleryThemeNameKey               = @"PlotGalleryThemeNameKe
 
 -(void)awakeFromNib
 {
+    [super awakeFromNib];
+
     [self setupThemes];
 }
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(nonnull instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
 {
     if ( (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) ) {
         [self setupThemes];
@@ -56,17 +58,17 @@ NSString *const PlotGalleryThemeNameKey               = @"PlotGalleryThemeNameKe
 #pragma mark -
 #pragma mark Table view data source
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+-(NSInteger)numberOfSectionsInTableView:(nonnull UITableView *)tableView
 {
     return 1;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+-(NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return (NSInteger)self.themes.count;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+-(nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"ThemeCell";
 
@@ -84,9 +86,9 @@ NSString *const PlotGalleryThemeNameKey               = @"PlotGalleryThemeNameKe
 #pragma mark -
 #pragma mark Table view delegate
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(nonnull UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    NSDictionary *themeInfo = @{
+    NSDictionary<NSString *, NSString *> *themeInfo = @{
         PlotGalleryThemeNameKey: self.themes[(NSUInteger)indexPath.row]
     };
 

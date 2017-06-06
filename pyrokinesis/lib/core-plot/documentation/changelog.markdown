@@ -1,3 +1,72 @@
+# Release 2.2 (September 18, 2016)
+
+## Release Notes
+
+This release updates Core Plot to be compatible with Xcode 8 and Swift 3.
+
+The Mac deployment target remains OS X 10.8. The iOS deployment target has changed to iOS 8.0 for both the framework and the static library. The tvOS deployment target remains tvOS 9.0.
+
+## Details
+- **New**: Increased the iOS deployment target to iOS 8.
+- **Changed**: Added Swift name mappings for all string constants.
+- **Changed**: Updated all Swift example apps to Swift 3.
+- **Changed**: Miscellaneous bug fixes and cleanup.
+
+
+
+# Release 2.1 (April 16, 2016)
+
+## Release Notes
+
+This release adds a tvOS framework and removes the deprecated `CorePlot-CocoaTouch.xcodeproj` project file. All Core Plot build targets for Mac, iOS, tvOS, and the documentation are in the `CorePlot.xcodeproj` project file. Annotated type definitions (e.g., `CPTNumberArray`) were changed to exclude the pointer star ("*") so they can be used interchangeably with class names.
+
+Curved scatter plots received several improvements. This release adds options to use Catmull-Rom and Hermite cubic splines to draw curved scatter plot lines. When a Hermite spline is used to draw a monotonic data series, the curved line will be monotonic as well. Plot spaces have new methods to scale the plot space to fit entire plots.
+
+The Mac deployment target has increased to OS X 10.8. The iOS deployment target remains iOS 6.0 for the static library and iOS 8.0 for the framework. The tvOS deployment target is tvOS 9.0.
+
+## Details
+- **New**: Increased the Mac deployment target to OS X 10.8.
+- **New**: Added a tvOS framework.
+- **New**: Added an option to anchor alternating band fills to a specific starting value.
+- **New**: Added support for animating `NSNumber` properties with `CPTAnimation`.
+- **New**: Added support for `NSSecureCoding`.
+- **New**: Added an option to draw legend swatches to the left or right side of the title.
+- **New**: Added options to use Catmull-Rom and Hermite cubic splines to draw curved scatter plot lines.
+- **New**: Added a method to automatically scale the plot space to fit the entire plot.
+- **Changed**: Changed the annotated type definitions to exclude the pointer star ("*").
+- **Changed**: Miscellaneous bug fixes and cleanup.
+- **Removed**: Removed the deprecated `CorePlot-CocoaTouch.xcodeproj` project file.
+
+
+
+# Release 2.0 (October 4, 2015)
+
+## Release Notes
+
+This release contains changes that will break apps built against earlier Core Plot
+versions. For a cleaner public API and ease of use from Swift, all public properties and methods that take `NSDecimal` values have been changed to take `NSNumber` values instead. See the [Release 2.0 API Changes](https://github.com/core-plot/core-plot/wiki/Core-Plot-API-Changes-Between-Versions-1.x-and-2.x) wiki page for a detailed list of the API changes.
+
+The Mac and iOS projects have been combined into one project file. The `CorePlot-CocoaTouch.xcodeproj` project file is deprecated and will be removed in a future release. There is now an iOS framework target in addition to the static library in the `CorePlot.xcodeproj` project file.
+
+The deployment target has increased to iOS 6.0 for the static library and iOS 8.0 for the framework. The Mac deployment target remains OS X 10.7.
+
+## Details
+- **New**: Combined the Mac and iOS projects and added an iOS framework target. The `CorePlot-CocoaTouch.xcodeproj` project file is deprecated.
+- **New**: Added histogram style options to `CPTScatterPlot`.
+- **New**: Added iOS unit tests.
+- **New**: Added plot space point conversion methods that take an `NSArray` of coordinate values.
+- **New**: Added nullability annotations to all property and method declarations.
+- **New**: Added type annotations to all arrays, sets, and dictionaries.
+- **New**: Added the log-modulus scale type.
+- **Changed**: Increased the deployment target to iOS 6.0 and Mac OS X 10.7. The iOS framework requires iOS 8 or higher.
+- **Changed**: Changed the Installation Directory for the Mac framework to "@rpath" and updated the Runpath Search Path in each Mac example app.
+- **Changed**: Changed all public properties and methods that take `NSDecimal` values to take `NSNumber` values instead. Use `NSDecimalNumber` to maintain full decimal precision.
+- **Changed**: Added properties to `CPTPlotRange` and `CPTMutablePlotRange` to read and write all range properties as `NSNumber`, `NSDecimal`, or `double`.
+- **Changed**: Renamed the `CPTXYAxis.orthogonalCoordinateDecimal` property to `CPTXYAxis.orthogonalPosition`.
+- **Changed**: Miscellaneous bug fixes and cleanup.
+
+
+
 # Release 1.6 (May 9, 2015)
 
 ## Release Notes

@@ -58,26 +58,40 @@ copy('License.txt', sourceDir)
 binariesDir = join(releaseRootDir, 'Binaries')
 macosDir = join(binariesDir, 'MacOS')
 iosDir = join(binariesDir, 'iOS')
+tvosDir = join(binariesDir, 'tvOS')
 makedirs(macosDir)
 mkdir(iosDir)
+mkdir(tvosDir)
 
 # Build Mac Framework
 chdir('framework')
-RunXcode('CorePlot.xcodeproj', 'CorePlot')
+RunXcode('CorePlot.xcodeproj', 'CorePlot Mac')
 macProductsDir = join(projectRoot, 'build/Release')
 macFramework = join(macProductsDir, 'CorePlot.framework')
 copytree(macFramework, join(macosDir, 'CorePlot.framework'), symlinks=True)
 
+# Build iOS Framework
+RunXcode('CorePlot.xcodeproj', 'Universal iOS Framework')
+iOSProductsDir = join(projectRoot, 'build/Release-iphoneuniversal')
+iOSFramework = join(iOSProductsDir, 'CorePlot.framework')
+copytree(iOSFramework, join(iosDir, 'CorePlot.framework'), symlinks=True)
+
 # Build iOS Static Library
-RunXcode('CorePlot-CocoaTouch.xcodeproj', 'Universal Library')
+RunXcode('CorePlot.xcodeproj', 'Universal Library')
 iOSLibFile = join(join(projectRoot, 'build/Release-universal'), 'libCorePlot-CocoaTouch.a')
 copy(iOSLibFile, iosDir)
 iOSHeaderFile = join(join(projectRoot, 'build/Release-universal'), 'CorePlotHeaders')
 copytree(iOSHeaderFile, join(iosDir, 'CorePlotHeaders'))
 
+# Build tvOS Framework
+RunXcode('CorePlot.xcodeproj', 'Universal tvOS Framework')
+tvOSProductsDir = join(projectRoot, 'build/Release-appletvuniversal')
+tvOSFramework = join(tvOSProductsDir, 'CorePlot.framework')
+copytree(tvOSFramework, join(tvosDir, 'CorePlot.framework'), symlinks=True)
+
 # Build Docs
-RunXcode('CorePlot.xcodeproj', 'Documentation')
-RunXcode('CorePlot-CocoaTouch.xcodeproj', 'Documentation')
+RunXcode('CorePlot.xcodeproj', 'Documentation-Mac')
+RunXcode('CorePlot.xcodeproj', 'Documentation-iOS')
 
 # Copy Docs
 docDir = join(releaseRootDir, 'Documentation')

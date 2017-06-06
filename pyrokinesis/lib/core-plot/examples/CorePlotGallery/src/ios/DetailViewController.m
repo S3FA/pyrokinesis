@@ -1,6 +1,6 @@
 //
-//  DetailViewController.m
-//  CorePlotGallery
+// DetailViewController.m
+// CorePlotGallery
 //
 
 #import "DetailViewController.h"
@@ -10,12 +10,10 @@
 
 @interface DetailViewController()
 
--(CPTTheme *)currentTheme;
-
-@property (nonatomic, readwrite) UIPopoverController *themePopoverController;
+-(nullable CPTTheme *)currentTheme;
 
 -(void)setupView;
--(void)themeChanged:(NSNotification *)notification;
+-(void)themeChanged:(nonnull NSNotification *)notification;
 
 @end
 
@@ -27,7 +25,6 @@
 @synthesize hostingView;
 @synthesize themeBarButton;
 @synthesize currentThemeName;
-@synthesize themePopoverController;
 
 #pragma mark -
 #pragma mark Initialization and Memory Management
@@ -39,15 +36,20 @@
                                                  name:PlotGalleryThemeDidChangeNotification
                                                object:nil];
 
-    [self.detailItem renderInView:self.hostingView withTheme:[self currentTheme] animated:YES];
+    UIView *hostView = self.hostingView;
+    if ( hostView ) {
+        [self.detailItem renderInView:hostView withTheme:[self currentTheme] animated:YES];
+    }
 }
 
 -(void)awakeFromNib
 {
+    [super awakeFromNib];
+
     [self setupView];
 }
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(nonnull instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
 {
     if ( (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) ) {
         [self setupView];
@@ -64,15 +66,16 @@
 #pragma mark -
 #pragma mark Managing the detail item
 
--(void)setDetailItem:(PlotItem *)newDetailItem
+-(void)setDetailItem:(nonnull PlotItem *)newDetailItem
 {
     if ( detailItem != newDetailItem ) {
         [detailItem killGraph];
 
         detailItem = newDetailItem;
 
-        if ( self.hostingView ) {
-            [detailItem renderInView:self.hostingView withTheme:[self currentTheme] animated:YES];
+        UIView *hostView = self.hostingView;
+        if ( hostView ) {
+            [detailItem renderInView:hostView withTheme:[self currentTheme] animated:YES];
         }
     }
 }
@@ -90,7 +93,7 @@
 #pragma mark -
 #pragma mark Theme Selection
 
--(void)setCurrentThemeName:(NSString *)newThemeName
+-(void)setCurrentThemeName:(nonnull NSString *)newThemeName
 {
     if ( newThemeName != currentThemeName ) {
         currentThemeName = [newThemeName copy];
@@ -99,7 +102,7 @@
     }
 }
 
--(CPTTheme *)currentTheme
+-(nullable CPTTheme *)currentTheme
 {
     CPTTheme *theme;
 
@@ -116,45 +119,24 @@
     return theme;
 }
 
--(void)themeSelectedWithName:(NSString *)themeName
+-(void)themeSelectedWithName:(nonnull NSString *)themeName
 {
     self.currentThemeName = themeName;
 
-    [self.detailItem renderInView:self.hostingView withTheme:[self currentTheme] animated:YES];
-}
-
--(void)themeChanged:(NSNotification *)notification
-{
-    NSDictionary *themeInfo = notification.userInfo;
-
-    [self themeSelectedWithName:themeInfo[PlotGalleryThemeNameKey]];
-}
-
-#pragma mark -
-#pragma mark Segues
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ( [segue.identifier isEqualToString:@"selectTheme"] ) {
-        self.themePopoverController = [[UIPopoverController alloc] initWithContentViewController:segue.destinationViewController];
+    UIView *hostView = self.hostingView;
+    if ( hostView ) {
+        [self.detailItem renderInView:hostView withTheme:[self currentTheme] animated:YES];
     }
 }
 
--(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+-(void)themeChanged:(nonnull NSNotification *)notification
 {
-    if ( [identifier isEqualToString:@"selectTheme"] ) {
-        UIPopoverController *controller = self.themePopoverController;
+    NSDictionary<NSString *, NSString *> *themeInfo = notification.userInfo;
 
-        if ( controller ) {
-            [controller dismissPopoverAnimated:YES];
-            return NO;
-        }
-        else {
-            return YES;
-        }
+    NSString *themeName = themeInfo[PlotGalleryThemeNameKey];
+    if ( themeName ) {
+        [self themeSelectedWithName:themeName];
     }
-
-    return YES;
 }
 
 @end

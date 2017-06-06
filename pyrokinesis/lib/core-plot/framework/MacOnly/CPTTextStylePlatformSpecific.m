@@ -6,7 +6,7 @@
 
 @implementation CPTTextStyle(CPTPlatformSpecificTextStyleExtensions)
 
-/** @property NSDictionary *attributes
+/** @property nonnull CPTDictionary *attributes
  *  @brief A dictionary of standard text attributes suitable for formatting an NSAttributedString.
  *
  *  The dictionary will contain values for the following keys that represent the receiver's text style:
@@ -32,7 +32,7 @@
  *  @param attributes A dictionary of standard text attributes.
  *  @return A new CPTTextStyle instance.
  **/
-+(instancetype)textStyleWithAttributes:(NSDictionary *)attributes
++(nonnull instancetype)textStyleWithAttributes:(nullable CPTDictionary *)attributes
 {
     CPTMutableTextStyle *newStyle = [CPTMutableTextStyle textStyle];
 
@@ -47,17 +47,17 @@
     // Color
     NSColor *styleColor = attributes[NSForegroundColorAttributeName];
     if ( styleColor ) {
-        // CGColor property is available in Mac OS 10.8 and later
+        // CGColor property is available in macOS 10.8 and later
         if ( [styleColor respondsToSelector:@selector(CGColor)] ) {
             newStyle.color = [CPTColor colorWithCGColor:styleColor.CGColor];
         }
         else {
-            const NSInteger numberOfComponents = [styleColor numberOfComponents];
+            const NSInteger numberOfComponents = styleColor.numberOfComponents;
 
             CGFloat *components = calloc( (size_t)numberOfComponents, sizeof(CGFloat) );
             [styleColor getComponents:components];
 
-            CGColorSpaceRef colorSpace = [[styleColor colorSpace] CGColorSpace];
+            CGColorSpaceRef colorSpace = styleColor.colorSpace.CGColorSpace;
             CGColorRef styleCGColor    = CGColorCreate(colorSpace, components);
 
             newStyle.color = [CPTColor colorWithCGColor:styleCGColor];
@@ -82,9 +82,9 @@
 
 /// @cond
 
--(NSDictionary *)attributes
+-(nonnull CPTDictionary *)attributes
 {
-    NSMutableDictionary *myAttributes = [NSMutableDictionary dictionary];
+    CPTMutableDictionary *myAttributes = [NSMutableDictionary dictionary];
 
     // Font
     NSFont *styleFont  = nil;
@@ -125,9 +125,20 @@
 
 @implementation CPTMutableTextStyle(CPTPlatformSpecificMutableTextStyleExtensions)
 
-/// @cond
-
-+(instancetype)textStyleWithAttributes:(NSDictionary *)attributes
+/** @brief Creates and returns a new CPTMutableTextStyle instance initialized from a dictionary of text attributes.
+ *
+ *  The text style will be initalized with values associated with the following keys:
+ *  - #NSFontAttributeName: Sets the @link CPTMutableTextStyle::fontName fontName @endlink
+ *  and @link CPTMutableTextStyle::fontSize fontSize @endlink.
+ *  - #NSForegroundColorAttributeName: Sets the @link CPTMutableTextStyle::color color @endlink.
+ *  - #NSParagraphStyleAttributeName: Sets the @link CPTMutableTextStyle::textAlignment textAlignment @endlink and @link CPTMutableTextStyle::lineBreakMode lineBreakMode @endlink.
+ *
+ *  Properties associated with missing keys will be inialized to their default values.
+ *
+ *  @param attributes A dictionary of standard text attributes.
+ *  @return A new CPTMutableTextStyle instance.
+ **/
++(nonnull instancetype)textStyleWithAttributes:(nullable CPTDictionary *)attributes
 {
     CPTMutableTextStyle *newStyle = [CPTMutableTextStyle textStyle];
 
@@ -142,17 +153,17 @@
     // Color
     NSColor *styleColor = attributes[NSForegroundColorAttributeName];
     if ( styleColor ) {
-        // CGColor property is available in Mac OS 10.8 and later
+        // CGColor property is available in macOS 10.8 and later
         if ( [styleColor respondsToSelector:@selector(CGColor)] ) {
             newStyle.color = [CPTColor colorWithCGColor:styleColor.CGColor];
         }
         else {
-            const NSInteger numberOfComponents = [styleColor numberOfComponents];
+            const NSInteger numberOfComponents = styleColor.numberOfComponents;
 
             CGFloat *components = calloc( (size_t)numberOfComponents, sizeof(CGFloat) );
             [styleColor getComponents:components];
 
-            CGColorSpaceRef colorSpace = [[styleColor colorSpace] CGColorSpace];
+            CGColorSpaceRef colorSpace = styleColor.colorSpace.CGColorSpace;
             CGColorRef styleCGColor    = CGColorCreate(colorSpace, components);
 
             newStyle.color = [CPTColor colorWithCGColor:styleCGColor];
@@ -172,8 +183,6 @@
     return newStyle;
 }
 
-/// @endcond
-
 @end
 
 #pragma mark -
@@ -187,27 +196,17 @@
  *  @param style The text style.
  *  @return The size of the text when drawn with the given style.
  **/
--(CGSize)sizeWithTextStyle:(CPTTextStyle *)style
+-(CGSize)sizeWithTextStyle:(nullable CPTTextStyle *)style
 {
-    NSFont *theFont    = nil;
-    NSString *fontName = style.fontName;
+    CGRect rect = [self boundingRectWithSize:CPTSizeMake(10000.0, 10000.0)
+                                     options:CPTStringDrawingOptions
+                                  attributes:style.attributes
+                                     context:nil];
 
-    if ( fontName ) {
-        theFont = [NSFont fontWithName:fontName size:style.fontSize];
-    }
+    CGSize textSize = rect.size;
 
-    CGSize textSize;
-
-    if ( theFont ) {
-        NSDictionary *attributes = @{
-            NSFontAttributeName: theFont
-        };
-
-        textSize = NSSizeToCGSize([self sizeWithAttributes:attributes]);
-    }
-    else {
-        textSize = CGSizeZero;
-    }
+    textSize.width  = ceil(textSize.width);
+    textSize.height = ceil(textSize.height);
 
     return textSize;
 }
@@ -220,7 +219,7 @@
  *  @param style The text style.
  *  @param context The graphics context to draw into.
  **/
--(void)drawInRect:(CGRect)rect withTextStyle:(CPTTextStyle *)style inContext:(CGContextRef)context
+-(void)drawInRect:(CGRect)rect withTextStyle:(nullable CPTTextStyle *)style inContext:(nonnull CGContextRef)context
 {
     if ( style.color == nil ) {
         return;
@@ -246,13 +245,13 @@
         paragraphStyle.alignment     = (NSTextAlignment)style.textAlignment;
         paragraphStyle.lineBreakMode = style.lineBreakMode;
 
-        NSDictionary *attributes = @{
+        CPTDictionary *attributes = @{
             NSFontAttributeName: theFont,
             NSForegroundColorAttributeName: foregroundColor,
             NSParagraphStyleAttributeName: paragraphStyle
         };
         [self drawWithRect:NSRectFromCGRect(rect)
-                   options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
+                   options:CPTStringDrawingOptions
                 attributes:attributes];
     }
     CPTPopCGContext();

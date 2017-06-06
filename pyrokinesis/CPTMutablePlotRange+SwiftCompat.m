@@ -13,7 +13,7 @@
 - (void)setLengthFloat:(float)lengthFloat
 {
     NSNumber *number = [NSNumber numberWithFloat:lengthFloat];
-    [self setLength:[number decimalValue]];
+    [self setLength:number];
 }
 
 @end

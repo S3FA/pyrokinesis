@@ -23,14 +23,14 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
     static let MUSE_DATA_DIV: Int = 5
     
     var museGraph: CPTXYGraph!
-    var updateTimer: NSTimer? = nil
+    var updateTimer: Timer? = nil
     
     var currPlots = [CPTScatterPlot]()
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.overviewViewController = self
     }
     
@@ -42,20 +42,20 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
         // Create the muse graph
         self.museGraph = CPTXYGraph(frame: self.graphView.bounds)
         self.graphView.allowPinchScaling = true
-        self.museGraph.applyTheme(CPTTheme(named: kCPTPlainBlackTheme))
+        self.museGraph.apply(CPTTheme(named: CPTThemeName.plainBlackTheme))
         self.graphView.hostedGraph = self.museGraph
         
         self.museGraph.borderWidth = 0.0
         self.museGraph.borderLineStyle = nil
-        self.museGraph.borderColor = CPTColor.clearColor().cgColor
+        self.museGraph.borderColor = CPTColor.clear().cgColor
         
-        self.museGraph.plotAreaFrame.borderWidth = 0.0
-        self.museGraph.plotAreaFrame.borderLineStyle = nil
-        self.museGraph.plotAreaFrame.borderColor = CPTColor.clearColor().cgColor
-        self.museGraph.plotAreaFrame.paddingLeft = 25.0
-        self.museGraph.plotAreaFrame.paddingRight = 5.0
-        self.museGraph.plotAreaFrame.paddingBottom = 15.0
-        self.museGraph.plotAreaFrame.paddingTop = 5.0
+        self.museGraph.plotAreaFrame?.borderWidth = 0.0
+        self.museGraph.plotAreaFrame?.borderLineStyle = nil
+        self.museGraph.plotAreaFrame?.borderColor = CPTColor.clear().cgColor
+        self.museGraph.plotAreaFrame?.paddingLeft = 25.0
+        self.museGraph.plotAreaFrame?.paddingRight = 5.0
+        self.museGraph.plotAreaFrame?.paddingBottom = 15.0
+        self.museGraph.plotAreaFrame?.paddingTop = 5.0
         
         self.configurePlots()
         self.configureAxes()
@@ -87,7 +87,7 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
         */
         
         if self.updateTimer == nil {
-            self.updateTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateGraphAndStatus"), userInfo: nil, repeats: true)
+            self.updateTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(OverviewViewController.updateGraphAndStatus), userInfo: nil, repeats: true)
         }
         
         self.updateGraphAndStatus()
@@ -99,38 +99,38 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
         // Dispose of any resources that can be recreated.
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
 
     
-    private func configurePlots() {
-        var plotSpace = self.museGraph.defaultPlotSpace as! CPTXYPlotSpace
+    fileprivate func configurePlots() {
+        let plotSpace = self.museGraph.defaultPlotSpace as! CPTXYPlotSpace
 
-        var yRange = plotSpace.yRange.mutableCopy() as! CPTMutablePlotRange
+        let yRange = plotSpace.yRange.mutableCopy() as! CPTMutablePlotRange
         yRange.setLengthFloat(1.0)
         plotSpace.yRange = yRange
         
-        var xRange = plotSpace.xRange.mutableCopy() as! CPTMutablePlotRange
+        let xRange = plotSpace.xRange.mutableCopy() as! CPTMutablePlotRange
         xRange.setLengthFloat(Float(MuseListener.MAX_CACHED_VALUES/OverviewViewController.MUSE_DATA_DIV))
         plotSpace.xRange = xRange
     }
     
-    private func generatePlotTitle(plotType: IXNMuseDataPacketType) -> String {
+    fileprivate func generatePlotTitle(_ plotType: IXNMuseDataPacketType) -> String {
         switch (plotType) {
-            case IXNMuseDataPacketType.AlphaScore:
+            case IXNMuseDataPacketType.alphaScore:
                 return "Alpha"
-            case IXNMuseDataPacketType.BetaScore:
+            case IXNMuseDataPacketType.betaScore:
                 return "Beta"
-            case IXNMuseDataPacketType.DeltaScore:
+            case IXNMuseDataPacketType.deltaScore:
                 return "Delta"
-            case IXNMuseDataPacketType.ThetaScore:
+            case IXNMuseDataPacketType.thetaScore:
                 return "Theta"
-            case IXNMuseDataPacketType.GammaScore:
+            case IXNMuseDataPacketType.gammaScore:
                 return "Gamma"
-            case IXNMuseDataPacketType.Mellow:
+            case IXNMuseDataPacketType.mellow:
                 return "Mellow"
-            case IXNMuseDataPacketType.Concentration:
+            case IXNMuseDataPacketType.concentration:
                 return "Concentration"
             default:
                 assert(false)
@@ -157,77 +157,77 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
         var axisSet = self.museGraph.axisSet
         
         // X-Axis
-        var x = axisSet.axisForCoordinate(CPTCoordinate.X, atIndex: 0)
+        var x = axisSet?.axis(for: CPTCoordinate.X, at: 0)
         
-        x.labelingPolicy = CPTAxisLabelingPolicy.None
-        x.axisLineStyle = nil
+        x?.labelingPolicy = CPTAxisLabelingPolicy.none
+        x?.axisLineStyle = nil
         
-        for label in x.axisLabels {
+        for label in (x?.axisLabels)! {
             if let axisLabel = label as? CPTAxisLabel {
-                axisLabel.contentLayer.hidden = true
+                axisLabel.contentLayer?.isHidden = true
             }
         }
         
         // Y-Axis
-        var y = axisSet.axisForCoordinate(CPTCoordinate.Y, atIndex: 0)
+        var y = axisSet?.axis(for: CPTCoordinate.Y, at: 0)
         
-        y.axisLineStyle = nil
-        y.majorGridLineStyle = majorGridLineStyle
-        y.minorGridLineStyle = minorGridLineStyle
-        y.majorTickLineStyle = nil
-        y.minorTickLineStyle = nil
+        y?.axisLineStyle = nil
+        y?.majorGridLineStyle = majorGridLineStyle
+        y?.minorGridLineStyle = minorGridLineStyle
+        y?.majorTickLineStyle = nil
+        y?.minorTickLineStyle = nil
         
-        y.labelingPolicy = CPTAxisLabelingPolicy.None
-        y.labelTextStyle = axisTextStyle
-        y.labelOffset = 16.0
+        y?.labelingPolicy = CPTAxisLabelingPolicy.none
+        y?.labelTextStyle = axisTextStyle
+        y?.labelOffset = 16.0
 
-        y.majorTickLength = 8.0;
-        y.minorTickLength = 4.0;
-        y.tickDirection = CPTSign.Positive;
+        y?.majorTickLength = 8.0;
+        y?.minorTickLength = 4.0;
+        y?.tickDirection = CPTSign.positive;
         
         var yLabels = Set<NSObject>()
         var minorTickLocations = Set<NSObject>()
         var majorTickLocations = Set<NSObject>()
         
-        for (var i = 0; i <= 10; i++) {
+        for i in 0...10 {
             let tickValue = Double(i)*0.1
             
-            var tempLabel = CPTAxisLabel(text: "\(tickValue)", textStyle: y.labelTextStyle)
-            tempLabel.tickLocation = CPTDecimalFromDouble(tickValue)
-            tempLabel.offset = -y.majorTickLength - y.labelOffset
+            let tempLabel = CPTAxisLabel(text: "\(tickValue)", textStyle: y?.labelTextStyle)
+            tempLabel.tickLocation = NSNumber(value:tickValue)
+            tempLabel.offset = -y!.majorTickLength - y!.labelOffset
             yLabels.insert(tempLabel)
             
             if (i % 10 == 0) {
-                majorTickLocations.insert(NSDecimalNumber(double: tickValue))
+                majorTickLocations.insert(NSDecimalNumber(value: tickValue as Double))
             }
             else {
-                minorTickLocations.insert(NSDecimalNumber(double: tickValue))
+                minorTickLocations.insert(NSDecimalNumber(value: tickValue as Double))
             }
         }
         
-        y.axisLabels = yLabels
-        y.minorTickLocations = minorTickLocations
-        y.majorTickLocations = majorTickLocations
+        y?.axisLabels = yLabels as! Set<CPTAxisLabel>
+        y?.minorTickLocations = minorTickLocations as! Set<NSNumber>
+        y?.majorTickLocations = majorTickLocations as! Set<NSNumber>
 
     }
     
     func updateGraphAndStatus() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let museListener = appDelegate.museListener {
             if museListener.dataUpdated {
                 self.museGraph.reloadData()
                 museListener.dataUpdated = false
             }
 
-            self.connStatusDetailLabel.text = MuseListener.getConnectionStatusString(museListener.museConnStatus).uppercaseString
+            self.connStatusDetailLabel.text = MuseListener.getConnectionStatusString(museListener.museConnStatus).uppercased()
             self.connStatusLabel.text = museListener.isMuseAvailable() ? "FOUND" : "NOT FOUND"
             
             var score = museListener.avgHorseshoeValue()
-            self.signalLabel.text = MuseListener.getSignalStrengthString(score).uppercaseString
-            self.signalDetailLabel.text = MuseListener.getSignalDetailString(score).uppercaseString
+            self.signalLabel.text = MuseListener.getSignalStrengthString(score).uppercased()
+            self.signalDetailLabel.text = MuseListener.getSignalDetailString(score).uppercased()
             
             switch (museListener.museConnStatus) {
-            case .Connected:
+            case .connected:
                 if score >= MuseListener.WORST_HORSESHOE_SCORE {
                     // Overlay on graph that the connection with the muse is too horrible to stream data
                     
@@ -243,23 +243,23 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
     
     func updateSettings() {
         if let settings = PyrokinesisSettings.getSettings() {
-            self.gameModeLabel.text = settings.gameMode.uppercaseString + " MODE"
+            self.gameModeLabel.text = settings.gameMode.uppercased() + " MODE"
             
             // The data present in the graph will be based off the game mode...
             if let gameMode = PyrokinesisSettings.GameMode(rawValue: settings.gameMode) {
                 
-                var plotSpace = self.museGraph.defaultPlotSpace as! CPTXYPlotSpace
+                let plotSpace = self.museGraph.defaultPlotSpace as! CPTXYPlotSpace
                 var trackedTypesAndColours = [IXNMuseDataPacketType: (CPTColor, CPTColor)]()
                 
                 switch (gameMode) {
                     case .Calm:
-                        trackedTypesAndColours.updateValue((CPTColor(componentRed: 0.0, green: 0.5, blue: 0.5, alpha: 1.0), CPTColor.blueColor()), forKey: .AlphaScore)
-                        trackedTypesAndColours.updateValue((CPTColor.cyanColor(), CPTColor(componentRed: 0.0, green: 0.5, blue: 0.5, alpha: 1.0)), forKey: .Mellow)
+                        trackedTypesAndColours.updateValue((CPTColor(componentRed: 0.0, green: 0.5, blue: 0.5, alpha: 1.0), CPTColor.blue()), forKey: .alphaScore)
+                        trackedTypesAndColours.updateValue((CPTColor.cyan(), CPTColor(componentRed: 0.0, green: 0.5, blue: 0.5, alpha: 1.0)), forKey: .mellow)
                         break
                     
                     case .Concentration:
-                        trackedTypesAndColours.updateValue((CPTColor.orangeColor(), CPTColor.redColor()), forKey: .BetaScore)
-                        trackedTypesAndColours.updateValue((CPTColor.yellowColor(), CPTColor.orangeColor()), forKey: .Concentration)
+                        trackedTypesAndColours.updateValue((CPTColor.orange(), CPTColor.red()), forKey: .betaScore)
+                        trackedTypesAndColours.updateValue((CPTColor.yellow(), CPTColor.orange()), forKey: .concentration)
                         break
                     
                     default:
@@ -268,30 +268,30 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
                 }
                 
                 for plot in self.currPlots {
-                    self.museGraph.removePlot(plot)
+                    self.museGraph.remove(plot)
                 }
-                self.currPlots.removeAll(keepCapacity: true)
+                self.currPlots.removeAll(keepingCapacity: true)
                 
                 // Create a plot for each type of data coming from the muse that we're interested in visualizing
                 let LINE_WIDTH  = CGFloat(2.0)
-                let MARKER_SIZE = CGSizeMake(10.0, 10.0)
+                let MARKER_SIZE = CGSize(width: 10.0, height: 10.0)
                 
                 for (type, (lineColor, markerColor)) in trackedTypesAndColours {
                     
-                    var scatterPlot = CPTScatterPlot(frame: CGRectZero)
+                    let scatterPlot = CPTScatterPlot(frame: CGRect.zero)
                     scatterPlot.dataSource = self
-                    scatterPlot.identifier = type.rawValue
+                    scatterPlot.identifier = type.rawValue as NSCoding & NSCopying & NSObjectProtocol
                     scatterPlot.title = self.generatePlotTitle(type)
                     
-                    var lineStyle = scatterPlot.dataLineStyle.mutableCopy() as! CPTMutableLineStyle
+                    let lineStyle = scatterPlot.dataLineStyle?.mutableCopy() as! CPTMutableLineStyle
                     lineStyle.lineWidth = LINE_WIDTH
                     lineStyle.lineColor = lineColor
                     scatterPlot.dataLineStyle = lineStyle
                     
-                    var markerLineStyle = scatterPlot.dataLineStyle.mutableCopy() as! CPTMutableLineStyle
+                    let markerLineStyle = scatterPlot.dataLineStyle?.mutableCopy() as! CPTMutableLineStyle
                     markerLineStyle.lineWidth = LINE_WIDTH/2.0
                     
-                    var markerSymbol = CPTPlotSymbol.ellipsePlotSymbol()
+                    let markerSymbol = CPTPlotSymbol.ellipse()
                     markerSymbol.fill = CPTFill(color: markerColor)
                     markerSymbol.lineStyle = markerLineStyle
                     markerSymbol.size = MARKER_SIZE
@@ -299,15 +299,15 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
                     scatterPlot.plotSymbol = markerSymbol
                     
                     self.currPlots.append(scatterPlot)
-                    self.museGraph.addPlot(scatterPlot, toPlotSpace: plotSpace)
+                    self.museGraph.add(scatterPlot, to: plotSpace)
                 }
             }
         }
     }
 
     // CPTPlotDataSource Functions
-    func numberOfRecordsForPlot(plot: CPTPlot!) -> UInt {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    func numberOfRecords(for plot: CPTPlot!) -> UInt {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let museListener = appDelegate.museListener {
             
             if let plotType = IXNMuseDataPacketType(rawValue: (plot.identifier as! IXNMuseDataPacketType.RawValue)) {
@@ -320,13 +320,13 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
         return 0
     }
     
-    func doubleForPlot(plot: CPTPlot!, field fieldEnum: UInt, recordIndex idx: UInt) -> Double {
+    func double(for plot: CPTPlot!, field fieldEnum: UInt, record idx: UInt) -> Double {
         
         if (Int(fieldEnum) == CPTScatterPlotField.X.rawValue) {
             return Double(idx);
         }
         else if (Int(fieldEnum) == CPTScatterPlotField.Y.rawValue) {
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
             if let museListener = appDelegate.museListener {
                 
                 if let plotType = IXNMuseDataPacketType(rawValue: (plot.identifier as! IXNMuseDataPacketType.RawValue)) {

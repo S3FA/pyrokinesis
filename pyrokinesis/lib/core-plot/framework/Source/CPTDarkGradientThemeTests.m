@@ -1,4 +1,5 @@
 #import "CPTDarkGradientThemeTests.h"
+
 #import "CPTDerivedXYGraph.h"
 #import "_CPTDarkGradientTheme.h"
 
@@ -21,7 +22,7 @@
     // Arrange
     _CPTDarkGradientTheme *theme = [[_CPTDarkGradientTheme alloc] init];
 
-    [theme setGraphClass:[CPTDerivedXYGraph class]];
+    theme.graphClass = [CPTDerivedXYGraph class];
 
     // Act
     CPTGraph *graph = [theme newGraph];

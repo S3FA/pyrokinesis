@@ -5,7 +5,7 @@ static NSString *const outerChartName = @"Outer";
 
 @interface DonutChart()
 
-@property (nonatomic, readwrite, strong) NSArray *plotData;
+@property (nonatomic, readwrite, strong, nonnull) CPTNumberArray *plotData;
 
 @end
 
@@ -18,7 +18,7 @@ static NSString *const outerChartName = @"Outer";
     [super registerPlotItem:self];
 }
 
--(id)init
+-(nonnull instancetype)init
 {
     if ( (self = [super init]) ) {
         self.title   = @"Donut Chart";
@@ -30,14 +30,14 @@ static NSString *const outerChartName = @"Outer";
 
 -(void)generateData
 {
-    if ( self.plotData == nil ) {
+    if ( self.plotData.count == 0 ) {
         self.plotData = @[@20.0, @30.0, @60.0];
     }
 }
 
--(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
 {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
 #else
     CGRect bounds = NSRectToCGRect(hostingView.bounds);
@@ -92,7 +92,7 @@ static NSString *const outerChartName = @"Outer";
     // Add another pie chart
     piePlot                 = [[CPTPieChart alloc] init];
     piePlot.dataSource      = self;
-    piePlot.pieRadius       = CPTFloat( animated ? 0.0 : (innerRadius - 5.0) );
+    piePlot.pieRadius       = ( animated ? CPTFloat(0.0) : ( innerRadius - CPTFloat(5.0) ) );
     piePlot.identifier      = innerChartName;
     piePlot.borderLineStyle = whiteLineStyle;
     piePlot.startAngle      = CPTFloat(M_PI_4);
@@ -113,7 +113,7 @@ static NSString *const outerChartName = @"Outer";
     }
 }
 
--(void)pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)index
+-(void)pieChart:(nonnull CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)index
 {
     NSLog(@"%@ slice was selected at index %lu. Value = %@", plot.identifier, (unsigned long)index, self.plotData[index]);
 }
@@ -121,12 +121,12 @@ static NSString *const outerChartName = @"Outer";
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
 {
     return self.plotData.count;
 }
 
--(id)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSNumber *num;
 
@@ -140,21 +140,21 @@ static NSString *const outerChartName = @"Outer";
     return num;
 }
 
--(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index
+-(nullable CPTLayer *)dataLabelForPlot:(nonnull CPTPlot *)plot recordIndex:(NSUInteger)index
 {
     static CPTMutableTextStyle *whiteText = nil;
     static dispatch_once_t onceToken      = 0;
 
     CPTTextLayer *newLayer = nil;
 
-    if ( [(NSString *)plot.identifier isEqualToString : outerChartName] ) {
+    if ( [(NSString *) plot.identifier isEqualToString:outerChartName] ) {
         dispatch_once(&onceToken, ^{
             whiteText = [[CPTMutableTextStyle alloc] init];
             whiteText.color = [CPTColor whiteColor];
             whiteText.fontSize = self.titleSize * CPTFloat(0.5);
         });
 
-        newLayer                 = [[CPTTextLayer alloc] initWithText:[NSString stringWithFormat:@"%.0f", [self.plotData[index] floatValue]] style:whiteText];
+        newLayer                 = [[CPTTextLayer alloc] initWithText:[NSString stringWithFormat:@"%.0f", self.plotData[index].doubleValue] style:whiteText];
         newLayer.fill            = [CPTFill fillWithColor:[CPTColor darkGrayColor]];
         newLayer.cornerRadius    = 5.0;
         newLayer.paddingLeft     = 3.0;
@@ -167,11 +167,11 @@ static NSString *const outerChartName = @"Outer";
     return newLayer;
 }
 
--(CGFloat)radialOffsetForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)index
+-(CGFloat)radialOffsetForPieChart:(nonnull CPTPieChart *)pieChart recordIndex:(NSUInteger)index
 {
     CGFloat result = 0.0;
 
-    if ( [(NSString *)pieChart.identifier isEqualToString : outerChartName] ) {
+    if ( [(NSString *) pieChart.identifier isEqualToString:outerChartName] ) {
         result = (index == 0 ? 15.0 : 0.0);
     }
     return result;
@@ -180,27 +180,27 @@ static NSString *const outerChartName = @"Outer";
 #pragma mark -
 #pragma mark Animation Delegate
 
--(void)animationDidStart:(id)operation
+-(void)animationDidStart:(nonnull id)operation
 {
     NSLog(@"animationDidStart: %@", operation);
 }
 
--(void)animationDidFinish:(CPTAnimationOperation *)operation
+-(void)animationDidFinish:(nonnull CPTAnimationOperation *)operation
 {
     NSLog(@"animationDidFinish: %@", operation);
 }
 
--(void)animationCancelled:(CPTAnimationOperation *)operation
+-(void)animationCancelled:(nonnull CPTAnimationOperation *)operation
 {
     NSLog(@"animationCancelled: %@", operation);
 }
 
--(void)animationWillUpdate:(CPTAnimationOperation *)operation
+-(void)animationWillUpdate:(nonnull CPTAnimationOperation *)operation
 {
     NSLog(@"animationWillUpdate:");
 }
 
--(void)animationDidUpdate:(CPTAnimationOperation *)operation
+-(void)animationDidUpdate:(nonnull CPTAnimationOperation *)operation
 {
     NSLog(@"animationDidUpdate:");
 }

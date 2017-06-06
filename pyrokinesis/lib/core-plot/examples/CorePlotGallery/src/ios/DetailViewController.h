@@ -1,18 +1,18 @@
 //
-//  DetailViewController.h
-//  CorePlotGallery
+// DetailViewController.h
+// CorePlotGallery
 //
 
 @class PlotItem;
 
 @interface DetailViewController : UIViewController
 
-@property (nonatomic, strong) PlotItem *detailItem;
-@property (nonatomic, copy) NSString *currentThemeName;
+@property (nonatomic, strong, nonnull) PlotItem *detailItem;
+@property (nonatomic, copy, nonnull) NSString *currentThemeName;
 
-@property (nonatomic, strong) IBOutlet UIView *hostingView;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *themeBarButton;
+@property (nonatomic, strong, nullable) IBOutlet UIView *hostingView;
+@property (nonatomic, strong, nullable) IBOutlet UIBarButtonItem *themeBarButton;
 
--(void)themeSelectedWithName:(NSString *)themeName;
+-(void)themeSelectedWithName:(nonnull NSString *)themeName;
 
 @end

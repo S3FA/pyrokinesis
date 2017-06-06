@@ -2,7 +2,7 @@
  *
  *  @section intro Introduction
  *
- *  Core Plot is a 2D plotting framework for Mac OS X and iOS.
+ *  Core Plot is a 2D Cocoa plotting framework for macOS, iOS, and tvOS.
  *  It is highly customizable and capable of drawing many types of plots.
  *  See the <a href="https://github.com/core-plot/core-plot/wiki/Example-Graphs">Example Graphs</a>
  *  wiki page and the <a href="https://github.com/core-plot/core-plot/tree/master/examples">example applications</a>
@@ -38,7 +38,6 @@
  *  @subsection socialnetworks Social Networks
  *
  *  - <a href="https://twitter.com/CorePlot">Twitter</a>
- *  - <a href="https://alpha.app.net/coreplot">App.net</a>; Subscribe to the <a href="https://app.net/c/2rw2">Announcements</a> broadcast.
  *
  *  @section contributingtocoreplot Contributing to Core Plot
  *
@@ -56,8 +55,8 @@
  *  Nonetheless, in a project like Core Plot, with many developers contributing, it is worthwhile
  *  defining a set of basic coding standards to prevent a mishmash of different styles which can
  *  become frustrating when navigating the code base. See the file
- *  <a href="https://github.com/core-plot/core-plot/blob/master/documentation/Coding%20Style.markdown">Coding Style.markdown</a>
- *  found in the <a href="https://github.com/core-plot/core-plot/tree/master/documentation">documentation</a>
+ *  <a href="https://github.com/core-plot/core-plot/blob/master/.github/CONTRIBUTING.md">CONTRIBUTING.md</a>
+ *  found in the <a href="https://github.com/core-plot/core-plot/tree/master/.github">.github</a>
  *  directory of the project source for specific guidelines.
  *
  *  Core Plot includes a <a href="https://github.com/core-plot/core-plot/blob/master/scripts/format_core_plot.sh">script</a>

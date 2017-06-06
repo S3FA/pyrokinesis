@@ -3,8 +3,8 @@
 #pragma mark Graphics Context
 
 // linked list to store saved contexts
-static NSMutableArray *pushedContexts   = nil;
-static dispatch_once_t contextOnceToken = 0;
+static NSMutableArray<NSGraphicsContext *> *pushedContexts = nil;
+static dispatch_once_t contextOnceToken                    = 0;
 
 static dispatch_queue_t contextQueue  = NULL;
 static dispatch_once_t queueOnceToken = 0;
@@ -12,7 +12,7 @@ static dispatch_once_t queueOnceToken = 0;
 /** @brief Pushes the current AppKit graphics context onto a stack and replaces it with the given Core Graphics context.
  *  @param newContext The graphics context.
  **/
-void CPTPushCGContext(CGContextRef newContext)
+void CPTPushCGContext(__nonnull CGContextRef newContext)
 {
     dispatch_once(&contextOnceToken, ^{
         pushedContexts = [[NSMutableArray alloc] init];
@@ -24,12 +24,15 @@ void CPTPushCGContext(CGContextRef newContext)
     dispatch_sync(contextQueue, ^{
         NSGraphicsContext *currentContext = [NSGraphicsContext currentContext];
 
-        if ( newContext && currentContext ) {
+        if ( currentContext ) {
             [pushedContexts addObject:currentContext];
-            [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithGraphicsPort:newContext flipped:NO]];
         }
         else {
-            [pushedContexts addObject:[NSNull null]];
+            [pushedContexts addObject:(NSGraphicsContext *)[NSNull null]];
+        }
+
+        if ( newContext ) {
+            [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithGraphicsPort:newContext flipped:NO]];
         }
     });
 }
@@ -53,22 +56,13 @@ void CPTPopCGContext(void)
             if ( [lastContext isKindOfClass:[NSGraphicsContext class]] ) {
                 [NSGraphicsContext setCurrentContext:lastContext];
             }
+            else {
+                [NSGraphicsContext setCurrentContext:nil];
+            }
+
             [pushedContexts removeLastObject];
         }
     });
-}
-
-#pragma mark -
-#pragma mark Context
-
-/**
- *  @brief Get the default graphics context
- **/
-CGContextRef CPTGetCurrentContext(void)
-{
-    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
-
-    return context;
 }
 
 #pragma mark -
@@ -81,7 +75,7 @@ CGContextRef CPTGetCurrentContext(void)
  *  @param nsColor The NSColor.
  *  @return The @ref CGColorRef.
  **/
-CGColorRef CPTCreateCGColorFromNSColor(NSColor *nsColor)
+__nonnull CGColorRef CPTCreateCGColorFromNSColor(NSColor *__nonnull nsColor)
 {
     NSColor *rgbColor = [nsColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
     CGFloat r, g, b, a;
@@ -97,7 +91,7 @@ CGColorRef CPTCreateCGColorFromNSColor(NSColor *nsColor)
  *  @param nsColor The NSColor.
  *  @return The CPTRGBAColor.
  **/
-CPTRGBAColor CPTRGBAColorFromNSColor(NSColor *nsColor)
+CPTRGBAColor CPTRGBAColorFromNSColor(NSColor *__nonnull nsColor)
 {
     CGFloat red, green, blue, alpha;
 
@@ -110,4 +104,37 @@ CPTRGBAColor CPTRGBAColorFromNSColor(NSColor *nsColor)
     rgbColor.alpha = alpha;
 
     return rgbColor;
+}
+
+#pragma mark -
+#pragma mark Debugging
+
+CPTNativeImage * __nonnull CPTQuickLookImage(CGRect rect, __nonnull CPTQuickLookImageBlock renderBlock)
+{
+    NSBitmapImageRep *layerImage = [[NSBitmapImageRep alloc]
+                                    initWithBitmapDataPlanes:NULL
+                                                  pixelsWide:(NSInteger)rect.size.width
+                                                  pixelsHigh:(NSInteger)rect.size.height
+                                               bitsPerSample:8
+                                             samplesPerPixel:4
+                                                    hasAlpha:YES
+                                                    isPlanar:NO
+                                              colorSpaceName:NSCalibratedRGBColorSpace
+                                                 bytesPerRow:(NSInteger)rect.size.width * 4
+                                                bitsPerPixel:32];
+
+    NSGraphicsContext *bitmapContext = [NSGraphicsContext graphicsContextWithBitmapImageRep:layerImage];
+
+    CGContextRef context = (CGContextRef)bitmapContext.graphicsPort;
+
+    CGContextClearRect(context, rect);
+
+    renderBlock(context, 1.0, rect);
+
+    CGContextFlush(context);
+
+    NSImage *image = [[NSImage alloc] initWithSize:NSSizeFromCGSize(rect.size)];
+    [image addRepresentation:layerImage];
+
+    return image;
 }

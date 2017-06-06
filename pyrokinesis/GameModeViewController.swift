@@ -13,9 +13,9 @@ class GameModeViewController : UITableViewController {
     @IBOutlet var gameModeTableView: UITableView!
     
     static let CELL_BG_COLOUR = UIColor(red: 23/255.0, green: 23/255.0, blue: 23/255.0, alpha: 1.0)
-    private var lastSelectedIndexPath: NSIndexPath? = nil
+    fileprivate var lastSelectedIndexPath: IndexPath? = nil
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         self.navigationItem.title = "GAME MODE"
@@ -27,7 +27,7 @@ class GameModeViewController : UITableViewController {
         
         SettingsViewController.setupNavButtons(self, navigationItem: self.navigationItem)
         
-        var selectedIndex = NSIndexPath(forRow: 0, inSection: 0)
+        var selectedIndex = IndexPath(row: 0, section: 0)
         if let settings = PyrokinesisSettings.getSettings() {
 
             // Find the index of the given game mode...
@@ -39,16 +39,16 @@ class GameModeViewController : UITableViewController {
                 if modeStr == settings.gameMode {
                     break
                 }
-                gameModeIdx++
+                gameModeIdx += 1
             }
             
             if gameModeIdx < PyrokinesisSettings.GameMode.allValues.count {
-                selectedIndex = NSIndexPath(forRow: gameModeIdx, inSection: 0)
+                selectedIndex = IndexPath(row: gameModeIdx, section: 0)
             }
         }
        
         // Make sure SOMETHING is selected...
-        self.tableView(self.gameModeTableView, didSelectRowAtIndexPath: selectedIndex)
+        self.tableView(self.gameModeTableView, didSelectRowAt: selectedIndex)
     }
     
     override func didReceiveMemoryWarning() {
@@ -56,22 +56,22 @@ class GameModeViewController : UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return PyrokinesisSettings.GameMode.allValues.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let gameMode = PyrokinesisSettings.GameMode.allValues[indexPath.row]
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("ModeOptionCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ModeOptionCell", for: indexPath) 
         cell.textLabel?.text = PyrokinesisSettings.GameMode.allValues[indexPath.row].rawValue
-        cell.accessoryType = (self.lastSelectedIndexPath?.row == indexPath.row) ? .Checkmark : .None
-        if (cell.accessoryType == .Checkmark) {
+        cell.accessoryType = (self.lastSelectedIndexPath?.row == indexPath.row) ? .checkmark : .none
+        if (cell.accessoryType == .checkmark) {
             cell.accessoryView = UIImageView(image: UIImage(named: "checkmark"))
             cell.accessoryView?.backgroundColor = GameModeViewController.CELL_BG_COLOUR
         }
@@ -81,38 +81,38 @@ class GameModeViewController : UITableViewController {
         
         return cell
     }
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row != self.lastSelectedIndexPath?.row {
             if let lastIdxPath = lastSelectedIndexPath {
-                let oldCell = tableView.cellForRowAtIndexPath(lastIdxPath)
-                oldCell?.accessoryType = .None
+                let oldCell = tableView.cellForRow(at: lastIdxPath)
+                oldCell?.accessoryType = .none
                 oldCell?.accessoryView = nil
             }
             
-            let newCell = tableView.cellForRowAtIndexPath(indexPath)
-            newCell?.accessoryType = .Checkmark
+            let newCell = tableView.cellForRow(at: indexPath)
+            newCell?.accessoryType = .checkmark
             newCell?.accessoryView = UIImageView(image: UIImage(named: "checkmark"))
             newCell?.accessoryView?.backgroundColor = GameModeViewController.CELL_BG_COLOUR
             
             self.lastSelectedIndexPath = indexPath
         }
     }
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let header = view as? UITableViewHeaderFooterView {
-            header.textLabel.textColor = UIColor.whiteColor()
+            header.textLabel?.textColor = UIColor.white
         }
     }
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         cell.backgroundColor = GameModeViewController.CELL_BG_COLOUR
     }
     
     func getGameModeString() -> String {
         if let selectedIdxPath = self.lastSelectedIndexPath {
-            if let cell = self.gameModeTableView.cellForRowAtIndexPath(selectedIdxPath) {
+            if let cell = self.gameModeTableView.cellForRow(at: selectedIdxPath) {
                 if let label = cell.textLabel {
                     if let text = label.text {
                         return text
@@ -135,10 +135,10 @@ class GameModeViewController : UITableViewController {
             settings.save()
         }
         
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func cancelButtonPressed() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 }

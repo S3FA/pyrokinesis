@@ -33,17 +33,17 @@ class PyrokinesisTabBarController: UITabBarController {
             
             assert(items.count == 3)
             
-            var item0 = items[0] as! UITabBarItem
-            item0.image = UIImage(named: "graphInactive")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
-            item0.selectedImage = UIImage(named: "graphActive")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            let item0 = items[0] 
+            item0.image = UIImage(named: "graphInactive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            item0.selectedImage = UIImage(named: "graphActive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
             
-            var item1 = items[1] as! UITabBarItem
-            item1.image = UIImage(named: "controlInactive")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
-            item1.selectedImage = UIImage(named: "controlActive")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            let item1 = items[1] 
+            item1.image = UIImage(named: "controlInactive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            item1.selectedImage = UIImage(named: "controlActive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
             
-            var item2 = items[2] as! UITabBarItem
-            item2.image = UIImage(named: "settingsInactive")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
-            item2.selectedImage = UIImage(named: "settingsActive")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+            let item2 = items[2] 
+            item2.image = UIImage(named: "settingsInactive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            item2.selectedImage = UIImage(named: "settingsActive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         }
     }
     
