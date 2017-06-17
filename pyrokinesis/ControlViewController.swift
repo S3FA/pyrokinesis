@@ -43,21 +43,21 @@ class ControlViewController : UIViewController, UINavigationControllerDelegate, 
         return .lightContent
     }
     
-    func touchesBegan(_ touches: Set<NSObject>, with event: UIEvent) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.checkFlameEffectTouches(touches, touchOn: true)
-        super.touchesBegan(touches as! Set<UITouch>, with:event)
+        super.touchesBegan(touches, with:event)
     }
-    func touchesMoved(_ touches: Set<NSObject>, with event: UIEvent) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.checkFlameEffectTouches(touches, touchOn: true)
-        super.touchesMoved(touches as! Set<UITouch>, with: event)
+        super.touchesMoved(touches, with: event)
     }
-    func touchesEnded(_ touches: Set<NSObject>, with event: UIEvent) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.checkFlameEffectTouches(touches, touchOn: false)
-        super.touchesEnded(touches as! Set<UITouch>, with: event)
+        super.touchesEnded(touches, with: event)
     }
-    func touchesCancelled(_ touches: Set<NSObject>!, with event: UIEvent!) {
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent!) {
         self.checkFlameEffectTouches(touches, touchOn: false)
-        super.touchesCancelled(touches as! Set<UITouch>, with: event)
+        super.touchesCancelled(touches, with: event)
     }
     
     // FireSimulatorDelegate Protocol
@@ -94,7 +94,7 @@ class ControlViewController : UIViewController, UINavigationControllerDelegate, 
         let pinwheelSpd = MathHelper.lerp(timeDiff, x0: 0.0, x1: ControlViewController.MAX_BUTTON_HOLD_TIME_S, y0: 0.15, y1: 0.075)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        var anims = FireAnimatorManager.buildPinwheelFireAnimators(0.0, burstTimeInSecs: pinwheelSpd, clockwise: MathHelper.randomBool(), numPinwheels: numPinwheels)
+        let anims = FireAnimatorManager.buildPinwheelFireAnimators(0.0, burstTimeInSecs: pinwheelSpd, clockwise: MathHelper.randomBool(), numPinwheels: numPinwheels)
         
         if let fireMgr = appDelegate.fireAnimatorManager {
             fireMgr.clearAnimators()
@@ -117,10 +117,10 @@ class ControlViewController : UIViewController, UINavigationControllerDelegate, 
         let currTimestamp = Date.timeIntervalSinceReferenceDate
         let timeDiff = min(currTimestamp - self.buttonHoldDownStartTimestamp, ControlViewController.MAX_BUTTON_HOLD_TIME_S)
         
-        var eruptionLengthInS = MathHelper.lerp(timeDiff, x0: 0.0, x1: ControlViewController.MAX_BUTTON_HOLD_TIME_S, y0: 0.5, y1: 1.9)
+        let eruptionLengthInS = MathHelper.lerp(timeDiff, x0: 0.0, x1: ControlViewController.MAX_BUTTON_HOLD_TIME_S, y0: 0.5, y1: 1.9)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        var anims = FireAnimatorManager.buildEruptionFireAnimators(0.0, burstTimeInSecs: eruptionLengthInS)
+        let anims = FireAnimatorManager.buildEruptionFireAnimators(0.0, burstTimeInSecs: eruptionLengthInS)
         
         if let fireMgr = appDelegate.fireAnimatorManager {
             fireMgr.clearAnimators()
@@ -143,10 +143,10 @@ class ControlViewController : UIViewController, UINavigationControllerDelegate, 
         let currTimestamp = Date.timeIntervalSinceReferenceDate
         let timeDiff = min(currTimestamp - self.buttonHoldDownStartTimestamp, ControlViewController.MAX_BUTTON_HOLD_TIME_S)
         
-        var randomBurstTime = MathHelper.lerp(timeDiff, x0: 0.0, x1: ControlViewController.MAX_BUTTON_HOLD_TIME_S, y0: 0.4, y1: 0.2)
+        let randomBurstTime = MathHelper.lerp(timeDiff, x0: 0.0, x1: ControlViewController.MAX_BUTTON_HOLD_TIME_S, y0: 0.4, y1: 0.2)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        var anims = FireAnimatorManager.buildRandomFireAnimators(0.0, minNumRandomFlames: 8, maxNumRandomFlames: 16, minBurstTimeInSecs: randomBurstTime, maxBurstTimeInSecs: randomBurstTime)
+        let anims = FireAnimatorManager.buildRandomFireAnimators(0.0, minNumRandomFlames: 8, maxNumRandomFlames: 16, minBurstTimeInSecs: randomBurstTime, maxBurstTimeInSecs: randomBurstTime)
         
         if let fireMgr = appDelegate.fireAnimatorManager {
             fireMgr.clearAnimators()

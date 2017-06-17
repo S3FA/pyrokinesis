@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C53EEEB1EEA45E9007146BF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C53EEEA1EEA45E9007146BF /* libc++.tbd */; };
 		A418759D1B34B93200A542E1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A418759C1B34B93200A542E1 /* SettingsViewController.swift */; };
 		A41875A11B34C05E00A542E1 /* TableViewSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41875A01B34C05E00A542E1 /* TableViewSwitchCell.swift */; };
 		A41875A31B34CEE300A542E1 /* IPAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41875A21B34CEE300A542E1 /* IPAddressViewController.swift */; };
@@ -35,10 +36,8 @@
 		A4B8BEAD1B2E5C2900DF3964 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B8BEAB1B2E5C2900DF3964 /* Main.storyboard */; };
 		A4B8BEAF1B2E5C2900DF3964 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B8BEAE1B2E5C2900DF3964 /* Images.xcassets */; };
 		A4B8BEBE1B2E5C2900DF3964 /* pyrokinesisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BEBD1B2E5C2900DF3964 /* pyrokinesisTests.swift */; };
-		A4B8BED21B2E687300DF3964 /* MuseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B8BED11B2E687300DF3964 /* MuseListener.swift */; };
 		A4D328E51B7BFFD300B9CC8C /* FireAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */; };
 		A4D328E91B7C302300B9CC8C /* FireAnimatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D328E81B7C302300B9CC8C /* FireAnimatorManager.swift */; };
-		A4F2F4E81B7297D600AAAC4E /* libMuse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4F2F3D81B7297D600AAAC4E /* libMuse.a */; };
 		A4F2F4F21B729CC400AAAC4E /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A4F2F4F11B729CC400AAAC4E /* libc++.dylib */; };
 /* End PBXBuildFile section */
 
@@ -144,6 +143,8 @@
 
 /* Begin PBXFileReference section */
 		4C018FFA1EE6407800E7675A /* CorePlot.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CorePlot.xcodeproj; path = "pyrokinesis/lib/core-plot/framework/CorePlot.xcodeproj"; sourceTree = "<group>"; };
+		4C53EEE71EEA45A3007146BF /* Muse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Muse.framework; path = pyrokinesis/lib/Muse.framework; sourceTree = "<group>"; };
+		4C53EEEA1EEA45E9007146BF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		A418759C1B34B93200A542E1 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A41875A01B34C05E00A542E1 /* TableViewSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSwitchCell.swift; sourceTree = "<group>"; };
 		A41875A21B34CEE300A542E1 /* IPAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPAddressViewController.swift; sourceTree = "<group>"; };
@@ -182,42 +183,9 @@
 		A4B8BEBC1B2E5C2900DF3964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4B8BEBD1B2E5C2900DF3964 /* pyrokinesisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pyrokinesisTests.swift; sourceTree = "<group>"; };
 		A4B8BECD1B2E623900DF3964 /* ObjCBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjCBridge.h; sourceTree = "<group>"; };
-		A4B8BED11B2E687300DF3964 /* MuseListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseListener.swift; sourceTree = "<group>"; };
 		A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireAnimator.swift; sourceTree = "<group>"; };
 		A4D328E81B7C302300B9CC8C /* FireAnimatorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireAnimatorManager.swift; sourceTree = "<group>"; };
 		A4F2F2771B72977500AAAC4E /* libMuse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMuse.a; path = pyrokinesis/lib/libmuse/libMuse.a; sourceTree = "<group>"; };
-		A4F2F3B91B7297D600AAAC4E /* EAAccessory+IXNAccessoryMuse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EAAccessory+IXNAccessoryMuse.h"; sourceTree = "<group>"; };
-		A4F2F3BA1B7297D600AAAC4E /* IXNAccelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNAccelerometer.h; sourceTree = "<group>"; };
-		A4F2F3BB1B7297D600AAAC4E /* IXNAnnotationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNAnnotationData.h; sourceTree = "<group>"; };
-		A4F2F3BC1B7297D600AAAC4E /* IXNAnnotationFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNAnnotationFormat.h; sourceTree = "<group>"; };
-		A4F2F3BD1B7297D600AAAC4E /* IXNBattery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNBattery.h; sourceTree = "<group>"; };
-		A4F2F3BE1B7297D600AAAC4E /* IXNComputingDeviceConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNComputingDeviceConfiguration.h; sourceTree = "<group>"; };
-		A4F2F3BF1B7297D600AAAC4E /* IXNConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNConnectionState.h; sourceTree = "<group>"; };
-		A4F2F3C01B7297D600AAAC4E /* IXNDrlRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNDrlRef.h; sourceTree = "<group>"; };
-		A4F2F3C11B7297D600AAAC4E /* IXNDspData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNDspData.h; sourceTree = "<group>"; };
-		A4F2F3C21B7297D600AAAC4E /* IXNEeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNEeg.h; sourceTree = "<group>"; };
-		A4F2F3C31B7297D600AAAC4E /* IXNLibMuseVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNLibMuseVersion.h; sourceTree = "<group>"; };
-		A4F2F3C41B7297D600AAAC4E /* IXNMessageType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMessageType.h; sourceTree = "<group>"; };
-		A4F2F3C51B7297D600AAAC4E /* IXNMuse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuse.h; sourceTree = "<group>"; };
-		A4F2F3C61B7297D600AAAC4E /* IXNMuseArtifactPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseArtifactPacket.h; sourceTree = "<group>"; };
-		A4F2F3C71B7297D600AAAC4E /* IXNMuseConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseConfiguration.h; sourceTree = "<group>"; };
-		A4F2F3C81B7297D600AAAC4E /* IXNMuseConnectionListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseConnectionListener.h; sourceTree = "<group>"; };
-		A4F2F3C91B7297D600AAAC4E /* IXNMuseConnectionPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseConnectionPacket.h; sourceTree = "<group>"; };
-		A4F2F3CA1B7297D600AAAC4E /* IXNMuseDataListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseDataListener.h; sourceTree = "<group>"; };
-		A4F2F3CB1B7297D600AAAC4E /* IXNMuseDataPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseDataPacket.h; sourceTree = "<group>"; };
-		A4F2F3CC1B7297D600AAAC4E /* IXNMuseDataPacketType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseDataPacketType.h; sourceTree = "<group>"; };
-		A4F2F3CD1B7297D600AAAC4E /* IXNMuseFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseFile.h; sourceTree = "<group>"; };
-		A4F2F3CE1B7297D600AAAC4E /* IXNMuseFileFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseFileFactory.h; sourceTree = "<group>"; };
-		A4F2F3CF1B7297D600AAAC4E /* IXNMuseFileIos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseFileIos.h; sourceTree = "<group>"; };
-		A4F2F3D01B7297D600AAAC4E /* IXNMuseFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseFileReader.h; sourceTree = "<group>"; };
-		A4F2F3D11B7297D600AAAC4E /* IXNMuseFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseFileWriter.h; sourceTree = "<group>"; };
-		A4F2F3D21B7297D600AAAC4E /* IXNMuseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseManager.h; sourceTree = "<group>"; };
-		A4F2F3D31B7297D600AAAC4E /* IXNMusePreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMusePreset.h; sourceTree = "<group>"; };
-		A4F2F3D41B7297D600AAAC4E /* IXNMuseVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNMuseVersion.h; sourceTree = "<group>"; };
-		A4F2F3D51B7297D600AAAC4E /* IXNNotchFrequency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNNotchFrequency.h; sourceTree = "<group>"; };
-		A4F2F3D61B7297D600AAAC4E /* IXNSenderInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXNSenderInformation.h; sourceTree = "<group>"; };
-		A4F2F3D71B7297D600AAAC4E /* Muse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Muse.h; sourceTree = "<group>"; };
-		A4F2F3D81B7297D600AAAC4E /* libMuse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMuse.a; sourceTree = "<group>"; };
 		A4F2F4F11B729CC400AAAC4E /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -226,11 +194,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C53EEEB1EEA45E9007146BF /* libc++.tbd in Frameworks */,
 				A4F2F4F21B729CC400AAAC4E /* libc++.dylib in Frameworks */,
 				A41875B91B3B5A3E00A542E1 /* Accelerate.framework in Frameworks */,
 				A41875B31B3B4CD600A542E1 /* QuartzCore.framework in Frameworks */,
 				A41875B11B3B4C8E00A542E1 /* libCorePlot-CocoaTouch.a in Frameworks */,
-				A4F2F4E81B7297D600AAAC4E /* libMuse.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,7 +230,7 @@
 		A41875A61B3B4C3F00A542E1 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				A4F2F27A1B7297D500AAAC4E /* libmuse */,
+				4C53EEE71EEA45A3007146BF /* Muse.framework */,
 				A49365BB1B5C19FB008D3A42 /* GCD */,
 				A41875A71B3B4C4A00A542E1 /* CorePlot-CocoaTouch.xcodeproj */,
 			);
@@ -324,7 +292,6 @@
 			isa = PBXGroup;
 			children = (
 				A4B8BECD1B2E623900DF3964 /* ObjCBridge.h */,
-				A4B8BED11B2E687300DF3964 /* MuseListener.swift */,
 				A4D328E41B7BFFD300B9CC8C /* FireAnimator.swift */,
 				A4D328E81B7C302300B9CC8C /* FireAnimatorManager.swift */,
 				A47A5D5A1B83F979007973AC /* FireSimulator.swift */,
@@ -380,68 +347,13 @@
 		A4B8BEC91B2E5F0D00DF3964 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4C53EEEA1EEA45E9007146BF /* libc++.tbd */,
 				A4F2F4F11B729CC400AAAC4E /* libc++.dylib */,
 				A4F2F2771B72977500AAAC4E /* libMuse.a */,
 				A41875B81B3B5A3E00A542E1 /* Accelerate.framework */,
 				A41875B21B3B4CD600A542E1 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A4F2F27A1B7297D500AAAC4E /* libmuse */ = {
-			isa = PBXGroup;
-			children = (
-				A4F2F3B71B7297D600AAAC4E /* Headers */,
-				A4F2F3D81B7297D600AAAC4E /* libMuse.a */,
-			);
-			name = libmuse;
-			path = pyrokinesis/lib/libmuse;
-			sourceTree = "<group>";
-		};
-		A4F2F3B71B7297D600AAAC4E /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				A4F2F3B81B7297D600AAAC4E /* Muse */,
-			);
-			path = Headers;
-			sourceTree = "<group>";
-		};
-		A4F2F3B81B7297D600AAAC4E /* Muse */ = {
-			isa = PBXGroup;
-			children = (
-				A4F2F3B91B7297D600AAAC4E /* EAAccessory+IXNAccessoryMuse.h */,
-				A4F2F3BA1B7297D600AAAC4E /* IXNAccelerometer.h */,
-				A4F2F3BB1B7297D600AAAC4E /* IXNAnnotationData.h */,
-				A4F2F3BC1B7297D600AAAC4E /* IXNAnnotationFormat.h */,
-				A4F2F3BD1B7297D600AAAC4E /* IXNBattery.h */,
-				A4F2F3BE1B7297D600AAAC4E /* IXNComputingDeviceConfiguration.h */,
-				A4F2F3BF1B7297D600AAAC4E /* IXNConnectionState.h */,
-				A4F2F3C01B7297D600AAAC4E /* IXNDrlRef.h */,
-				A4F2F3C11B7297D600AAAC4E /* IXNDspData.h */,
-				A4F2F3C21B7297D600AAAC4E /* IXNEeg.h */,
-				A4F2F3C31B7297D600AAAC4E /* IXNLibMuseVersion.h */,
-				A4F2F3C41B7297D600AAAC4E /* IXNMessageType.h */,
-				A4F2F3C51B7297D600AAAC4E /* IXNMuse.h */,
-				A4F2F3C61B7297D600AAAC4E /* IXNMuseArtifactPacket.h */,
-				A4F2F3C71B7297D600AAAC4E /* IXNMuseConfiguration.h */,
-				A4F2F3C81B7297D600AAAC4E /* IXNMuseConnectionListener.h */,
-				A4F2F3C91B7297D600AAAC4E /* IXNMuseConnectionPacket.h */,
-				A4F2F3CA1B7297D600AAAC4E /* IXNMuseDataListener.h */,
-				A4F2F3CB1B7297D600AAAC4E /* IXNMuseDataPacket.h */,
-				A4F2F3CC1B7297D600AAAC4E /* IXNMuseDataPacketType.h */,
-				A4F2F3CD1B7297D600AAAC4E /* IXNMuseFile.h */,
-				A4F2F3CE1B7297D600AAAC4E /* IXNMuseFileFactory.h */,
-				A4F2F3CF1B7297D600AAAC4E /* IXNMuseFileIos.h */,
-				A4F2F3D01B7297D600AAAC4E /* IXNMuseFileReader.h */,
-				A4F2F3D11B7297D600AAAC4E /* IXNMuseFileWriter.h */,
-				A4F2F3D21B7297D600AAAC4E /* IXNMuseManager.h */,
-				A4F2F3D31B7297D600AAAC4E /* IXNMusePreset.h */,
-				A4F2F3D41B7297D600AAAC4E /* IXNMuseVersion.h */,
-				A4F2F3D51B7297D600AAAC4E /* IXNNotchFrequency.h */,
-				A4F2F3D61B7297D600AAAC4E /* IXNSenderInformation.h */,
-				A4F2F3D71B7297D600AAAC4E /* Muse.h */,
-			);
-			path = Muse;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -636,7 +548,6 @@
 			files = (
 				A4D328E91B7C302300B9CC8C /* FireAnimatorManager.swift in Sources */,
 				A41875A31B34CEE300A542E1 /* IPAddressViewController.swift in Sources */,
-				A4B8BED21B2E687300DF3964 /* MuseListener.swift in Sources */,
 				A47A5D551B8128DA007973AC /* MathHelper.swift in Sources */,
 				A47A5D591B81410A007973AC /* PyrokinesisTabBarController.swift in Sources */,
 				A4B8BEA61B2E5C2900DF3964 /* AppDelegate.swift in Sources */,
@@ -803,10 +714,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 259P4N6KG7;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/pyrokinesis",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/pyrokinesis/lib",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -840,10 +753,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 259P4N6KG7;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/pyrokinesis",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+					"$(PROJECT_DIR)/pyrokinesis/lib",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

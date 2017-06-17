@@ -17,10 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     var overviewViewController: OverviewViewController? = nil
     
     
-    var muse: IXNMuse? = nil
-    var musePickerTimer: Timer? = nil
-    var museListener: MuseListener? = nil
-    var museManager: IXNMuseManager? = nil
+//    var muse: IXNMuse? = nil
+//    var musePickerTimer: Timer? = nil
+//    var museListener: MuseListener? = nil
+//    var museManager: IXNMuseManagerIos? = nil
     
     var udpSocket: GCDAsyncUdpSocket? = nil
     
@@ -63,26 +63,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
         // Restart any tasks that were paused (or not yet started) while the application was inactive. 
         // If the application was previously in the background, optionally refresh the user interface.
         
-        objc_sync_enter(self.museManager)
-        if self.museManager != nil {
-            objc_sync_exit(self.museManager)
-            return
-        }
-        self.museManager = IXNMuseManager.shared()
-        objc_sync_exit(self.museManager)
-
-        if self.museListener == nil {
-            self.museListener = MuseListener()
-        }
-        
-        if self.muse == nil {
-            // Intent: show a bluetooth picker, but only if there isn't already a
-            // Muse connected to the device. Do this by delaying the picker by 1
-            // second. If startWithMuse happens before the timer expires, cancel the timer.
-            self.musePickerTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(AppDelegate.showMusePicker), userInfo: nil, repeats: false)
-        }
-        
-        self.museManager!.addObserver(self, forKeyPath: self.museManager!.connectedMusesKeyPath(), options:[.new, .initial], context:nil)
+//        objc_sync_enter(self.museManager)
+//        if self.museManager != nil {
+//            objc_sync_exit(self.museManager)
+//            return
+//        }
+//        self.museManager = IXNMuseManagerIos.sharedManager()
+//        objc_sync_exit(self.museManager)
+//
+//        if self.museListener == nil {
+//            self.museListener = MuseListener()
+//        }
+//        
+//        if self.muse == nil {
+//            // Intent: show a bluetooth picker, but only if there isn't already a
+//            // Muse connected to the device. Do this by delaying the picker by 1
+//            // second. If startWithMuse happens before the timer expires, cancel the timer.
+//            self.musePickerTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(AppDelegate.showMusePicker), userInfo: nil, repeats: false)
+//        }
+//        
+//        self.museManager!.addObserver(self, forKeyPath: self.museManager!.connectedMusesKeyPath(), options:[.new, .initial], context:nil)
         
         self.initUdp()
     }
@@ -90,70 +90,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCDAsyncUdpSocketDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         
-        self.muse = nil;
+//        self.muse = nil;
     }
     
     func observeValue(forKeyPath keyPath: String, of object: AnyObject, change: [AnyHashable: Any], context: UnsafeMutableRawPointer) {
         
-        if keyPath == self.museManager?.connectedMusesKeyPath() {
-            let connectedMuses = (change[NSKeyValueChangeKey.newKey] as! NSSet) as Set
-            
-            if connectedMuses.count > 0 {
-                if let muse = connectedMuses.first as? IXNMuse {
-                    self.startWithMuse(muse)
-                }
-            }
-        }
+//        if keyPath == self.museManager?.connectedMusesKeyPath() {
+//            let connectedMuses = (change[NSKeyValueChangeKey.newKey] as! NSSet) as Set
+//            
+//            if connectedMuses.count > 0 {
+//                if let muse = connectedMuses.first as? IXNMuse {
+//                    self.startWithMuse(muse)
+//                }
+//            }
+//        }
     }
     
     func showMusePicker() {
-        if self.muse != nil {
-            return
-        }
-        
-        self.museManager?.showMusePicker(completion: {(error: NSError?) in
-            if let e = error {
-                NSLog("Error showing Muse picker: \(e)");
-            }
-        } as! EABluetoothAccessoryPickerCompletion)
+//        if self.muse != nil {
+//            return
+//        }
+//        
+//        self.museManager?.showMusePicker(completion: {(error: NSError?) in
+//            if let e = error {
+//                NSLog("Error showing Muse picker: \(e)");
+//            }
+//        } as! EABluetoothAccessoryPickerCompletion)
     }
     
     func startWithMuse(_ muse: IXNMuse) {
-        self.musePickerTimer?.invalidate()
-        self.musePickerTimer = nil
-        
-        objc_sync_enter(self.muse)
-        if self.muse != nil {
-            objc_sync_exit(self.muse)
-            return
-        }
-        self.muse = muse;
-        objc_sync_exit(self.muse)
-        
-        if let m = self.muse {
-            m.register(self.museListener, type: IXNMuseDataPacketType.horseshoe)
-            m.register(self.museListener, type: IXNMuseDataPacketType.battery)
-            m.register(self.museListener, type: IXNMuseDataPacketType.artifacts)
-            
-            m.register(self.museListener, type: IXNMuseDataPacketType.alphaScore)
-            m.register(self.museListener, type: IXNMuseDataPacketType.betaScore)
-            m.register(self.museListener, type: IXNMuseDataPacketType.deltaScore)
-            m.register(self.museListener, type: IXNMuseDataPacketType.thetaScore)
-            m.register(self.museListener, type: IXNMuseDataPacketType.gammaScore)
-            m.register(self.museListener, type: IXNMuseDataPacketType.mellow)
-            m.register(self.museListener, type: IXNMuseDataPacketType.concentration)
-            
-            //m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.Accelerometer)
-            m.register(self.museListener)
-            
-            m.runAsynchronously()
-        }
+//        self.musePickerTimer?.invalidate()
+//        self.musePickerTimer = nil
+//        
+//        objc_sync_enter(self.muse)
+//        if self.muse != nil {
+//            objc_sync_exit(self.muse)
+//            return
+//        }
+//        self.muse = muse;
+//        objc_sync_exit(self.muse)
+//        
+//        if let m = self.muse {
+//            m.register(self.museListener, type: IXNMuseDataPacketType.hsi)
+//            m.register(self.museListener, type: IXNMuseDataPacketType.battery)
+//            m.register(self.museListener, type: IXNMuseDataPacketType.artifacts)
+//            
+//            m.register(self.museListener, type: IXNMuseDataPacketType.alphaScore)
+//            m.register(self.museListener, type: IXNMuseDataPacketType.betaScore)
+//            m.register(self.museListener, type: IXNMuseDataPacketType.deltaScore)
+//            m.register(self.museListener, type: IXNMuseDataPacketType.thetaScore)
+//            m.register(self.museListener, type: IXNMuseDataPacketType.gammaScore)
+//            
+//            // These seem to have been removed from the latest version of LibMuse
+////            m.register(self.museListener, type: IXNMuseDataPacketType.mellow)
+////            m.register(self.museListener, type: IXNMuseDataPacketType.concentration)
+//            
+//            //m.registerDataListener(self.museListener, type: IXNMuseDataPacketType.Accelerometer)
+//            m.register(self.museListener)
+//            
+//            m.runAsynchronously()
+//        }
     }
     
     func reconnectMuse() {
-        if let m = self.muse {
-            m.runAsynchronously()
-        }
+//        if let m = self.muse {
+//            m.runAsynchronously()
+//        }
     }
     
     func initUdp() {

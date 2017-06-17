@@ -112,7 +112,7 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
         plotSpace.yRange = yRange
         
         let xRange = plotSpace.xRange.mutableCopy() as! CPTMutablePlotRange
-        xRange.setLengthFloat(Float(MuseListener.MAX_CACHED_VALUES/OverviewViewController.MUSE_DATA_DIV))
+//        xRange.setLengthFloat(Float(MuseListener.MAX_CACHED_VALUES/OverviewViewController.MUSE_DATA_DIV))
         plotSpace.xRange = xRange
     }
     
@@ -128,10 +128,10 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
                 return "Theta"
             case IXNMuseDataPacketType.gammaScore:
                 return "Gamma"
-            case IXNMuseDataPacketType.mellow:
-                return "Mellow"
-            case IXNMuseDataPacketType.concentration:
-                return "Concentration"
+//            case IXNMuseDataPacketType.mellow:
+//                return "Mellow"
+//            case IXNMuseDataPacketType.concentration:
+//                return "Concentration"
             default:
                 assert(false)
                 return ""
@@ -212,33 +212,33 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
     }
     
     func updateGraphAndStatus() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        if let museListener = appDelegate.museListener {
-            if museListener.dataUpdated {
-                self.museGraph.reloadData()
-                museListener.dataUpdated = false
-            }
-
-            self.connStatusDetailLabel.text = MuseListener.getConnectionStatusString(museListener.museConnStatus).uppercased()
-            self.connStatusLabel.text = museListener.isMuseAvailable() ? "FOUND" : "NOT FOUND"
-            
-            var score = museListener.avgHorseshoeValue()
-            self.signalLabel.text = MuseListener.getSignalStrengthString(score).uppercased()
-            self.signalDetailLabel.text = MuseListener.getSignalDetailString(score).uppercased()
-            
-            switch (museListener.museConnStatus) {
-            case .connected:
-                if score >= MuseListener.WORST_HORSESHOE_SCORE {
-                    // Overlay on graph that the connection with the muse is too horrible to stream data
-                    
-                }
-                break
-                
-            default:
-                // No data!
-                break
-            }
-        }
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        if let museListener = appDelegate.museListener {
+//            if museListener.dataUpdated {
+//                self.museGraph.reloadData()
+//                museListener.dataUpdated = false
+//            }
+//
+//            self.connStatusDetailLabel.text = MuseListener.getConnectionStatusString(museListener.museConnStatus).uppercased()
+//            self.connStatusLabel.text = museListener.isMuseAvailable() ? "FOUND" : "NOT FOUND"
+//            
+//            var score = museListener.avgHorseshoeValue()
+//            self.signalLabel.text = MuseListener.getSignalStrengthString(score).uppercased()
+//            self.signalDetailLabel.text = MuseListener.getSignalDetailString(score).uppercased()
+//            
+//            switch (museListener.museConnStatus) {
+//            case .connected:
+//                if score >= MuseListener.WORST_HORSESHOE_SCORE {
+//                    // Overlay on graph that the connection with the muse is too horrible to stream data
+//                    
+//                }
+//                break
+//                
+//            default:
+//                // No data!
+//                break
+//            }
+//        }
     }
     
     func updateSettings() {
@@ -252,18 +252,18 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
                 var trackedTypesAndColours = [IXNMuseDataPacketType: (CPTColor, CPTColor)]()
                 
                 switch (gameMode) {
-                    case .Calm:
-                        trackedTypesAndColours.updateValue((CPTColor(componentRed: 0.0, green: 0.5, blue: 0.5, alpha: 1.0), CPTColor.blue()), forKey: .alphaScore)
-                        trackedTypesAndColours.updateValue((CPTColor.cyan(), CPTColor(componentRed: 0.0, green: 0.5, blue: 0.5, alpha: 1.0)), forKey: .mellow)
-                        break
-                    
-                    case .Concentration:
-                        trackedTypesAndColours.updateValue((CPTColor.orange(), CPTColor.red()), forKey: .betaScore)
-                        trackedTypesAndColours.updateValue((CPTColor.yellow(), CPTColor.orange()), forKey: .concentration)
-                        break
+//                    case .Calm:
+//                        trackedTypesAndColours.updateValue((CPTColor(componentRed: 0.0, green: 0.5, blue: 0.5, alpha: 1.0), CPTColor.blue()), forKey: .alphaScore)
+//                        trackedTypesAndColours.updateValue((CPTColor.cyan(), CPTColor(componentRed: 0.0, green: 0.5, blue: 0.5, alpha: 1.0)), forKey: .mellow)
+//                        break
+//                    
+//                    case .Concentration:
+//                        trackedTypesAndColours.updateValue((CPTColor.orange(), CPTColor.red()), forKey: .betaScore)
+//                        trackedTypesAndColours.updateValue((CPTColor.yellow(), CPTColor.orange()), forKey: .concentration)
+//                        break
                     
                     default:
-                        assert(false)
+//                        assert(false)
                         return
                 }
                 
@@ -307,36 +307,36 @@ class OverviewViewController: UIViewController, CPTPlotDataSource {
 
     // CPTPlotDataSource Functions
     func numberOfRecords(for plot: CPTPlot!) -> UInt {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        if let museListener = appDelegate.museListener {
-            
-            if let plotType = IXNMuseDataPacketType(rawValue: (plot.identifier as! IXNMuseDataPacketType.RawValue)) {
-                if let records = museListener.cachedScoreValues[plotType] {
-                    return UInt(records.count/OverviewViewController.MUSE_DATA_DIV)
-                }
-            }
-        }
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        if let museListener = appDelegate.museListener {
+//            
+//            if let plotType = IXNMuseDataPacketType(rawValue: (plot.identifier as! IXNMuseDataPacketType.RawValue)) {
+//                if let records = museListener.cachedScoreValues[plotType] {
+//                    return UInt(records.count/OverviewViewController.MUSE_DATA_DIV)
+//                }
+//            }
+//        }
         
         return 0
     }
     
     func double(for plot: CPTPlot!, field fieldEnum: UInt, record idx: UInt) -> Double {
         
-        if (Int(fieldEnum) == CPTScatterPlotField.X.rawValue) {
-            return Double(idx);
-        }
-        else if (Int(fieldEnum) == CPTScatterPlotField.Y.rawValue) {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            if let museListener = appDelegate.museListener {
-                
-                if let plotType = IXNMuseDataPacketType(rawValue: (plot.identifier as! IXNMuseDataPacketType.RawValue)) {
-                    if let records = museListener.cachedScoreValues[plotType] {
-                        assert(idx < UInt(records.count), "Invalid record index found.")
-                        return records[Int(idx * UInt(OverviewViewController.MUSE_DATA_DIV))]
-                    }
-                }
-            }
-        }
+//        if (Int(fieldEnum) == CPTScatterPlotField.X.rawValue) {
+//            return Double(idx);
+//        }
+//        else if (Int(fieldEnum) == CPTScatterPlotField.Y.rawValue) {
+//            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//            if let museListener = appDelegate.museListener {
+//                
+//                if let plotType = IXNMuseDataPacketType(rawValue: (plot.identifier as! IXNMuseDataPacketType.RawValue)) {
+//                    if let records = museListener.cachedScoreValues[plotType] {
+//                        assert(idx < UInt(records.count), "Invalid record index found.")
+//                        return records[Int(idx * UInt(OverviewViewController.MUSE_DATA_DIV))]
+//                    }
+//                }
+//            }
+//        }
         
         return 0
     }
