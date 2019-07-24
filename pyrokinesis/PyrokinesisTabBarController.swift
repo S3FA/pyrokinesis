@@ -31,19 +31,15 @@ class PyrokinesisTabBarController: UITabBarController {
                 }
             }
             
-            assert(items.count == 3)
+            assert(items.count == 2)
             
-            let item0 = items[0] 
-            item0.image = UIImage(named: "graphInactive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-            item0.selectedImage = UIImage(named: "graphActive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            let item1 = items[0]
+            item1.image = UIImage(named: "controlInactive")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+            item1.selectedImage = UIImage(named: "controlActive")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
             
-            let item1 = items[1] 
-            item1.image = UIImage(named: "controlInactive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-            item1.selectedImage = UIImage(named: "controlActive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-            
-            let item2 = items[2] 
-            item2.image = UIImage(named: "settingsInactive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-            item2.selectedImage = UIImage(named: "settingsActive")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            let item2 = items[1] 
+            item2.image = UIImage(named: "settingsInactive")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+            item2.selectedImage = UIImage(named: "settingsActive")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
         }
     }
     

@@ -41,6 +41,7 @@ class FireAnimatorManager : NSObject {
         self.animators.removeAll(keepingCapacity: true)
     }
     
+    @objc
     func tick() {
         // Tick each of the current animators...
         var allDone = true
@@ -88,7 +89,7 @@ class FireAnimatorManager : NSObject {
         var timeCountInS = startTimeInSecs
         if clockwise {
             for _ in 0...numPinwheels {
-                for i in 0...PyrokinesisSettings.NUM_FLAME_EFFECTS {
+                for i in 0..<PyrokinesisSettings.NUM_FLAME_EFFECTS {
                     result.append(FireAnimator(fireIndices: [i], timeUntilFire: timeCountInS, holdFlameTime: burstTimeInSecs))
                     timeCountInS += burstTimeInSecs
                 }
@@ -96,7 +97,7 @@ class FireAnimatorManager : NSObject {
         }
         else {
             for _ in 0...numPinwheels {
-                for i in (PyrokinesisSettings.NUM_FLAME_EFFECTS-1)...0 {
+                for i in (0..<PyrokinesisSettings.NUM_FLAME_EFFECTS).reversed() {
                     result.append(FireAnimator(fireIndices: [i], timeUntilFire: timeCountInS, holdFlameTime: burstTimeInSecs))
                     timeCountInS += burstTimeInSecs
                 }

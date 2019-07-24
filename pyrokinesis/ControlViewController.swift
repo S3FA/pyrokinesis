@@ -43,21 +43,21 @@ class ControlViewController : UIViewController, UINavigationControllerDelegate, 
         return .lightContent
     }
     
-    func touchesBegan(_ touches: Set<NSObject>, with event: UIEvent) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.checkFlameEffectTouches(touches, touchOn: true)
-        super.touchesBegan(touches as! Set<UITouch>, with:event)
+        super.touchesBegan(touches, with:event)
     }
-    func touchesMoved(_ touches: Set<NSObject>, with event: UIEvent) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.checkFlameEffectTouches(touches, touchOn: true)
-        super.touchesMoved(touches as! Set<UITouch>, with: event)
+        super.touchesMoved(touches, with: event)
     }
-    func touchesEnded(_ touches: Set<NSObject>, with event: UIEvent) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.checkFlameEffectTouches(touches, touchOn: false)
-        super.touchesEnded(touches as! Set<UITouch>, with: event)
+        super.touchesEnded(touches, with: event)
     }
-    func touchesCancelled(_ touches: Set<NSObject>!, with event: UIEvent!) {
+    override func touchesCancelled(_ touches: Set<UITouch>!, with event: UIEvent?) {
         self.checkFlameEffectTouches(touches, touchOn: false)
-        super.touchesCancelled(touches as! Set<UITouch>, with: event)
+        super.touchesCancelled(touches, with: event)
     }
     
     // FireSimulatorDelegate Protocol
@@ -177,12 +177,12 @@ class ControlViewController : UIViewController, UINavigationControllerDelegate, 
     
     
     fileprivate func flashOff(_ v: UIView, flashTimeInS: TimeInterval, originalColour: UIColor) {
-        UIView.animate(withDuration: flashTimeInS, delay: 0.0, options: UIViewAnimationOptions.allowUserInteraction, animations: { v.backgroundColor = originalColour }, completion: { (isComplete: Bool) in if isComplete { self.flashOn(v, flashTimeInS: flashTimeInS - ControlViewController.DELTA_FLASH_TIME_S, delay: TimeInterval(0.0), originalColour: originalColour) } })
+        UIView.animate(withDuration: flashTimeInS, delay: 0.0, options: UIView.AnimationOptions.allowUserInteraction, animations: { v.backgroundColor = originalColour }, completion: { (isComplete: Bool) in if isComplete { self.flashOn(v, flashTimeInS: flashTimeInS - ControlViewController.DELTA_FLASH_TIME_S, delay: TimeInterval(0.0), originalColour: originalColour) } })
     }
     
     fileprivate func flashOn(_ v: UIView, flashTimeInS: TimeInterval, delay: TimeInterval, originalColour: UIColor) {
         let flashTime = max(flashTimeInS, ControlViewController.DELTA_FLASH_TIME_S)
-        UIView.animate(withDuration: flashTime, delay: delay, options: UIViewAnimationOptions.allowUserInteraction, animations: { v.backgroundColor = UIColor.white }, completion: { (isComplete: Bool) in if isComplete { self.flashOff(v, flashTimeInS: flashTime, originalColour: originalColour) } })
+        UIView.animate(withDuration: flashTime, delay: delay, options: UIView.AnimationOptions.allowUserInteraction, animations: { v.backgroundColor = UIColor.white }, completion: { (isComplete: Bool) in if isComplete { self.flashOff(v, flashTimeInS: flashTime, originalColour: originalColour) } })
     }
     
     fileprivate func stopFlashing(_ v: UIView, originalColour: UIColor) {

@@ -35,9 +35,10 @@ class FlameEffectSimulator : NSObject {
         self.isOn = true
         delegate?.flameEffectChanged(self.index, isOn: self.isOn)
         
-        self.timer = Timer.scheduledTimer(timeInterval: PyrokinesisSettings.FLAME_EFFECT_ON_TIME_S, target: self, selector: Selector("turnOff"), userInfo: nil, repeats: false)
+        self.timer = Timer.scheduledTimer(timeInterval: PyrokinesisSettings.FLAME_EFFECT_ON_TIME_S, target: self, selector: #selector(FlameEffectSimulator.turnOff), userInfo: nil, repeats: false)
     }
     
+    @objc
     func turnOff() {
         self.isOn = false
         delegate?.flameEffectChanged(self.index, isOn: self.isOn)

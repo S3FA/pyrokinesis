@@ -9,8 +9,5 @@
 #ifndef pyrokinesis_ObjCBridge_h
 #define pyrokinesis_ObjCBridge_h
 
-#import "Muse/Muse.h"
-#include "CorePlot-CocoaTouch.h"
 #include "GCDAsyncUdpSocket.h"
-#include "CPTMutablePlotRange+SwiftCompat.h"
 #endif

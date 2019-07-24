@@ -98,10 +98,10 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
     
     
     class func setupNavButtons(_ target: AnyObject?, navigationItem: UINavigationItem) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "checkmark"), style: UIBarButtonItemStyle.done, target: target, action: Selector("doneButtonPressed"))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "checkmark"), style: UIBarButtonItem.Style.done, target: target, action: Selector("doneButtonPressed"))
         navigationItem.rightBarButtonItem?.tintColor = UISettings.DARK_RED_COLOR
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "cancelBack"), style: UIBarButtonItemStyle.plain, target: target, action: Selector("cancelButtonPressed"))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "cancelBack"), style: UIBarButtonItem.Style.plain, target: target, action: Selector("cancelButtonPressed"))
         navigationItem.leftBarButtonItem?.tintColor = UISettings.DARK_RED_COLOR
     }
     
@@ -124,11 +124,6 @@ class SettingsViewController: UITableViewController, UINavigationControllerDeleg
                 connSwitchOn = true
             }
             self.connectionEnabledSwitch.setOn(connSwitchOn, animated: false)
-        }
-        
-        // Update the overview controller as well...
-        if let graphView = appDelegate.overviewViewController {
-            graphView.updateSettings()
         }
         
     }

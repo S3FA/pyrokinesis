@@ -77,7 +77,7 @@ class UIFlameEffect : UIView {
             self.sendFireControlData()
             
             if self.touchRepeatTimer == nil {
-                self.touchRepeatTimer = Timer.scheduledTimer(timeInterval: PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S, target: self, selector: Selector("sendFireControlData"), userInfo: nil, repeats: true)
+                self.touchRepeatTimer = Timer.scheduledTimer(timeInterval: PyrokinesisSettings.FLAME_EFFECT_RESEND_TIME_S, target: self, selector: #selector(UIFlameEffect.sendFireControlData), userInfo: nil, repeats: true)
             }
             
             self.currFillColour = self.touchFillColour
@@ -98,6 +98,7 @@ class UIFlameEffect : UIView {
     }
     
     // Resend fire data if the flame effect is being held down...
+    @objc
     func sendFireControlData() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.sendFireControlData(self.index)
